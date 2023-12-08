@@ -1,16 +1,14 @@
-add_library(api-lib Api.cpp)
+file(GLOB_RECURSE api_sources *.cpp)
 
-add_subdirectory(libs/oatpp)
+add_library(api-lib ${api_sources})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-target_include_directories(api-lib PRIVATE
-    ${INCLUDE_DIR}
-    )
+find_package(oatpp 1.3.0 REQUIRED)
 
-file(GLOB_RECURSE api_sources *.cpp)
+target_link_libraries(api-lib PRIVATE oatpp::oatpp)
 
-target_link_libraries(api-lib PUBLIC oatpp)
+target_include_directories(api-lib PRIVATE ${oatpp_INCLUDE_DIRS})
 
 install(TARGETS api-lib
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
