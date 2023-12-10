@@ -47,13 +47,11 @@ void parseJsonData(const json& jsonData, std::vector<Product>& products, std::ve
 }
 
 int main() {
+    
     std::vector<Product> products;
     std::vector<User> users;
     
-      {"receipt":[{"products":[{"product":"sth","amount":sth,"price":sth,"whoBought",{"personiD":sth,"personID":sth}]},
-      {"product":"sth","amount":sth,"price":sth,"whoBought":2}]}],
-       "users":[{id":1,"name":"sth","phone":"sth"},
-      {"id":2,"name":"sth","phone":"sth"}]}";
+     std::string jsonData ="...";
     
    json parsedData = json::parse(jsonData);
 
