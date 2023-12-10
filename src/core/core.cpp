@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 #include <string>
 
 using json = nlohmann::json;
@@ -50,8 +50,7 @@ int main() {
     
     std::vector<Product> products;
     std::vector<User> users;
-    
-     std::string jsonData ="...";
+    std::string jsonData;
     
    json parsedData = json::parse(jsonData);
 
