@@ -6,6 +6,17 @@
 
 ```bash
 $ sudo apt install googletest libgtest-dev  google-mock libgmock-dev -y
+
+# oat++ lib:
+$ git clone https://github.com/oatpp/oatpp.git
+
+$ cd oatpp
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
 ```
 
 # Run
