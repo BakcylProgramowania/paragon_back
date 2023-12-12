@@ -43,15 +43,9 @@ or
 ```bash
 $ ctest --test-dir build
 ```
-#DataBase
-MongoDB Compass:
-https://www.mongodb.com/products/tools/compass
-GUI DataBase Adres: mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/
+# DataBase
+MongoDB Compass: https://www.mongodb.com/products/tools/compass
+GUI DataBase Adres: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
 
-MongoDB C++:
-Adres_URI: mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/
-
-MongoDB SHELL:
-mongosh "mongodb+srv://paragondatabase.jedczob.mongodb.net/" --apiVersion 1 --username bakcyl324
-
-Password - Bakcyl768324
+MongoDB C++
+Adres_URI: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
