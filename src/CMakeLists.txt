@@ -1,3 +1,5 @@
+add_subdirectory(api)
+
 add_subdirectory(example)
 
 add_executable(example-main main.cpp)
@@ -8,5 +10,3 @@ add_custom_target(example-main-run
     COMMAND example-main
     DEPENDS example-main
     )
-
-add_subdirectory(api)
