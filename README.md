@@ -8,6 +8,21 @@
 $ sudo apt install googletest libgtest-dev  google-mock libgmock-dev -y
 ```
 
+//download json
+```bash
+$ git clone https://github.com/nlohmann/json.git
+
+$ cd json
+
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
+```
+
+
 # Run
 ```bash
 $ cmake -B<build_dir> -H<headers_dir>
