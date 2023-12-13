@@ -1,6 +1,8 @@
 #include "./controller/MyController.hpp"
 #include "./AppComponent.hpp"
 
+#include "oatpp-swagger/Controller.hpp"
+
 #include "oatpp/network/Server.hpp"
 
 #include <iostream>
@@ -13,7 +15,12 @@ void run() {
   /* Get router component */
   OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
 
+  oatpp::web::server::api::Endpoints docEndpoints;
+
+  // docEndpoints.append(router->addController(UserController::createShared())->getEndpoints());
+
   /* Create MyController and add all of its endpoints to router */
+  router->addController(oatpp::swagger::Controller::createShared(docEndpoints));
   router->addController(std::make_shared<MyController>());
 
   /* Get connection handler component */

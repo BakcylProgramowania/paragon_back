@@ -1,8 +1,10 @@
 #ifndef AppComponent_hpp
 #define AppComponent_hpp
 
-#include "oatpp/web/server/HttpConnectionHandler.hpp"
+#include "SwaggerComponent.hpp"
 
+#include "oatpp/web/server/HttpConnectionHandler.hpp"
+#include "oatpp/web/server/HttpRouter.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
@@ -17,8 +19,10 @@ class AppComponent {
 public:
   
   /**
-   *  Create ConnectionProvider component which listens on the port
+   *  Swagger component
    */
+  SwaggerComponent swaggerComponent;
+
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
     return oatpp::network::tcp::server::ConnectionProvider::createShared({"0.0.0.0", 8000, oatpp::network::Address::IP_4});
   }());
@@ -44,6 +48,7 @@ public:
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
     return oatpp::parser::json::mapping::ObjectMapper::createShared();
   }());
+
 };
 
 #endif /* AppComponent_hpp */
