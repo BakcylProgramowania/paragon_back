@@ -1,3 +1,5 @@
+add_subdirectory(api)
+
 add_subdirectory(example)
 
 add_executable(example-main main.cpp)
