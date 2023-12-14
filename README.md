@@ -8,6 +8,7 @@
 ```bash
 $ sudo apt install googletest libgtest-dev  google-mock libgmock-dev -y
 
+
 # MongoDB driver:
 $ curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.0/mongo-cxx-driver-r3.9.0.tar.gz
 $ tar -xzf mongo-cxx-driver-r3.9.0.tar.gz
@@ -18,7 +19,37 @@ $ cmake ..                                \
      -DMONGOCXX_OVERRIDE_DEFAULT_INSTALL_PREFIX=OFF
 $ cmake --build .
 $ sudo cmake --build . --target install
+
+# oat++ lib:
+$ git clone https://github.com/oatpp/oatpp.git
+
+$ cd oatpp
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
+
+# oat++-swagger lib: 
+$ git clone https://github.com/oatpp/oatpp-swagger
+
+$ cd oatpp-swagger
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
 ```
+
+# DataBase
+MongoDB Compass: https://www.mongodb.com/products/tools/compass
+
+GUI DataBase Adres: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
+
+MongoDB C++
+Adres_URI: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
 
 # Run
 ```bash
@@ -43,10 +74,9 @@ or
 ```bash
 $ ctest --test-dir build
 ```
-# DataBase
-MongoDB Compass: https://www.mongodb.com/products/tools/compass
 
-GUI DataBase Adres: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
-
-MongoDB C++
-Adres_URI: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
+# Run Code
+```bash
+$ cmake --build build
+$ ./build/src/example-main
+```
