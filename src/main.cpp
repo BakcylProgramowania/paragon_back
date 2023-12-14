@@ -1,10 +1,12 @@
+#include "api/EnvironmentWrapper.hpp"
+#include "api/Api.cpp"
 #include "example/Example.hpp"
 #include <iostream>
 
-int main() {
-    using paragon::Example;
+int main(int argc, const char * argv[]) {
+    EnvironmentWrapper environmentWrapper;
 
-    Example example{13};
-    std::cout << "Hello " << example.get() << std::endl;
+    run();
+    
     return 0;
 }
