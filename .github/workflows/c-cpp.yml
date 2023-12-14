@@ -22,7 +22,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libssl-dev
 
-      - name: Install gtest
+      - name: Install gtest and gmock
         run: |
           sudo apt-get install -y libgtest-dev
           sudo apt-get install -y cmake
@@ -32,6 +32,10 @@ jobs:
           sudo mkdir -p /usr/lib/gtest
           sudo cp /usr/src/gtest/lib/*.a /usr/lib/gtest/
           sudo ldconfig  # Ensure dynamic linker knows about the library
+      
+          # Install gmock
+          sudo apt-get install -y libgmock-dev
+
 
       - name: Build and Install oat++
         run: |
