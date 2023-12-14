@@ -8,10 +8,10 @@ target_include_directories(example-test PRIVATE
 
 target_link_libraries(example-test
     PRIVATE
-    gtest
-    gmock
     gtest_main
     gmock_main
+    gtest
+    gmock
 )
 
 gtest_discover_tests(example-test)
