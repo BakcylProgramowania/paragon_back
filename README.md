@@ -28,14 +28,11 @@ $ cd build
 $ cmake ..
 $ make
 $ sudo make install
-```
 
 # download json
-```bash
 $ git clone https://github.com/nlohmann/json.git
 
 $ cd json
-
 $ mkdir build
 $ cd build
 
@@ -43,7 +40,6 @@ $ cmake ..
 $ make
 $ sudo make install
 ```
-
 
 # Run
 ```bash
