@@ -1,4 +1,3 @@
-// EnvironmentWrapper.hpp
 #ifndef EnvironmentWrapper_hpp
 #define EnvironmentWrapper_hpp
 
