@@ -29,7 +29,7 @@ $ cmake ..
 $ make
 $ sudo make install
 
-download json
+# download json:
 $ git clone https://github.com/nlohmann/json.git
 
 $ cd json
