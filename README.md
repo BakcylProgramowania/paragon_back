@@ -68,3 +68,9 @@ or
 ```bash
 $ ctest --test-dir build
 ```
+
+# Run Code
+```bash
+$ cmake --build build
+$ ./build/src/example-main
+```
