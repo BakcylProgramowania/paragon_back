@@ -1,8 +1,6 @@
 find_package(libmongocxx REQUIRED)
 find_package(mongocxx REQUIRED)
 
-cmake_minimum_required(VERSION 3.20)
-
 add_library(database-lib database.cpp)
 
 target_include_directories(database-lib PUBLIC 
