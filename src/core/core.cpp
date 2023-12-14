@@ -22,34 +22,73 @@ struct User
 
 void parseJsonData(const json& jsonData, std::vector<Product>& products, std::vector<User>& users) 
 {
-    for (const auto& receiptData : jsonData["receipt"]) 
+    if (jsonData.contains("receipt")) 
     {
-        for (const auto& productData : receiptData["products"])
+        for (const auto& receiptData : jsonData["receipt"]) 
+        {
+            if (!receiptData.contains("products"))
             {
-            Product product;
-            product.name = productData["product"];
-            product.amount = productData["amount"];
-            product.price = productData["price"];
-
-            if (productData.contains("whoBought")) {
-                product.whoBoughtID = productData["whoBought"]["personID"];
-            } 
-            else
-            {
-                product.whoBoughtID = productData["whoBought"];
+                continue;  // Skip this iteration and proceed to the next
             }
 
-            products.push_back(product);
+            for (const auto& productData : receiptData["products"]) 
+            {
+                Product product;
+
+                if (productData.contains("product"))
+                {
+                    product.name = productData["product"];
+                }
+
+                if (productData.contains("amount")) 
+                {
+                    product.amount = productData["amount"];
+                }
+
+                if (productData.contains("price")) 
+                {
+                    product.price = productData["price"];
+                }
+
+                if (productData.contains("whoBought"))
+                {
+                    if (productData["whoBought"].is_object())
+                    {
+                        if (productData["whoBought"].contains("personID"))
+                        {
+                            product.whoBoughtID = productData["whoBought"]["personID"];
+                        } 
+                        else
+                        {
+                           continue;
+                        }
+                    }
+                }
+
+                products.push_back(product);
+            }
         }
     }
 
-    for (const auto& userData : jsonData["users"]) 
-    {
-        User user;
-        user.id = userData["id"];
-        user.name = userData["name"];
-        user.phone = userData["phone"];
-        users.push_back(user);
+    if (jsonData.contains("users")) {
+        for (const auto& userData : jsonData["users"]) 
+        {
+            User user;
+
+            if (userData.contains("id")) {
+                user.id = userData["id"];
+            }
+
+            if (userData.contains("name")) {
+                user.name = userData["name"];
+            }
+
+            if (userData.contains("phone")) {
+                user.phone = userData["phone"];
+            }
+
+            users.push_back(user);
+        }
     }
 }
 
