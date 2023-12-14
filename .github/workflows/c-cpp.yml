@@ -29,12 +29,17 @@ jobs:
           cd /usr/src/gtest
           sudo cmake CMakeLists.txt
           sudo make
-          sudo make install
           sudo mkdir -p /usr/lib/gtest
           sudo cp /usr/src/gtest/lib/*.a /usr/lib/gtest/
           sudo ldconfig  # Ensure dynamic linker knows about the library
-          sudo make install  # Add this line to install the library
-          sudo ln -s /usr/lib/gtest/libgtest.a /usr/lib/gtest/gtest_main.a  # Fix for gtest_main
+      
+          # Manually copy header files and libraries
+          sudo cp -r /usr/src/gtest/googletest/include/* /usr/include/
+          sudo cp /usr/src/gtest/lib/*.a /usr/lib/
+      
+          # Create symbolic links (if needed)
+          sudo ln -s /usr/lib/libgtest.a /usr/lib/libgtest_main.a
+
 
 
       - name: Build and Install oat++
