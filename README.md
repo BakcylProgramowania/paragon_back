@@ -6,6 +6,28 @@
 
 ```bash
 $ sudo apt install googletest libgtest-dev  google-mock libgmock-dev -y
+
+# oat++ lib:
+$ git clone https://github.com/oatpp/oatpp.git
+
+$ cd oatpp
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
+
+# oat++-swagger lib: 
+$ git clone https://github.com/oatpp/oatpp-swagger
+
+$ cd oatpp-swagger
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
 ```
 
 # download json

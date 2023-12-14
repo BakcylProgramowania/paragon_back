@@ -33,3 +33,6 @@
 
 # build
 /build/*
+
+# Temp files
+/Testing/*
