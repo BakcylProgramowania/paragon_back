@@ -11,4 +11,3 @@ target_link_libraries(api-lib
         PUBLIC oatpp::oatpp
         PUBLIC oatpp::oatpp-swagger
 )
-
