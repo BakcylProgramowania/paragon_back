@@ -31,6 +31,7 @@ jobs:
           sudo make
           sudo mkdir -p /usr/lib/gtest
           sudo cp /usr/src/gtest/lib/*.a /usr/lib/gtest/
+          sudo ldconfig  # Ensure dynamic linker knows about the library
 
       - name: Build and Install oat++
         run: |
