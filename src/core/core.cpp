@@ -5,22 +5,27 @@
 using json = nlohmann::json;
 
 
-struct Product {
+struct Product 
+{
     std::string name;
     double price;
     int amount;
     int whoBoughtID;
 };
 
-struct User {
+struct User 
+{
     std::string name;
     std::string phone;
     int id;
 };
 
-void parseJsonData(const json& jsonData, std::vector<Product>& products, std::vector<User>& users) {
-    for (const auto& receiptData : jsonData["receipt"]) {
-        for (const auto& productData : receiptData["products"]) {
+void parseJsonData(const json& jsonData, std::vector<Product>& products, std::vector<User>& users) 
+{
+    for (const auto& receiptData : jsonData["receipt"]) 
+    {
+        for (const auto& productData : receiptData["products"])
+            {
             Product product;
             product.name = productData["product"];
             product.amount = productData["amount"];
@@ -28,7 +33,9 @@ void parseJsonData(const json& jsonData, std::vector<Product>& products, std::ve
 
             if (productData.contains("whoBought")) {
                 product.whoBoughtID = productData["whoBought"]["personID"];
-            } else {
+            } 
+            else
+            {
                 product.whoBoughtID = productData["whoBought"];
             }
 
@@ -36,7 +43,8 @@ void parseJsonData(const json& jsonData, std::vector<Product>& products, std::ve
         }
     }
 
-    for (const auto& userData : jsonData["users"]) {
+    for (const auto& userData : jsonData["users"]) 
+    {
         User user;
         user.id = userData["id"];
         user.name = userData["name"];
@@ -45,7 +53,8 @@ void parseJsonData(const json& jsonData, std::vector<Product>& products, std::ve
     }
 }
 
-int main() {
+int main() 
+{
     
     std::vector<Product> products;
     std::vector<User> users;
@@ -54,6 +63,7 @@ int main() {
    json parsedData = json::parse(jsonData);
 
     parseJsonData(parsedData, products, users);
+    
     }
   
 
