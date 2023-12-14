@@ -7,15 +7,15 @@ using json = nlohmann::json;
 
 struct Product {
     std::string name;
-    int amount;
     double price;
+    int amount;
     int whoBoughtID;
 };
 
 struct User {
-    int id;
     std::string name;
     std::string phone;
+    int id;
 };
 
 void parseJsonData(const json& jsonData, std::vector<Product>& products, std::vector<User>& users) {
