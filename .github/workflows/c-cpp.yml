@@ -29,7 +29,8 @@ jobs:
           cd /usr/src/gtest
           sudo cmake CMakeLists.txt
           sudo make
-          sudo cp -r /usr/src/gtest/build/* /usr/lib/
+          sudo mkdir -p /usr/lib/gtest
+          sudo cp /usr/src/gtest/lib/*.a /usr/lib/gtest/
 
       - name: Build and Install oat++
         run: |
