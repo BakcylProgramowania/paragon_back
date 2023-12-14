@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -33,12 +32,6 @@ jobs:
           sudo mkdir -p /usr/lib/gtest
           sudo cp /usr/src/gtest/lib/*.a /usr/lib/gtest/
           sudo ldconfig  # Ensure dynamic linker knows about the library
-
-      - name: Create build directory
-        run: |
-          mkdir build
-          cd build
-          cmake -DGTEST_ROOT=/usr/src/gtest ..
 
       - name: Build and Install oat++
         run: |
