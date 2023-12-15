@@ -22,10 +22,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libssl-dev
 
+      - name: Set up CMake
+        run: sudo apt-get install -y cmake
+
       - name: Install gtest and gmock
         run: |
           sudo apt-get install -y libgtest-dev
-          sudo apt-get install -y cmake
           cd /usr/src/gtest
           sudo cmake CMakeLists.txt
           sudo make
@@ -58,9 +60,6 @@ jobs:
           make
           sudo make install
           cd ../..
-
-      - name: Set up CMake
-        run: sudo apt-get install -y cmake
 
       - name: Create build directory
         run: cmake -B build
