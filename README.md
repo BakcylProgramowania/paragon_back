@@ -51,6 +51,18 @@ GUI DataBase Adres: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczo
 MongoDB C++
 Adres_URI: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
 
+DataBase structure:
+DataBase -> ParagonApp
+{
+   Collection users
+   {
+   _id type ObjectId,
+   UserName type String,
+   Password type String,
+   Email type String
+   }
+}
+
 # Run
 ```bash
 $ cmake -B<build_dir> -H<headers_dir>
