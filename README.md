@@ -44,24 +44,23 @@ $ sudo make install
 ```
 
 # DataBase
-MongoDB Compass: https://www.mongodb.com/products/tools/compass
-
+MongoDB Compass: https://www.mongodb.com/products/tools/compass  
 GUI DataBase Adres: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
 
 MongoDB C++
 Adres_URI: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
 
-DataBase structure:
-DataBase -> ParagonApp
-{
-   Collection users
-   {
-   _id type ObjectId,
-   UserName type String,
-   Password type String,
-   Email type String
-   }
-}
+DataBase structure:  
+DataBase -> ParagonApp  
+{  
+     Collection users  
+     (  
+          _id type ObjectId,  
+           UserName type String,  
+           Password type String,  
+           Email type String  
+      )  
+}  
 
 # Run
 ```bash
