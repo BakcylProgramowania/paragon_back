@@ -9,10 +9,11 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     cmake \
     libgtest-dev \
-    libgmock-dev
+    libgmock-dev \
+    git
 
 # Clone and build oatpp
-RUN git clone --branch ${OATPP_VERSION} --depth 1 https://github.com/oatpp/oatpp.git
+RUN git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp.git
 WORKDIR /app/oatpp/build
 RUN cmake ..
 RUN make
@@ -20,7 +21,7 @@ RUN make install
 WORKDIR /app
 
 # Clone and build oatpp-swagger
-RUN git clone --branch ${OATPP_SWAGGER_VERSION} --depth 1 https://github.com/oatpp/oatpp-swagger.git
+RUN git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp-swagger.git
 WORKDIR /app/oatpp-swagger/build
 RUN cmake ..
 RUN make
