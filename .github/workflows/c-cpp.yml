@@ -17,57 +17,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Set up Docker
+        uses: actions/setup-docker@v2
+
+      - name: Build Docker image
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libssl-dev
+          docker build -t my-build-image \
+            --build-arg OATPP_VERSION=1.3.0 \
+            --build-arg OATPP_SWAGGER_VERSION=1.3.0 \
+            - < Dockerfile
 
-      - name: Set up CMake
-        run: sudo apt-get install -y cmake
-
-      - name: Install gtest and gmock
+      - name: Run tests in Docker
         run: |
-          sudo apt-get install -y libgtest-dev
-          cd /usr/src/gtest
-          sudo cmake CMakeLists.txt
-          sudo make
-          sudo mkdir -p /usr/lib/gtest
-          sudo cp /usr/src/gtest/lib/*.a /usr/lib/gtest/
-          sudo ldconfig  # Ensure dynamic linker knows about the library
-      
-          # Install gmock
-          sudo apt-get install -y libgmock-dev
-
-
-      - name: Build and Install oat++
-        run: |
-          git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp.git
-          cd oatpp
-          mkdir build
-          cd build
-          cmake ..
-          make
-          sudo make install
-          cd ../..
-
-      - name: Build and Install oat++-swagger
-        run: |
-          git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp-swagger.git
-          cd oatpp-swagger
-          mkdir build
-          cd build
-          cmake ..
-          make
-          sudo make install
-          cd ../..
-
-      - name: Create build directory
-        run: cmake -B build
-
-      - name: Build
-        run: cmake --build build
-
-      - name: Run tests
-        run: |
-          cd build
-          ctest
+          docker run my-build-image
