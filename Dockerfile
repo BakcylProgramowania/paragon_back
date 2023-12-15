@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     cmake \
-    g++ \  # Install the C++ compiler
+    g++ \
     libgtest-dev \
     libgmock-dev \
     git
