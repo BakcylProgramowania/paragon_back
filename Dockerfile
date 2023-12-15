@@ -5,35 +5,28 @@ FROM ubuntu:latest
 WORKDIR /app
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    cmake \
-    g++ \
-    libgtest-dev \
-    libgmock-dev \
-    git
+RUN apt-get update && \
+    apt-get install -y libssl-dev && \
+    apt-get install -y cmake && \
+    apt-get install -y libgtest-dev && \
+    apt-get install -y libgmock-dev
 
-# Clone and build oatpp
-RUN git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp.git
-WORKDIR /app/oatpp/build
-RUN cmake ..
-RUN make
-RUN make install
-WORKDIR /app
+# Build and install oat++
+RUN git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp.git && \
+    cd oatpp && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make && \
+    make install && \
+    cd ../..
 
-# Clone and build oatpp-swagger
-RUN git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp-swagger.git
-WORKDIR /app/oatpp-swagger/build
-RUN cmake ..
-RUN make
-RUN make install
-WORKDIR /app
-
-# Create build directory
-RUN cmake -B build
-
-# Build
-RUN cmake --build build
-
-# Run tests
-CMD ["ctest"]
+# Build and install oat++-swagger
+RUN git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp-swagger.git && \
+    cd oatpp-swagger && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make && \
+    make install && \
+    cd ../..
