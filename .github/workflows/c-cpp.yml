@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: your-docker-image:latest
+      image: your-docker-image:latest  # Replace with your Docker image name
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create build directory (if not already created in Dockerfile)
+      - name: Create build directory
         run: cmake -B build
 
       - name: Build
