@@ -9,7 +9,6 @@
 
 int main()
 {
-
 std::cout << "test";
 mongocxx::instance instance{};
 
