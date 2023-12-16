@@ -92,20 +92,3 @@ void parseJsonData(const json& jsonData, std::vector<Product>& products, std::ve
     }
 }
 
-int main() 
-{
-    
-    std::vector<Product> products;
-    std::vector<User> users;
-    std::string jsonData;
-    
-   json parsedData = json::parse(jsonData);
-
-    parseJsonData(parsedData, products, users);
-    
-    }
-  
-
-   
-    return 0;
-}
