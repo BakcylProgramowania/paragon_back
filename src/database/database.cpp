@@ -9,8 +9,8 @@
 
 int main()
 {
-std::cout << "test";
-mongocxx::instance instance{};
-
-return 0;
+  std::cout << "test";
+  mongocxx::instance instance{};
+  
+  return 0;
 }
