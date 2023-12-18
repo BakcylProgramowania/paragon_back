@@ -1,5 +1,3 @@
-find_package(GTest REQUIRED)
-
 add_executable(example-test ExampleTest.cpp)
 
 target_include_directories(example-test PRIVATE 
