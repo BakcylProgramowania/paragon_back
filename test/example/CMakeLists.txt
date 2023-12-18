@@ -8,7 +8,6 @@ target_include_directories(example-test PRIVATE
 
 target_link_libraries(example-test
     PRIVATE
-    api-lib
     example-lib
     gtest_main
     gmock_main
