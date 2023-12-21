@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include<core.cpp>
+#include "core/core.cpp"
 TEST(ParseJsonDataTest, ParsesJsonDataCorrectly) 
 {
     // Arrange
