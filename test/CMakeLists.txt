@@ -4,3 +4,4 @@ include(GoogleTest)
 include(CTest)
 
 add_subdirectory(example)
+add_subdirectory(core)
