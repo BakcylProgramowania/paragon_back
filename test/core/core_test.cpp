@@ -57,8 +57,18 @@ TEST(ParseJsonDataTest, ParsesJsonDataCorrectly)
     std::vector<Product> actualProducts;
     std::vector<User> actualUsers;
 
-    parseJsonData(jsonData, actualProducts, actualUsers);
+      parseJsonData(jsonData, actualProducts, actualUsers);
 
-    ASSERT_EQ(expectedProducts, actualProducts);
-    ASSERT_EQ(expectedUsers, actualUsers);
+    std::cout << "Parsed Products:" << std::endl;
+    for (const auto& product : actualProducts) {
+        std::cout << product.name << ", " << product.price << ", " << product.amount << ", " << product.whoBoughtID << std::endl;
+    }
+
+    std::cout << "Parsed Users:" << std::endl;
+    for (const auto& user : actualUsers) {
+        std::cout << user.name << ", " << user.phone << ", " << user.id << std::endl;
+    }
+
+    ASSERT_THAT(actualProducts, testing::ElementsAreArray(expectedProducts));
+    ASSERT_THAT(actualUsers, testing::ElementsAreArray(expectedUsers));
 }
