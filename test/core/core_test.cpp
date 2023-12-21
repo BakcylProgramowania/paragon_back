@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
 #include "core/core.cpp"
-TEST(ParseJsonDataTest, ParsesJsonDataCorrectly) 
-{
-    // Arrange
+
     const std::string jsonInput = R"(
         {
             "receipt": [
@@ -42,6 +40,9 @@ TEST(ParseJsonDataTest, ParsesJsonDataCorrectly)
         }
     )";
 
+TEST(ParseJsonDataTest, ParsesJsonDataCorrectly) 
+{
+
     json jsonData = json::parse(jsonInput);
 
     std::vector<Product> expectedProducts = {
@@ -59,16 +60,22 @@ TEST(ParseJsonDataTest, ParsesJsonDataCorrectly)
 
       parseJsonData(jsonData, actualProducts, actualUsers);
 
-    std::cout << "Parsed Products:" << std::endl;
-    for (const auto& product : actualProducts) {
-        std::cout << product.name << ", " << product.price << ", " << product.amount << ", " << product.whoBoughtID << std::endl;
-    }
+EXPECT_EQ(actualProducts.size(), expectedProducts.size());
+for (size_t i = 0; i < actualProducts.size(); ++i) 
+{
+    EXPECT_EQ(actualProducts[i].name, expectedProducts[i].name);
+    EXPECT_EQ(actualProducts[i].price, expectedProducts[i].price);
+    EXPECT_EQ(actualProducts[i].amount, expectedProducts[i].amount);
+    EXPECT_EQ(actualProducts[i].whoBoughtID, expectedProducts[i].whoBoughtID);
+}
 
-    std::cout << "Parsed Users:" << std::endl;
-    for (const auto& user : actualUsers) {
-        std::cout << user.name << ", " << user.phone << ", " << user.id << std::endl;
-    }
+EXPECT_EQ(actualUsers.size(), expectedUsers.size());
+for (size_t i = 0; i < actualUsers.size(); ++i)
+{
+    EXPECT_EQ(actualUsers[i].name, expectedUsers[i].name);
+    EXPECT_EQ(actualUsers[i].phone, expectedUsers[i].phone);
+    EXPECT_EQ(actualUsers[i].id, expectedUsers[i].id);
+}
 
-    ASSERT_THAT(actualProducts, testing::ElementsAreArray(expectedProducts));
-    ASSERT_THAT(actualUsers, testing::ElementsAreArray(expectedUsers));
+    
 }
