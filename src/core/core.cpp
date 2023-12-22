@@ -4,63 +4,36 @@
 #include "core.hpp"
 using json = nlohmann::json;
 
+std::vector<Product> getProducts(const json& jsonData) {
+    std::vector<Product> products;
 
-struct Product 
-{
-    std::string name;
-    double price;
-    int amount;
-    int whoBoughtID;
-};
-
-struct User 
-{
-    std::string name;
-    std::string phone;
-    int id;
-};
-
-void parseJsonData(const json& jsonData, std::vector<Product>& products, std::vector<User>& users) 
-{
-    if (jsonData.contains("receipt")) 
-    {
-        for (const auto& receiptData : jsonData["receipt"]) 
-        {
-            if (!receiptData.contains("products"))
-            {
+    if (jsonData.contains("receipt")) {
+        for (const auto& receiptData : jsonData["receipt"]) {
+            if (!receiptData.contains("products")) {
                 continue;  // Skip this iteration and proceed to the next
             }
 
-            for (const auto& productData : receiptData["products"]) 
-            {
+            for (const auto& productData : receiptData["products"]) {
                 Product product;
 
-                if (productData.contains("product"))
-                {
+                if (productData.contains("product")) {
                     product.name = productData["product"];
                 }
 
-                if (productData.contains("amount")) 
-                {
+                if (productData.contains("amount")) {
                     product.amount = productData["amount"];
                 }
 
-                if (productData.contains("price")) 
-                {
+                if (productData.contains("price")) {
                     product.price = productData["price"];
                 }
 
-                if (productData.contains("whoBought"))
-                {
-                    if (productData["whoBought"].is_object())
-                    {
-                        if (productData["whoBought"].contains("personID"))
-                        {
+                if (productData.contains("whoBought")) {
+                    if (productData["whoBought"].is_object()) {
+                        if (productData["whoBought"].contains("personID")) {
                             product.whoBoughtID = productData["whoBought"]["personID"];
-                        } 
-                        else
-                        {
-                           continue;
+                        } else {
+                            continue;
                         }
                     }
                 }
@@ -70,9 +43,14 @@ void parseJsonData(const json& jsonData, std::vector<Product>& products, std::ve
         }
     }
 
+    return products;
+}
+
+std::vector<User> getUsers(const json& jsonData) {
+    std::vector<User> users;
+
     if (jsonData.contains("users")) {
-        for (const auto& userData : jsonData["users"]) 
-        {
+        for (const auto& userData : jsonData["users"]) {
             User user;
 
             if (userData.contains("id")) {
@@ -90,5 +68,7 @@ void parseJsonData(const json& jsonData, std::vector<Product>& products, std::ve
             users.push_back(user);
         }
     }
+
+    return users;
 }
 
