@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include "core/core.hpp"
 
-TEST(GetProductsTest, RetrievesProductsCorrectly) {
-
-    json jsonData = R"(
+TEST(GetProductsTest, RetrievesProductsCorrectly) 
+{
+    const json jsonData = R"(
         {
             "receipt": [
                 {
@@ -29,14 +29,20 @@ TEST(GetProductsTest, RetrievesProductsCorrectly) {
             ]
         }
     )"_json;
-
-    std::vector<Product> products = getProducts(jsonData);
-
-    ASSERT_EQ(products.size(), 2);
+    
+    const std::vector<Product> expectProducts = 
+    {
+        {"Item1", 10.5, 2, 1},
+        {"Item2", 5.99, 1, 2}
+    };
+    
+    const std::vector<Product> actualProducts = getProducts(jsonData);
+    ASSERT_EQ(actualProducts, expectProducts);
 }
 
-TEST(GetUsersTest, RetrievesUsersCorrectly) {
-    json jsonData = R"(
+TEST(GetUsersTest, RetrievesUsersCorrectly) 
+{
+    const json jsonData = R"(
         {
             "users": [
                 {
@@ -52,8 +58,13 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
             ]
         }
     )"_json;
-    
-    std::vector<User> users = getUsers(jsonData);
 
-    ASSERT_EQ(users.size(), 2);
+    const std::vector<User> expectUsers = 
+    {
+        {"John Doe", "123-456-7890", 1},
+        {"Jane Doe", "987-654-3210", 2}
+    };
+
+    const std::vector<User> actualUsers = getUsers(jsonData);
+    ASSERT_EQ(actualUsers, expectUsers);
 }
