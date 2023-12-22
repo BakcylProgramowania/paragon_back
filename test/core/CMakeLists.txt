@@ -7,7 +7,7 @@ target_include_directories(core-test PRIVATE
 target_link_libraries(core-test PRIVATE
     GTest::gtest_main
     GTest::gmock
-    core
+    core-lib
     )
 
 gtest_discover_tests(core-test)
