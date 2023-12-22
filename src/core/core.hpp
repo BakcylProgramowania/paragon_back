@@ -19,4 +19,7 @@ struct User {
     int id;
 };
 
-void parseJsonData(const json& jsonData, std::vector<Product>& products, std::vector<User>& users);
+
+std::vector<Product> getProducts(const json& jsonData);
+
+std::vector<User> getUsers(const json& jsonData);
