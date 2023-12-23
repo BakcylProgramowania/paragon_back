@@ -1,10 +1,13 @@
 #pragma once
 
 #include "dto/DTOs.hpp"
+#include "dto/LoginDTOs.hpp"
 
 #include "oatpp/web/server/api/ApiController.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
+
+#include "oatpp/parser/json/mapping/ObjectMapper.hpp" 
 
 #include OATPP_CODEGEN_BEGIN(ApiController) //<-- Begin Codegen
 
@@ -28,9 +31,28 @@ public:
     dto->message = "Hello World!";
     return createDtoResponse(Status::CODE_200, dto);
   }
-  
-  // TODO Insert Your endpoints here !!!
-  
+    
+  ENDPOINT("POST", "/login", postUsers, BODY_STRING(String, body)) {
+      OATPP_LOGD("Test", "Request Body: %s", body->c_str());
+
+      auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()->readFromString<oatpp::Object<LoginDto>>(body);
+
+      if (json && json->username && json->password) {
+          if (json->username == "Jan34") {
+            auto responseDto = LoginResponseDto::createShared();
+            responseDto->success = true;
+            return createDtoResponse(Status::CODE_200, responseDto);
+          } else {
+            auto responseDto = LoginResponseDto::createShared();
+            responseDto->success = false;
+            return createDtoResponse(Status::CODE_403, responseDto);           
+          }
+      } else {
+          auto responseDto = LoginResponseDto::createShared();
+          responseDto->success = false;
+          return createDtoResponse(Status::CODE_400, responseDto);
+      }
+  }
 };
 
 #include OATPP_CODEGEN_END(ApiController) //<-- End Codegen
