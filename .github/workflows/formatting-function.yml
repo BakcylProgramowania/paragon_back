@@ -1,1 +1,28 @@
+name: Format Code
 
+on:
+  push:
+    branches:
+      - main  # Adjust this to your main branch name
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Clang-Format
+        run: sudo apt-get install -y clang-format
+
+      - name: Format Code
+        run: clang-format -i -style=Google **/*.cpp
+
+      - name: Commit Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Apply clang-format"
+          git push
