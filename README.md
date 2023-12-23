@@ -41,6 +41,17 @@ $ cd build
 $ cmake ..
 $ make
 $ sudo make install
+
+# download json:
+$ git clone https://github.com/nlohmann/json.git
+
+$ cd json
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
 ```
 
 # DataBase
