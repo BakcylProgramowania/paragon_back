@@ -1,5 +1,4 @@
-#ifndef SwaggerComponent_hpp
-#define SwaggerComponent_hpp
+#pragma once
 
 #include "oatpp-swagger/Model.hpp"
 #include "oatpp-swagger/Resources.hpp"
@@ -45,5 +44,3 @@ public:
   }());
   
 };
-
-#endif /* SwaggerComponent_hpp */

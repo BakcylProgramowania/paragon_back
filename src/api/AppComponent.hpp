@@ -1,5 +1,4 @@
-#ifndef AppComponent_hpp
-#define AppComponent_hpp
+#pragma once
 
 #include "SwaggerComponent.hpp"
 
@@ -50,5 +49,3 @@ public:
   }());
 
 };
-
-#endif /* AppComponent_hpp */

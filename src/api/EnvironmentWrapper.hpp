@@ -1,5 +1,4 @@
-#ifndef EnvironmentWrapper_hpp
-#define EnvironmentWrapper_hpp
+#pragma once
 
 #include "oatpp/network/Server.hpp"
 
@@ -13,5 +12,3 @@ public:
         oatpp::base::Environment::destroy();
     }
 };
-
-#endif /* EnvironmentWrapper_hpp */
