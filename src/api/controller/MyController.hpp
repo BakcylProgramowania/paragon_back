@@ -1,5 +1,4 @@
-#ifndef MyController_hpp
-#define MyController_hpp
+#pragma once
 
 #include "dto/DTOs.hpp"
 
@@ -35,5 +34,3 @@ public:
 };
 
 #include OATPP_CODEGEN_END(ApiController) //<-- End Codegen
-
-#endif /* MyController_hpp */

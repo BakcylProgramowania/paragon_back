@@ -3,9 +3,22 @@
 - libgtest-dev
 - google-mock
 - libgmock-dev
+- mongo-cxx-driver
 
 ```bash
 $ sudo apt install googletest libgtest-dev  google-mock libgmock-dev -y
+
+
+# MongoDB driver:
+$ curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.0/mongo-cxx-driver-r3.9.0.tar.gz
+$ tar -xzf mongo-cxx-driver-r3.9.0.tar.gz
+$ cd mongo-cxx-driver-r3.9.0/build
+
+$ cmake ..                                \
+     -DCMAKE_BUILD_TYPE=Release           \
+     -DMONGOCXX_OVERRIDE_DEFAULT_INSTALL_PREFIX=OFF
+$ cmake --build .
+$ sudo cmake --build . --target install
 
 # oat++ lib:
 $ git clone https://github.com/oatpp/oatpp.git
@@ -28,7 +41,37 @@ $ cd build
 $ cmake ..
 $ make
 $ sudo make install
+
+# download json:
+$ git clone https://github.com/nlohmann/json.git
+
+$ cd json
+$ mkdir build
+$ cd build
+
+$ cmake ..
+$ make
+$ sudo make install
 ```
+
+# DataBase
+MongoDB Compass: https://www.mongodb.com/products/tools/compass  
+GUI DataBase Adres: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
+
+MongoDB C++
+Adres_URI: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
+
+DataBase structure:  
+DataBase -> ParagonApp  
+{  
+     Collection users  
+     (  
+          _id type ObjectId,  
+           UserName type String,  
+           Password type String,  
+           Email type String  
+      )  
+}  
 
 # Run
 ```bash
