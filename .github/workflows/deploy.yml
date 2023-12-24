@@ -1,0 +1,19 @@
+name: Deploy C++ Application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    - name: stop existing container
+      run: docker container stop paragon-prod
+    - name: remove container
+      run: docker container rm paragon-prod
+    - name: run new container
+      run: docker run --detach --hostname paragon.wroc.ovh --publish 54100:8000 --name paragon-prod --restart always paragon_back:1.0.0
