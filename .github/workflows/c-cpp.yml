@@ -19,7 +19,6 @@ jobs:
 
       - name: Run Docker container
         run: |
-          docker pull bakcyl/paragon_back
           docker run --name bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
 
       - name: Create build directory
