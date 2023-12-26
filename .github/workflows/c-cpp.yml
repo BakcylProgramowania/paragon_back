@@ -19,7 +19,7 @@ jobs:
 
       - name: Run Docker container
         run: |
-          docker run --entrypoint /bin/bash bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
+          docker run --entrypoint "/bin/bash appbuild.sh" bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
 
       - name: Create build directory
         run: cmake -B build
