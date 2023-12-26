@@ -9,11 +9,12 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+    environment: staging
     steps:
     - uses: actions/checkout@v2
     - name: stop existing container
-      run: docker container stop paragon-staging
+      run: docker container stop ${{ env.CONTAINER_NAME }}
     - name: remove container
-      run: docker container rm paragon-staging
+      run: docker container rm ${{ env.CONTAINER_NAME }}
     - name: run new container
-      run: docker run --detach --hostname paragon-staging.wroc.ovh --publish 54110:8000 --name paragon-staging --restart always paragon_back:1.1.0
+      run: docker run --detach --hostname ${{ env.DOMAIN }} --publish ${{ env.API_PORT }}:8000 --name ${{ env.CONTAINER_NAME }} --restart always bakcyl/paragon_back:${{ env.DOCKER_IMAGE_VERSION }}
