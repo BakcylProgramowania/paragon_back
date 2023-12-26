@@ -17,70 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Run Docker container
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libssl-dev
-
-      - name: Set up CMake
-        run: sudo apt-get install -y cmake
-
-      - name: Install gtest and gmock
-        run: |
-          sudo apt-get install -y libgtest-dev
-          cd /usr/src/gtest
-          sudo cmake CMakeLists.txt
-          sudo make
-          sudo mkdir -p /usr/lib/gtest
-          sudo cp /usr/src/gtest/lib/*.a /usr/lib/gtest/
-          sudo ldconfig  # Ensure dynamic linker knows about the library
-      
-          # Install gmock
-          sudo apt-get install -y libgmock-dev
-
-      - name: Build and Install oat++
-        run: |
-          git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp.git
-          cd oatpp
-          mkdir build
-          cd build
-          cmake ..
-          make
-          sudo make install
-          cd ../..
-
-      - name: Build and Install oat++-swagger
-        run: |
-          git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp-swagger.git
-          cd oatpp-swagger
-          mkdir build
-          cd build
-          cmake ..
-          make
-          sudo make install
-          cd ../..
-      - name: Build and Install Json/nlohmann
-        run: |
-          git clone https://github.com/nlohmann/json.git
-          cd json
-          mkdir build 
-          cd build
-          cmake ..
-          make
-          sudo make install
-          cd ../..
-          
-      - name: Build and Install mongoDB
-        run: |
-          curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.0/mongo-cxx-driver-r3.9.0.tar.gz
-          tar -xzf mongo-cxx-driver-r3.9.0.tar.gz
-          cd mongo-cxx-driver-r3.9.0/build
-
-          cmake ..                                \
-          -DCMAKE_BUILD_TYPE=Release           \
-          -DMONGOCXX_OVERRIDE_DEFAULT_INSTALL_PREFIX=OFF
-          cmake --build .
-          sudo cmake --build . --target install
+          docker pull bakcyl/paragon_back
+          docker run --name paragon_back -d bakcyl/paragon_back
 
       - name: Create build directory
         run: cmake -B build
