@@ -1,4 +1,4 @@
-name: Deploy C++ Application
+name: Deploy staging
 
 on:
   push:
@@ -12,8 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: stop existing container
-      run: docker container stop paragon-prod
+      run: docker container stop paragon-staging
     - name: remove container
-      run: docker container rm paragon-prod
+      run: docker container rm paragon-staging
     - name: run new container
-      run: docker run --detach --hostname paragon.wroc.ovh --publish 54100:8000 --name paragon-prod --restart always paragon_back:1.1.0
+      run: docker run --detach --hostname paragon-staging.wroc.ovh --publish 54110:8000 --name paragon-staging --restart always paragon_back:1.1.0
