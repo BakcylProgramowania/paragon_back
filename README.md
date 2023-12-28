@@ -20,6 +20,10 @@ $ cmake ..                                \
 $ cmake --build .
 $ sudo cmake --build . --target install
 
+# Clang formatting
+$ sudo apt-get install pre-commit
+$ pre-commit install
+
 # oat++ lib:
 $ git clone https://github.com/oatpp/oatpp.git
 
