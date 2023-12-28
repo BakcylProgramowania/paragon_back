@@ -1,13 +1,14 @@
-#include "api/EnvironmentWrapper.hpp"
-#include "api/Api.cpp"
-#include "example/Example.hpp"
-#include "core/core.cpp"
 #include <iostream>
 
-int main(int argc, const char * argv[]) {
-    EnvironmentWrapper environmentWrapper;
+#include "api/Api.cpp"
+#include "api/EnvironmentWrapper.hpp"
+#include "core/core.cpp"
+#include "example/Example.hpp"
 
-    run();
-    
-    return 0;
+int main(int argc, const char* argv[]) {
+  EnvironmentWrapper environmentWrapper;
+
+  run();
+
+  return 0;
 }

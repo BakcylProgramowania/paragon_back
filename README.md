@@ -23,6 +23,9 @@ $ sudo cmake --build . --target install
 # Clang formatting
 $ sudo apt-get install pre-commit
 $ pre-commit install
+# to manually format with clang execute following
+# got to .github/pre-commit
+# run (it will format all .cpp and .hpp files in repository)  "$ pre-commit run --all-files"
 
 # oat++ lib:
 $ git clone https://github.com/oatpp/oatpp.git
