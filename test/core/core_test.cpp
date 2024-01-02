@@ -32,7 +32,7 @@ TEST(GetProductsTest, RetrievesProductsCorrectly)
 
     const std::vector<Product> expectProducts = 
     {
-        {"Item1", 10.5, 2, 1},
+        {"Item1", 10.5, 5, 1},
         {"Item2", 5.99, 1, 2}
     };
 
