@@ -25,7 +25,7 @@ jobs:
 
       - name: Check build results
         run: |
-          exit 'docker logs paragonTestBuild 2>&1 | grep -iE "Error" | wc -l'
+          exit `docker logs paragonTestBuild 2>&1 | grep -iE "Error" | wc -l`
 
       - name: Check GTest results
         run: |
