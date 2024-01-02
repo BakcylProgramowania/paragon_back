@@ -12,6 +12,8 @@ jobs:
     environment: staging
     steps:
     - uses: actions/checkout@v2
+    - name: test env
+      run: echo 'TEST:' + ${{ env.CONTAINER_NAME }}
     - name: stop existing container
       run: docker container stop ${{ vars.CONTAINER_NAME }}
     - name: remove container
