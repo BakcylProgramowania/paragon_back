@@ -5,7 +5,7 @@ using namespace ::testing;
 
 TEST(SomeTest, GetShouldReturnConstructionArgument)
 {
-    const int expectedValue{13};
+    const int expectedValue{14};
     paragon::Example example{expectedValue};
     EXPECT_THAT(example.get(), Eq(expectedValue));
 }
