@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: test env
+        run: echo "TEST: ${{ env.CONTAINER_NAME }}"
+
       - name: Run Docker container
         id: run_docker
         run: |
