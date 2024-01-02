@@ -13,11 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     steps:
-      - name: Display env
-        run: |
-          echo "repository variable : $REPOSITORY_VAR"
-        env:
-          REPOSITORY_VAR: ${{ vars.REPO }}
       - name: Checkout code
         uses: actions/checkout@v3
 
