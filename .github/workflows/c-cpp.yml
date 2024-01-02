@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: test env
-        run: echo ${{ env.CONTAINER_NAME }}
+        run: echo ${{ env.REPO }} +  "and " + ${{ vars.REPO }}
 
       - name: Run Docker container
         id: run_docker
