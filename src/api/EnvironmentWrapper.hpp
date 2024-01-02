@@ -3,12 +3,8 @@
 #include "oatpp/network/Server.hpp"
 
 class EnvironmentWrapper {
-public:
-    EnvironmentWrapper() {
-        oatpp::base::Environment::init();
-    }
+ public:
+  EnvironmentWrapper() { oatpp::base::Environment::init(); }
 
-    ~EnvironmentWrapper() {
-        oatpp::base::Environment::destroy();
-    }
+  ~EnvironmentWrapper() { oatpp::base::Environment::destroy(); }
 };
