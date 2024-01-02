@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: test env
-      run: echo "TEST: $CONTAINER_NAME"
+      run: echo "TEST: ${{ env.GITHUB_ACTOR }}"
     - name: stop existing container
       run: docker container stop ${{ vars.CONTAINER_NAME }}
     - name: remove container
