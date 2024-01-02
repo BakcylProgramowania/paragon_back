@@ -1,4 +1,4 @@
-find_package(oatpp 1.3.0 REQUIRED)
+find_package(oatpp 1.4.0 REQUIRED)
 find_package(oatpp-swagger 1.3.0 REQUIRED) 
 
 add_library(api-lib Api.cpp)
