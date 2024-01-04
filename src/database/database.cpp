@@ -1,28 +1,15 @@
-#include <iostream>
-#include <cstdint>
-#include <vector>
+#include "database.hpp"
 
-#include <mongocxx/client.hpp>
-#include <mongocxx/instance.hpp>
-#include <mongocxx/uri.hpp>
-#include <mongocxx/stdx.hpp>
-#include <bsoncxx/builder/basic/document.hpp>
-#include <bsoncxx/json.hpp>
+Database::Database()
+ : uri(mongocxx::uri("mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/")),
+ client(mongocxx::client(uri)),
+ database(client["ParagonApp"]) {}
 
-using bsoncxx::builder::basic::kvp;
-using bsoncxx::builder::basic::make_array;
-using bsoncxx::builder::basic::make_document;
-
-//Connecting to mongodb database
-mongocxx::instance inst{};
-mongocxx::uri uri("mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/");
-mongocxx::client client(uri);
+Database::~Database() {}
 
 //Checks if is there user with given Email
-bool isThereUserWithThisEmail (const std::string& Email)
+bool Database::isThereUserWithThisEmail (const std::string& Email)
 {
-    //moving to client "ParagonApp" and database "users"
-    auto database = client["ParagonApp"];
     auto collection = database["users"];
 
     //searching for user with this email and returning result
@@ -32,10 +19,8 @@ bool isThereUserWithThisEmail (const std::string& Email)
 }
 
 //Checks if is there user with given Username
-bool isThereUserWithThisUsername (const std::string& Username)
+bool Database::isThereUserWithThisUsername (const std::string& Username)
 {
-    //moving to client "ParagonApp" and database "users"
-    auto database = client["ParagonApp"];
     auto collection = database["users"];
 
     //searching for user with this username and returning result
@@ -44,13 +29,11 @@ bool isThereUserWithThisUsername (const std::string& Username)
     else return false;
 }
 
-//creating new user:
+//creating new user
 //returns true if user was created
 //returns false if there is already user with that username or email(new user was not created)
-bool createUser(const std::string& Username, const std::string& Password, const std::string& Email) 
+bool Database::createUser(const std::string& Username, const std::string& Password, const std::string& Email) 
 {
-    //moving to client "ParagonApp" and database "users"
-    auto database = client["ParagonApp"];
     auto collection = database["users"];
 
     
@@ -74,10 +57,8 @@ bool createUser(const std::string& Username, const std::string& Password, const 
 //id can be either email or username
 //needs password of this user
 //returns true if user was deleted and false if user was not deleted(password is incorrect or there is no user with this id)
-bool deleteUser(const std::string& id, const std::string& Password)
+bool Database::deleteUser(const std::string& id, const std::string& Password)
 {
-    //moving to client "ParagonApp" and database "users"
-    auto database = client["ParagonApp"];
     auto collection = database["users"];
 
     //Checking if the 'id' is a Username or Email
@@ -126,11 +107,9 @@ bool deleteUser(const std::string& id, const std::string& Password)
 
 //Checks if there is user with given 'id' and if user's password equals given 'Password'
 //returns true if 'id' and 'Password' are correct, false if not
-bool logInCheck(const std::string& id, const std::string& Password)
+bool Database::logInCheck(const std::string& id, const std::string& Password)
 {
     //id can be either email or username
-    //moving to client "ParagonApp" and database "users":
-    auto database = client["ParagonApp"];
     auto collection = database["users"];
 
     //Checking if id is Username or Email
