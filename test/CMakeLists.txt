@@ -4,3 +4,4 @@ include(CTest)
 
 add_subdirectory(example)
 add_subdirectory(core)
+add_subdirectory(database)
