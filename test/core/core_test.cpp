@@ -1,4 +1,5 @@
 #include "core/core.hpp"
+#include "core/core.cpp"
 
 #include <gtest/gtest.h>
 
@@ -75,4 +76,8 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
     EXPECT_EQ(actualUsers[i].phone, expectUsers[i].phone);
     EXPECT_EQ(actualUsers[i].id, expectUsers[i].id);
   }
+}
+
+TEST(WhetherUserIsCorrect, ReturnTrueForUserJan34) {
+    EXPECT_TRUE(getLogin("Jan34", ""));
 }
