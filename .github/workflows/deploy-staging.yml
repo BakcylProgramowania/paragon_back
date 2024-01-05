@@ -15,4 +15,4 @@ jobs:
     - name: remove container
       run: docker container rm ${{ vars.CONTAINER_NAME }}
     - name: run new container
-      run: docker run --detach --hostname ${{ vars.DOMAIN }} --publish ${{ vars.API_PORT }}:8000 --name ${{ vars.CONTAINER_NAME }} --restart always bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
+      run: docker run --detach -e "REPO=${{ vars.REPO }}" -e "BRANCH=${{ vars.BRANCH }}" --hostname ${{ vars.DOMAIN }} --publish ${{ vars.API_PORT }}:8000 --name ${{ vars.CONTAINER_NAME }} --restart always bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
