@@ -4,7 +4,7 @@
 #include "api/EnvironmentWrapper.hpp"
 #include "core/core.cpp"
 #include "example/Example.hpp"
-#include "database/database.cpp"
+#include "database/database.hpp"
 
 int main(int argc, const char* argv[]) {
   EnvironmentWrapper environmentWrapper;

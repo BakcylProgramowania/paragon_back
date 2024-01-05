@@ -17,18 +17,20 @@ using bsoncxx::builder::basic::make_document;
 
 class Database
 {
-    public:
+    private:
     mongocxx::uri uri;
     mongocxx::client client;
     mongocxx::database database;
 
+    public:
     Database();
-    ~Database();
+    ~Database()=default;
 
-    bool isThereUserWithThisUsername(const std::string& Username);
-    bool isThereUserWithThisEmail(const std::string& Email);
+    bool isThereUserWithThisUsername(const std::string& Username) const;
+    bool isThereUserWithThisEmail(const std::string& Email) const;
+    bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor, const std::string& Password) const;
     bool createUser(const std::string& Username, const std::string& Password, const std::string& Email);
     bool deleteUser(const std::string& id, const std::string& Password);
-    bool logInCheck(const std::string& id, const std::string& Password);
+    bool loginCheck(const std::string& id, const std::string& Password);
 
 };

@@ -1,17 +1,17 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <database/database.cpp>
+#include <database/database.hpp>
 
 using namespace ::testing;
 
 TEST(DatabaseLogingTest, ExpectedValidLoginToWork)
 {
     Database database;
-    EXPECT_FALSE(database.logInCheck("Lucy", "wrongPassword"));
-    EXPECT_FALSE(database.logInCheck("nonExistingUser", "ycuL"));
-    EXPECT_FALSE(database.logInCheck("nonExistingEmail@wrong.wrong", "ycuL"));
-    EXPECT_TRUE(database.logInCheck("Lucy", "ycuL"));
-    EXPECT_TRUE(database.logInCheck("lucy00@test.com", "ycuL"));
+    EXPECT_FALSE(database.loginCheck("Lucy", "wrongPassword"));
+    EXPECT_FALSE(database.loginCheck("nonExistingUser", "ycuL"));
+    EXPECT_FALSE(database.loginCheck("nonExistingEmail@wrong.wrong", "ycuL"));
+    EXPECT_TRUE(database.loginCheck("Lucy", "ycuL"));
+    EXPECT_TRUE(database.loginCheck("lucy00@test.com", "ycuL"));
 }
 
 
