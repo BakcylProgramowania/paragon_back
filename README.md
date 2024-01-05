@@ -1,111 +1,32 @@
-# Dependencies
-- googletest
-- libgtest-dev
-- google-mock
-- libgmock-dev
-- mongo-cxx-driver
+# How to run?
 
+### Run after commit
+Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+Run this in your terminal: 
 ```bash
-$ sudo apt install googletest libgtest-dev  google-mock libgmock-dev -y
-
-
-# MongoDB driver:
-$ curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.0/mongo-cxx-driver-r3.9.0.tar.gz
-$ tar -xzf mongo-cxx-driver-r3.9.0.tar.gz
-$ cd mongo-cxx-driver-r3.9.0/build
-
-$ cmake ..                                \
-     -DCMAKE_BUILD_TYPE=Release           \
-     -DMONGOCXX_OVERRIDE_DEFAULT_INSTALL_PREFIX=OFF
-$ cmake --build .
-$ sudo cmake --build . --target install
-
-# Clang formatting
-$ sudo apt-get install pre-commit
-$ pre-commit install
-# to manually format with clang execute following
-# got to .github/pre-commit
-# run (it will format all .cpp and .hpp files in repository)  "$ pre-commit run --all-files"
-
-# oat++ lib:
-$ git clone https://github.com/oatpp/oatpp.git
-
-$ cd oatpp
-$ mkdir build
-$ cd build
-
-$ cmake ..
-$ make
-$ sudo make install
-
-# oat++-swagger lib: 
-$ git clone https://github.com/oatpp/oatpp-swagger
-
-$ cd oatpp-swagger
-$ mkdir build
-$ cd build
-
-$ cmake ..
-$ make
-$ sudo make install
-
-# download json:
-$ git clone https://github.com/nlohmann/json.git
-
-$ cd json
-$ mkdir build
-$ cd build
-
-$ cmake ..
-$ make
-$ sudo make install
+docker run -it -e "REPO=https://github.com/BakcylProgramowania/paragon_back.git" -e "BRANCH=main" --publish 8000:8000 --name paragon-back --restart always bakcyl/paragon_back:1.1.7
 ```
+> 📝 Note: You can change the branch by changing main to your branch
 
-# DataBase
-MongoDB Compass: https://www.mongodb.com/products/tools/compass  
-GUI DataBase Adres: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
+### Run before commit (Not working yet)
+Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-MongoDB C++
-Adres_URI: (mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/)
-
-DataBase structure:  
-DataBase -> ParagonApp  
-{  
-     Collection users  
-     (  
-          _id type ObjectId,  
-           UserName type String,  
-           Password type String,  
-           Email type String  
-      )  
-}  
-
-# Run
+If you changed Dockerfile run this
 ```bash
-$ cmake -B<build_dir> -H<headers_dir>
-
-e.g.
-$ cmake -Bbuild -H.
+docker build -t paragon_back:1.1.7.1 .
 ```
-```bash
-$ cmake --build <build_dir> --target <target>
+> 📝 Note: Each time you will need to change the tag (1.1.7.1) to a different one
 
-e.g.
-$ cmake --build build --target example-test
+```bash
+docker run -it --publish 8000:8000 --name paragon-back --restart always paragon_back:1.1.7.1 .
 ```
+> 📝 Note: Replace paragon_back:1.1.7.1 with what you set above
 
-# To run Ctest
+# How to clang-format?
 ```bash
-$ cd build
-$ ctest .
-```
-or
-```bash
-$ ctest --test-dir build
-```
-
-# Run Code
-```bash
-$ cmake --build build
-$ ./build/src/example-main
+sudo apt-get install pre-commit
+pre-commit install
+cd .github/pre-commit
+pre-commit run --all-files
 ```
