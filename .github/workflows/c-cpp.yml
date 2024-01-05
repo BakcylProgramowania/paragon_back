@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,15 +13,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Docker container
-        id: run_docker
         run: |
           docker run --entrypoint appbuild.sh -e "REPO=${{ vars.REPO }}" -e "BRANCH=${{ vars.BRANCH }}" --name paragonTestBuild bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
         continue-on-error: true
 
       - name: Check build results
         run: |
-          exit `docker logs paragonTestBuild 2>&1 | grep -iE "Error" | wc -l`
+          exit $(docker logs paragonTestBuild 2>&1 | grep -iE "Error" | wc -l)
 
       - name: Check GTest results
         run: |
-          exit `docker logs paragonTestBuild 2>&1 | grep Failed | grep "Test \#" | wc -l`
+          exit $(docker logs paragonTestBuild 2>&1 | grep Failed | grep "Test #" | wc -l)
