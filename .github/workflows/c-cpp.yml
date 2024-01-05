@@ -20,9 +20,16 @@ jobs:
         id: extract_branch
         run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
+      - name: Clone repository
+        run: |
+          git clone https://github.com/BakcylProgramowania/paragon_back.git
+          cd paragon_back
+          git checkout ${{ env.BRANCH_NAME }}
+        working-directory: /app
+
       - name: Run Docker container
         run: |
-          docker run --entrypoint appbuild.sh -e "REPO=https://github.com/BakcylProgramowania/paragon_back.git" -e "BRANCH=${{ env.BRANCH_NAME }}" --name paragonTestBuild bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
+          docker run --entrypoint appbuild.sh -e "REPO=https://github.com/BakcylProgramowania/paragon_back.git" -e "BRANCH=refs/pull/33/head" --name paragonTestBuild bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
         continue-on-error: true
 
       - name: Check build results
