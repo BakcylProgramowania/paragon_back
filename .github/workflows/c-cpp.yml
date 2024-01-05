@@ -11,7 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+      
+      - name: Branch name
+        run: echo running on branch ${GITHUB_REF##*/}
+      
       - name: Run Docker container
         run: |
           docker run --entrypoint appbuild.sh -e "REPO=${{ vars.REPO }}" -e "BRANCH=${{ vars.BRANCH }}" --name paragonTestBuild bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
