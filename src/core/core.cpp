@@ -73,7 +73,7 @@ std::vector<User> getUsers(const json& jsonData) {
   return users;
 }
 
-bool getLogin(std::string username, std::string password){
+bool getLogin(const std::string &username, const std::string &password){
 
   if(username == "Jan34") {
     return true;
