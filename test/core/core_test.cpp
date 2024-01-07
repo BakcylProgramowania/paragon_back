@@ -1,4 +1,5 @@
 #include "core/core.hpp"
+#include "core/authenticator.hpp"
 
 #include <gtest/gtest.h>
 
@@ -78,7 +79,7 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
     EXPECT_EQ(actualUsers[i].id, expectUsers[i].id);
   }
 }
-Authenticator auth;
+
 
 TEST(WhetherUserIsCorrect, ReturnTrueForUserJan34) {
   Authenticator auth;

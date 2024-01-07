@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CORE_HPP
+#define CORE_HPP
 
 #include <nlohmann/json.hpp>
 #include <string>
