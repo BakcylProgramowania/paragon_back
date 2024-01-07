@@ -39,11 +39,14 @@ class MyController : public oatpp::web::server::api::ApiController {
 
     auto responseDto = LoginResponseDto::createShared();
 
+    Authenticator auth;
+
     if (json && json->username && json->password) {
-      bool loginSuccess = getLogin(json->username->c_str(), json->password->c_str());
+      bool loginSuccess =
+          auth.authenticateUser(json->username, json->password);
       responseDto->success = loginSuccess;
 
-      if (loginSuccess){
+      if (loginSuccess) {
         return createDtoResponse(Status::CODE_200, responseDto);
       } else {
         return createDtoResponse(Status::CODE_403, responseDto);

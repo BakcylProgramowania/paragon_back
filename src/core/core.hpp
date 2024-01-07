@@ -23,4 +23,8 @@ std::vector<Product> getProducts(const json& jsonData);
 
 std::vector<User> getUsers(const json& jsonData);
 
-bool getLogin(const std::string &username, const std::string &password);
+class Authenticator {
+  public:
+    bool authenticateUser(const std::string& username, const std::string& password) const;
+
+};
