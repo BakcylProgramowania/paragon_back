@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/core.hpp"
+#include "core/authenticator.hpp"
 #include "dto/DTOs.hpp"
 #include "dto/LoginDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
@@ -30,7 +30,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     dto->message = "Hello World!";
     return createDtoResponse(Status::CODE_200, dto);
   }
-
+  
   ENDPOINT("POST", "/login", postUsers, BODY_STRING(String, body)) {
     OATPP_LOGD("Test", "Request Body: %s", body->c_str());
 
@@ -39,11 +39,11 @@ class MyController : public oatpp::web::server::api::ApiController {
 
     auto responseDto = LoginResponseDto::createShared();
 
-    Authenticator auth;
-
     if (json && json->username && json->password) {
-      bool loginSuccess =
-          auth.authenticateUser(json->username, json->password);
+      Authenticator auth;
+      bool loginSuccess = 
+              auth.authenticateUser(json->username, json->password);
+          
       responseDto->success = loginSuccess;
 
       if (loginSuccess) {

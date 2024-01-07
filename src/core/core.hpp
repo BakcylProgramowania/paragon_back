@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CORE_HPP
+#define CORE_HPP
 
 #include <nlohmann/json.hpp>
 #include <string>
@@ -23,8 +24,4 @@ std::vector<Product> getProducts(const json& jsonData);
 
 std::vector<User> getUsers(const json& jsonData);
 
-class Authenticator {
-  public:
-    bool authenticateUser(const std::string& username, const std::string& password) const;
-
-};
+#endif 
