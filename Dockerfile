@@ -54,15 +54,16 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 # download and build mongo
-RUN  curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.0/mongo-cxx-driver-r3.9.0.tar.gz && \
+RUN curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.0/mongo-cxx-driver-r3.9.0.tar.gz && \
     tar -xzf mongo-cxx-driver-r3.9.0.tar.gz && \
-    cd mongo-cxx-driver-r3.9.0/build && \
-    cmake -DBUILD_VERSION=3.9.0 -DMONGOCXX_OVERRIDE_DEFAULT_INSTALL_PREFIX=OFF .. && \
-    cmake --build . && \
-    cmake --build . --target install && \
-    cd ../..
+    cd mongo-cxx-driver-r3.9.0 && \
+    cmake -B build -DCMAKE_BUILD_TYPE=Release -DMONGOCXX_OVERRIDE_DEFAULT_INSTALL_PREFIX=OFF -DBUILD_VERSION=3.9.0 && \
+    cmake --build build --target install -- -j4 && \
+    cd ..
 
 COPY appbuild.sh /usr/local/bin/appbuild.sh
 COPY appstarter.sh /usr/local/bin/appstarter.sh
+
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
 ENTRYPOINT ["appstarter.sh"]
