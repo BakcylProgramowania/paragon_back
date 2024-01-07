@@ -9,10 +9,8 @@ target_include_directories(api-lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${oatpp_IN
 
 target_include_directories(api-lib PRIVATE ${INCLUDE_DIR})
 
-target_include_directories(api-lib PRIVATE
-    src/api
-    src/core)
-    
+target_include_directories(api-lib PRIVATE ${INCLUDE_DIR})
+
 target_link_libraries(api-lib
         PUBLIC oatpp::oatpp
         PUBLIC oatpp::oatpp-swagger
