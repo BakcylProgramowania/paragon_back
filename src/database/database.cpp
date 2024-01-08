@@ -104,7 +104,7 @@ bool Database::deleteUser(const std::string& id, const std::string& Password)
 
 //Checks if there is user with given 'id' and if user's password equals given 'Password'
 //returns true if 'id' and 'Password' are correct, false if not
-bool Database::loginCheck(const std::string& id, const std::string& Password)
+bool Database::loginCheck(const std::string& id, const std::string& Password) const
 {
     //id can be either email or username
     auto collection = database["users"];
