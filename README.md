@@ -25,7 +25,7 @@ docker run -it --publish 8000:8000 --name paragon-back --restart always paragon_
 
 # How to clang-format?
 ```bash
-sudo apt-get install pre-commit
+apt-get install pre-commit
 pre-commit install
 cd .github/pre-commit
 pre-commit run --all-files
