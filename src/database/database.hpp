@@ -26,11 +26,11 @@ class Database
     Database(const std::string& address);
     ~Database()=default;
 
-    bool isThereUserWithThisUsername(const std::string& Username) const;
-    bool isThereUserWithThisEmail(const std::string& Email) const;
-    bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor, const std::string& Password) const;
-    bool createUser(const std::string& Username, const std::string& Password, const std::string& Email);
-    bool deleteUser(const std::string& id, const std::string& Password);
-    bool loginCheck(const std::string& id, const std::string& Password) const;
+    bool isThereUserWithThisUsername(const std::string& username) const;
+    bool isThereUserWithThisEmail(const std::string& email) const;
+    bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor, const std::string& password) const;
+    bool createUser(const std::string& username, const std::string& password, const std::string& email);
+    bool deleteUser(const std::string& id, const std::string& password);
+    bool loginCheck(const std::string& id, const std::string& password) const;
 
 };
