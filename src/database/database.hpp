@@ -23,7 +23,7 @@ class Database
     mongocxx::database database;
 
     public:
-    Database();
+    Database(const std::string& address);
     ~Database()=default;
 
     bool isThereUserWithThisUsername(const std::string& Username) const;

@@ -1,7 +1,7 @@
 #include "database.hpp"
 
-Database::Database()
- : uri(mongocxx::uri("mongodb+srv://bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/")),
+Database::Database(const std::string& address)
+ : uri(mongocxx::uri(address)),
  client(mongocxx::client(uri)),
  database(client["ParagonApp"]) {}
 
