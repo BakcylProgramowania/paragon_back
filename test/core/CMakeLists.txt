@@ -8,6 +8,7 @@ target_link_libraries(core-test PRIVATE
     GTest::gtest_main
     GTest::gmock
     core-lib
+    database-lib
     )
 
 gtest_discover_tests(core-test)

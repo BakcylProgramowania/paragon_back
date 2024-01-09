@@ -38,7 +38,7 @@ ctest --test-dir build
 
 # How to clang-format?
 ```bash
-sudo apt-get install pre-commit
+apt-get install pre-commit
 pre-commit install
 cd .github/pre-commit
 pre-commit run --all-files
