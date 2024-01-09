@@ -1,5 +1,4 @@
-#ifndef CORE_HPP
-#define CORE_HPP
+#pragma once
 
 #include <nlohmann/json.hpp>
 #include <string>
@@ -23,5 +22,3 @@ struct User {
 std::vector<Product> getProducts(const json& jsonData);
 
 std::vector<User> getUsers(const json& jsonData);
-
-#endif 

@@ -1,5 +1,4 @@
-#ifndef AUTHENTICATOR_HPP
-#define AUTHENTICATOR_HPP
+#pragma once
 
 #include "database/database.hpp"
 #include <string>
@@ -9,5 +8,3 @@ class Authenticator {
 public:
     bool authenticateUser(const std::string& username, const std::string& password) const;
 };
-
-#endif

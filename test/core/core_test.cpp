@@ -3,8 +3,6 @@
 
 #include <gtest/gtest.h>
 
-#include "core/core.cpp"
-
 TEST(GetProductsTest, RetrievesProductsCorrectly) {
   const json jsonData = R"(
         {
