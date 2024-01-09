@@ -1,7 +1,8 @@
 #include "core/core.hpp"
-#include "core/authenticator.hpp"
 
 #include <gtest/gtest.h>
+
+#include "core/authenticator.hpp"
 
 TEST(GetProductsTest, RetrievesProductsCorrectly) {
   const json jsonData = R"(
@@ -77,7 +78,6 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
     EXPECT_EQ(actualUsers[i].id, expectUsers[i].id);
   }
 }
-
 
 TEST(WhetherUserIsCorrect, ReturnTrueForUserJan34) {
   Authenticator auth;
