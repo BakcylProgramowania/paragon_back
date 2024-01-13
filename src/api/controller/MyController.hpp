@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/authenticator.hpp"
 #include "dto/DTOs.hpp"
 #include "dto/LoginDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
@@ -36,18 +37,20 @@ class MyController : public oatpp::web::server::api::ApiController {
     auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
                     ->readFromString<oatpp::Object<LoginDto>>(body);
 
+    auto responseDto = LoginResponseDto::createShared();
+
     if (json && json->username && json->password) {
-      if (json->username == "Jan34") {
-        auto responseDto = LoginResponseDto::createShared();
-        responseDto->success = true;
+      Authenticator auth;
+      bool loginSuccess = auth.authenticateUser(json->username, json->password);
+
+      responseDto->success = loginSuccess;
+
+      if (loginSuccess) {
         return createDtoResponse(Status::CODE_200, responseDto);
       } else {
-        auto responseDto = LoginResponseDto::createShared();
-        responseDto->success = false;
         return createDtoResponse(Status::CODE_403, responseDto);
       }
     } else {
-      auto responseDto = LoginResponseDto::createShared();
       responseDto->success = false;
       return createDtoResponse(Status::CODE_400, responseDto);
     }
