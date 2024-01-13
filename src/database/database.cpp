@@ -51,7 +51,7 @@ bool Database::isUserPasswordEqualGivenPassword(
 // was not created)
 bool Database::createUser(const std::string& username,
                           const std::string& password,
-                          const std::string& email) {
+                          const std::string& email) const {
   auto collection = database["users"];
   if (isThereUserWithThisUsername(username) ||
       isThereUserWithThisEmail(email)) {
