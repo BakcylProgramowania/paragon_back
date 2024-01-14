@@ -1,5 +1,8 @@
 #include "database.hpp"
 
+namespace bakcyl {
+namespace database {
+
 Database::Database(const std::string& address)
     : uri(mongocxx::uri(address)),
       client(mongocxx::client(uri)),
@@ -117,4 +120,7 @@ bool Database::loginCheck(const std::string& id,
     return false;
 
   return false;
+}
+
+}
 }

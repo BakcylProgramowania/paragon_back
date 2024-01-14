@@ -5,6 +5,9 @@
 #include "oatpp-swagger/Controller.hpp"
 #include "oatpp/network/Server.hpp"
 
+namespace bakcyl {
+namespace api {
+
 void run() {
   /* Register Components in scope of run() method */
   AppComponent components;
@@ -38,4 +41,7 @@ void run() {
 
   /* Run server */
   server.run();
+}
+
+}
 }

@@ -7,9 +7,9 @@
 #include "example/Example.hpp"
 
 int main(int argc, const char* argv[]) {
-  EnvironmentWrapper environmentWrapper;
+  bakcyl::api::EnvironmentWrapper environmentWrapper;
 
-  run();
+  bakcyl::api::run();
 
   return 0;
 }

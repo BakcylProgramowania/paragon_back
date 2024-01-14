@@ -32,10 +32,10 @@ TEST(GetProductsTest, RetrievesProductsCorrectly) {
         }
     )"_json;
 
-  const std::vector<Product> expectProducts = {{"Item1", 10.5, 2, 1},
+  const std::vector<bakcyl::core::Product> expectProducts = {{"Item1", 10.5, 2, 1},
                                                {"Item2", 5.99, 1, 2}};
 
-  const std::vector<Product> actualProducts = getProducts(jsonData);
+  const std::vector<bakcyl::core::Product> actualProducts = bakcyl::core::getProducts(jsonData);
 
   EXPECT_EQ(actualProducts.size(), expectProducts.size());
 
@@ -65,10 +65,10 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
         }
     )"_json;
 
-  const std::vector<User> expectUsers = {{"John Doe", "123-456-7890", 1},
+  const std::vector<bakcyl::core::User> expectUsers = {{"John Doe", "123-456-7890", 1},
                                          {"Jane Doe", "987-654-3210", 2}};
 
-  const std::vector<User> actualUsers = getUsers(jsonData);
+  const std::vector<bakcyl::core::User> actualUsers = bakcyl::core::getUsers(jsonData);
 
   EXPECT_EQ(actualUsers.size(), expectUsers.size());
 
@@ -80,6 +80,6 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
 }
 
 TEST(WhetherUserIsCorrect, ReturnTrueForUserJan34) {
-  Authenticator auth;
+  bakcyl::core::Authenticator auth;
   EXPECT_TRUE(auth.authenticateUser("Jan34", "Jan905"));
 }
