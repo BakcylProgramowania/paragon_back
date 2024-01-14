@@ -22,5 +22,5 @@ class MyDto : public oatpp::DTO {
 
 #include OATPP_CODEGEN_END(DTO)
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl

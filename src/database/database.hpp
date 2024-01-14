@@ -37,5 +37,5 @@ class Database {
   bool loginCheck(const std::string& id, const std::string& password) const;
 };
 
-}
-}
+}  // namespace database
+}  // namespace bakcyl

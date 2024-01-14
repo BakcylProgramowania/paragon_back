@@ -47,5 +47,5 @@ class SwaggerComponent {
   }());
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl

@@ -13,5 +13,5 @@ bool Authenticator::authenticateUser(const std::string& username,
   return database.loginCheck(username, password);
 }
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

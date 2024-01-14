@@ -16,5 +16,5 @@ class Authenticator {
                         const std::string& password) const;
 };
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

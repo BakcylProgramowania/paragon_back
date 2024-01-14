@@ -76,5 +76,5 @@ std::vector<User> getUsers(const json& jsonData) {
   return users;
 }
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

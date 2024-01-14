@@ -122,5 +122,5 @@ bool Database::loginCheck(const std::string& id,
   return false;
 }
 
-}
-}
+}  // namespace database
+}  // namespace bakcyl
