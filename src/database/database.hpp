@@ -14,6 +14,9 @@ using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
 
+namespace bakcyl {
+namespace database {
+
 class Database {
  private:
   mongocxx::uri uri;
@@ -33,3 +36,6 @@ class Database {
   bool deleteUser(const std::string& id, const std::string& password);
   bool loginCheck(const std::string& id, const std::string& password) const;
 };
+
+}  // namespace database
+}  // namespace bakcyl

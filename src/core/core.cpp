@@ -5,6 +5,9 @@
 #include <vector>
 using json = nlohmann::json;
 
+namespace bakcyl {
+namespace core {
+
 std::vector<Product> getProducts(const json& jsonData) {
   std::vector<Product> products;
 
@@ -72,3 +75,6 @@ std::vector<User> getUsers(const json& jsonData) {
 
   return users;
 }
+
+}  // namespace core
+}  // namespace bakcyl

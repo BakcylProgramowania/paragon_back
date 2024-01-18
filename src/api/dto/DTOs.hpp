@@ -3,6 +3,9 @@
 #include "oatpp/core/Types.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 
+namespace bakcyl {
+namespace api {
+
 #include OATPP_CODEGEN_BEGIN(DTO)
 
 /**
@@ -18,3 +21,6 @@ class MyDto : public oatpp::DTO {
 };
 
 #include OATPP_CODEGEN_END(DTO)
+
+}  // namespace api
+}  // namespace bakcyl

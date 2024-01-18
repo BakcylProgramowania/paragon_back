@@ -6,7 +6,7 @@
 using namespace ::testing;
 
 TEST(DatabaseLogingTest, ExpectedValidLoginToWork) {
-  Database database(
+  bakcyl::database::Database database(
       "mongodb+srv://"
       "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/");
   EXPECT_FALSE(database.loginCheck("Lucy", "wrongPassword"));

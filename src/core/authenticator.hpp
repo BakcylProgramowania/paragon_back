@@ -4,11 +4,17 @@
 
 #include "database/database.hpp"
 
+namespace bakcyl {
+namespace core {
+
 class Authenticator {
-  Database database;
+  bakcyl::database::Database database;
 
  public:
   Authenticator();
   bool authenticateUser(const std::string& username,
                         const std::string& password) const;
 };
+
+}  // namespace core
+}  // namespace bakcyl

@@ -12,6 +12,10 @@
  * components in oatpp::base::Environment Order of components initialization is
  * from top to bottom
  */
+
+namespace bakcyl {
+namespace api {
+
 class AppComponent {
  public:
   /**
@@ -54,3 +58,6 @@ class AppComponent {
                          apiObjectMapper)
   ([] { return oatpp::parser::json::mapping::ObjectMapper::createShared(); }());
 };
+
+}  // namespace api
+}  // namespace bakcyl

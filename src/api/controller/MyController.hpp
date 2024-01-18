@@ -8,6 +8,9 @@
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/web/server/api/ApiController.hpp"
 
+namespace bakcyl {
+namespace api {
+
 #include OATPP_CODEGEN_BEGIN(ApiController)  //<-- Begin Codegen
 
 /**
@@ -40,7 +43,8 @@ class MyController : public oatpp::web::server::api::ApiController {
     auto responseDto = LoginResponseDto::createShared();
 
     if (json && json->username && json->password) {
-      Authenticator auth;
+      bakcyl::core::Authenticator auth;
+
       bool loginSuccess = auth.authenticateUser(json->username, json->password);
 
       responseDto->success = loginSuccess;
@@ -58,3 +62,6 @@ class MyController : public oatpp::web::server::api::ApiController {
 };
 
 #include OATPP_CODEGEN_END(ApiController)  //<-- End Codegen
+
+}  // namespace api
+}  // namespace bakcyl
