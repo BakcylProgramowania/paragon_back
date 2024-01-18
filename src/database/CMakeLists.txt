@@ -8,4 +8,3 @@ include_directories(${LIBBSONCXX_INCLUDE_DIR})
 
 target_link_libraries(database-lib PUBLIC mongo::bsoncxx_shared) 
 target_link_libraries(database-lib PUBLIC mongo::mongocxx_shared)
-
