@@ -29,7 +29,7 @@ class Database {
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
                                         const std::string& password) const;
   bool createUser(const std::string& username, const std::string& password,
-                  const std::string& email);
+                  const std::string& email) const;
   bool deleteUser(const std::string& id, const std::string& password);
   bool loginCheck(const std::string& id, const std::string& password) const;
 };
