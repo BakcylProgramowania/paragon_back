@@ -1,4 +1,4 @@
-# Bill Splitting Application Backend - 2023 BakcylProgramowania
+# Bill Splitting App Backend - 2023 BakcylProgramowania
 
 This repository contains the backend source code for the Bill Splitting application, developed by 2023 BakcylProgramowania team.
 
