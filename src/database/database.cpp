@@ -11,12 +11,13 @@ using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
 
 class DatabaseImpl {
-  private:
+ private:
   mongocxx::uri uri;
   mongocxx::client client;
   mongocxx::database database;
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
                                         const std::string& password) const;
+
  public:
   DatabaseImpl(const std::string& address);
   ~DatabaseImpl() = default;
@@ -47,7 +48,8 @@ bool DatabaseImpl::isThereUserWithThisEmail(const std::string& email) const {
 }
 
 // Checks if is there user with given Username
-bool DatabaseImpl::isThereUserWithThisUsername(const std::string& username) const {
+bool DatabaseImpl::isThereUserWithThisUsername(
+    const std::string& username) const {
   auto collection = database["users"];
 
   // searching for user with this username and returning result
@@ -79,8 +81,8 @@ bool DatabaseImpl::isUserPasswordEqualGivenPassword(
 // returns false if there is already user with that username or email(new user
 // was not created)
 bool DatabaseImpl::createUser(const std::string& username,
-                          const std::string& password,
-                          const std::string& email) {
+                              const std::string& password,
+                              const std::string& email) {
   auto collection = database["users"];
   if (isThereUserWithThisUsername(username) ||
       isThereUserWithThisEmail(email)) {
@@ -98,7 +100,8 @@ bool DatabaseImpl::createUser(const std::string& username,
 // needs password of this user
 // returns true if user was deleted and false if user was not deleted(password
 // is incorrect or there is no user with this id)
-bool DatabaseImpl::deleteUser(const std::string& id, const std::string& password) {
+bool DatabaseImpl::deleteUser(const std::string& id,
+                              const std::string& password) {
   auto collection = database["users"];
 
   // Checking if the 'id' is a Username or Email
@@ -129,7 +132,7 @@ bool DatabaseImpl::deleteUser(const std::string& id, const std::string& password
 // Checks if there is user with given 'id' and if user's password equals given
 // 'Password' returns true if 'id' and 'Password' are correct, false if not
 bool DatabaseImpl::loginCheck(const std::string& id,
-                          const std::string& password) const {
+                              const std::string& password) const {
   // id can be either email or username
   auto collection = database["users"];
 
@@ -148,31 +151,29 @@ bool DatabaseImpl::loginCheck(const std::string& id,
   return false;
 }
 
-  Database::Database(const std::string& address) : impl(new DatabaseImpl(address)) {};
-  Database::~Database() = default;
-  
-  bool Database::isThereUserWithThisUsername(const std::string& username) const
-  {
-    return impl->isThereUserWithThisUsername(username);
-  }
+Database::Database(const std::string& address)
+    : impl(new DatabaseImpl(address)){};
+Database::~Database() = default;
 
-  bool Database::isThereUserWithThisEmail(const std::string& email) const
-  {
-    return impl->isThereUserWithThisEmail(email);
-  }
+bool Database::isThereUserWithThisUsername(const std::string& username) const {
+  return impl->isThereUserWithThisUsername(username);
+}
 
-  bool Database::createUser(const std::string& username, const std::string& password,
-                  const std::string& email)
-  {
-    return impl->createUser(username, password, email);
-  }
+bool Database::isThereUserWithThisEmail(const std::string& email) const {
+  return impl->isThereUserWithThisEmail(email);
+}
 
-  bool Database::deleteUser(const std::string& id, const std::string& password)
-  {
-      return impl->deleteUser(id, password);
-  }
+bool Database::createUser(const std::string& username,
+                          const std::string& password,
+                          const std::string& email) {
+  return impl->createUser(username, password, email);
+}
 
-  bool Database::loginCheck(const std::string& id, const std::string& password) const
-  {
-    return impl->loginCheck(id, password);
-  }
+bool Database::deleteUser(const std::string& id, const std::string& password) {
+  return impl->deleteUser(id, password);
+}
+
+bool Database::loginCheck(const std::string& id,
+                          const std::string& password) const {
+  return impl->loginCheck(id, password);
+}

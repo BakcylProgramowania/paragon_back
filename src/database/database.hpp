@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
 
 class DatabaseImpl;
 
@@ -17,6 +17,6 @@ class Database {
   bool deleteUser(const std::string& id, const std::string& password);
   bool loginCheck(const std::string& id, const std::string& password) const;
 
-  private:
+ private:
   std::unique_ptr<DatabaseImpl> impl;
 };
