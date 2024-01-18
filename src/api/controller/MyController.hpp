@@ -44,6 +44,7 @@ class MyController : public oatpp::web::server::api::ApiController {
 
     if (json && json->username && json->password) {
       bakcyl::core::Authenticator auth;
+
       bool loginSuccess = auth.authenticateUser(json->username, json->password);
 
       responseDto->success = loginSuccess;
