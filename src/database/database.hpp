@@ -20,4 +20,3 @@ class Database {
   private:
   std::unique_ptr<DatabaseImpl> impl;
 };
-
