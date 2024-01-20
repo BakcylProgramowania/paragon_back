@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+      branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,7 +17,7 @@ jobs:
 
       - name: Run Docker container
         run: |
-          docker run --entrypoint appbuild.sh -e "REPO=${{ vars.REPO }}" -e "BRANCH=${{ vars.BRANCH }}" --name paragonTestBuild bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
+          docker run --entrypoint appbuild.sh -e "REPO=${{ vars.REPO }}" -e "BRANCH=${{ github.head_ref}}" --name paragonTestBuild bakcyl/paragon_back:${{ vars.DOCKER_IMAGE_VERSION }}
         continue-on-error: true
 
       - name: Check build results
