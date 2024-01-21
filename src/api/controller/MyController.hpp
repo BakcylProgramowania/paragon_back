@@ -57,7 +57,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
   ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
-    OATPP_LOGD("TEST", "Registered with username: %s using email: %s",
+    OATPP_LOGD("TEST", "Registered with username: %s",
                body->c_str());
 
     auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()

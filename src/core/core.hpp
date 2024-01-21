@@ -19,6 +19,6 @@ struct User {
   int id;
 };
 
-std::vector<Product> getProducts(const json& jsonData);
+const std::vector<Product> getProducts(const json& jsonData);
 
-std::vector<User> getUsers(const json& jsonData);
+const std::vector<User> getUsers(const json& jsonData);

@@ -19,9 +19,10 @@ class Database {
   mongocxx::uri uri;
   mongocxx::client client;
   mongocxx::database database;
+  
 
  public:
-  Database(const std::string& address);
+  explicit Database(const std::string& address);
   ~Database() = default;
 
   bool isThereUserWithThisUsername(const std::string& username) const;
