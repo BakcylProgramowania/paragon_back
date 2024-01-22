@@ -13,5 +13,5 @@ class Authenticator {
                         const std::string& password) const;
 
   bool registerUser(const std::string& username, const std::string& password,
-                    const std::string& email) const;
+                    const std::string& email);
 };

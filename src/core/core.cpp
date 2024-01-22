@@ -5,7 +5,7 @@
 #include <vector>
 using json = nlohmann::json;
 
-const std::vector<Product> getProducts(const json& jsonData) {
+std::vector<Product> const getProducts(const json& jsonData) {
   std::vector<Product> products;
 
   if (jsonData.contains("receipt")) {
@@ -47,7 +47,7 @@ const std::vector<Product> getProducts(const json& jsonData) {
   return products;
 }
 
-const std::vector<User> getUsers(const json& jsonData) {
+std::vector<User> const getUsers(const json& jsonData) {
   std::vector<User> users;
 
   if (jsonData.contains("users")) {
