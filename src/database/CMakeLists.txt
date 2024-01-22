@@ -1,8 +1,8 @@
-project(database-lib) 
-add_library(database-lib database.cpp)
+add_library(database-lib database.cpp databaseImpl.cpp)
 
 find_package(mongocxx REQUIRED)
 find_package(bsoncxx REQUIRED)
+
 include_directories(${LIBMONGOCXX_INCLUDE_DIR})
 include_directories(${LIBBSONCXX_INCLUDE_DIR})
 
