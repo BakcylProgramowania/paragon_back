@@ -18,7 +18,7 @@ jobs:
 
       - name: Determine Branch
         id: determine_branch
-        run: echo "::set-output name=branch::${{ github.head_ref || github.ref }}"
+        run: echo "::set-output name=branch::${{ github.head_ref || vars.BRANCH }}"
 
       - name: Run Docker container
         run: |
