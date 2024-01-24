@@ -83,5 +83,5 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
 
 TEST(WhetherUserIsCorrect, ReturnTrueForUserJan34) {
   Authenticator auth;
-  EXPECT_TRUE(auth.authenticateUser("Jan34", "Jan905"));
+  EXPECT_FALSE(auth.authenticateUser("Jan34", "Jan905").empty());
 }

@@ -5,9 +5,12 @@ Authenticator::Authenticator()
           "mongodb+srv://"
           "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/") {}
 
-bool Authenticator::authenticateUser(const std::string& username,
+std::string Authenticator::authenticateUser(const std::string& username,
                                      const std::string& password) const {
-  return database.loginCheck(username, password);
+  if (database.loginCheck(username, password)) {
+    return database.getToken(username, password);
+  }
+  return "";
 }
 
 std::string Authenticator::registerUser(const std::string& username,

@@ -50,12 +50,19 @@ class MyController : public oatpp::web::server::api::ApiController {
 
     if (json && json->username && json->password) {
       Authenticator auth;
-      bool loginSuccess = auth.authenticateUser(json->username, json->password);
 
+      std::string token =
+          auth.authenticateUser(json->username, json->password);
+
+      bool loginSuccess = false;
+      if (token != "")
+        loginSuccess = true;
       responseDto->success = loginSuccess;
 
       if (loginSuccess) {
-        return createDtoResponse(Status::CODE_200, responseDto);
+        auto response = createDtoResponse(Status::CODE_200, responseDto);
+            response->putHeader("Authorization", "Bearer " + token);
+            return response;
       } else {
         return createDtoResponse(Status::CODE_403, responseDto);
       }
