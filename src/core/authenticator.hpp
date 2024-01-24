@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 
 #include "database/database.hpp"
@@ -13,6 +14,6 @@ class Authenticator {
   bool authenticateUser(const std::string& username,
                         const std::string& password) const;
 
-  bool registerUser(const std::string& username, const std::string& password,
+  std::string registerUser(const std::string& username, const std::string& password,
                     const std::string& email);
 };

@@ -10,9 +10,13 @@ bool Authenticator::authenticateUser(const std::string& username,
   return database.loginCheck(username, password);
 }
 
-bool Authenticator::registerUser(const std::string& username,
+std::string Authenticator::registerUser(const std::string& username,
                                  const std::string& password,
                                  const std::string& email) {
   Token token;
-  return database.createUser(username, password, email, token.createToken(username, password));
+  if (database.createUser(username, password, email, token.createToken(username, password)))
+  {
+    return database.getToken(username, password);
+  }
+  return "";
 }

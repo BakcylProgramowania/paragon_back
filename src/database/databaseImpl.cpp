@@ -127,3 +127,24 @@ bool DatabaseImpl::loginCheck(const std::string& id,
 
   return false;
 }
+
+std::string DatabaseImpl::getToken(const std::string& username, const std::string& password) {
+  auto collection = database["users"];
+
+  // Check if there is a user with the provided username
+  if (isThereUserWithThisUsername(username)) {
+    // Find the user by username
+    auto cursor = collection.find(make_document(kvp("UserName", username)));
+
+    // Check if the provided password matches the stored password for the user
+    if (isUserPasswordEqualGivenPassword(cursor, password)) {
+      // Retrieve the token from the user document
+      for (auto&& doc : cursor) {
+        auto tokenElement = doc["Token"];
+        return tokenElement.get_string().value.to_string();
+      }
+    }
+  }
+
+  return "";
+}

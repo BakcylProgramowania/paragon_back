@@ -14,6 +14,7 @@ class Database {
                   const std::string& email, const std::string& token);
   bool deleteUser(const std::string& id, const std::string& password);
   bool loginCheck(const std::string& id, const std::string& password) const;
+  std::string getToken(const std::string& username, const std::string& password);
 
   private:
   std::unique_ptr<DatabaseImpl> impl;
