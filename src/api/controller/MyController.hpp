@@ -3,6 +3,7 @@
 #include "core/authenticator.hpp"
 #include "dto/DTOs.hpp"
 #include "dto/LoginDTOs.hpp"
+#include "dto/RegisterDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
@@ -49,6 +50,33 @@ class MyController : public oatpp::web::server::api::ApiController {
         return createDtoResponse(Status::CODE_200, responseDto);
       } else {
         return createDtoResponse(Status::CODE_403, responseDto);
+      }
+    } else {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_400, responseDto);
+    }
+  }
+  ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
+    OATPP_LOGD("TEST", "Registered with username: %s",
+               body->c_str());
+
+    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
+                    ->readFromString<oatpp::Object<RegisterDto>>(body);
+
+    auto responseDto = RegisterResponseDto::createShared();
+
+    if (json && json->username && json->password && json->email) {
+      Authenticator auth;
+
+      bool registrationSuccess =
+          auth.registerUser(json->username, json->password, json->email);
+
+      responseDto->success = registrationSuccess;
+
+      if (registrationSuccess) {
+        return createDtoResponse(Status::CODE_201, responseDto);
+      } else {
+        return createDtoResponse(Status::CODE_500, responseDto);
       }
     } else {
       responseDto->success = false;
