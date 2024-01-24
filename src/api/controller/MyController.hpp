@@ -9,6 +9,8 @@
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/web/server/api/ApiController.hpp"
 
+using namespace oatpp::web::server::handler;
+
 #include OATPP_CODEGEN_BEGIN(ApiController)  //<-- Begin Codegen
 
 /**
@@ -16,15 +18,21 @@
  */
 class MyController : public oatpp::web::server::api::ApiController {
  public:
-  /**
-   * Constructor with object mapper.
-   * @param objectMapper - default object mapper used to serialize/deserialize
-   * DTOs.
-   */
-  MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
-      : oatpp::web::server::api::ApiController(objectMapper) {}
+  MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper) /* Inject object mapper */)
+    : oatpp::web::server::api::ApiController(objectMapper) 
+  {
+    setDefaultAuthorizationHandler(std::make_shared<BearerAuthorizationHandler>("my-realm"));
+  }
 
- public:
+  ENDPOINT("GET", "/my/secret/resource", getResource,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>, authObject)) 
+  {
+    if (authObject->token != "4e99e8c12de7e01535248d2bac85e732") {
+        return createResponse(Status::CODE_401, "{\"success\":false}");
+    }
+    return createResponse(Status::CODE_200, "{\"success\":true}");
+  }
+
   ENDPOINT("GET", "/", root) {
     auto dto = MyDto::createShared();
     dto->statusCode = 200;
@@ -56,6 +64,7 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
   }
+  
   ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
     OATPP_LOGD("TEST", "Registered with username: %s",
                body->c_str());
