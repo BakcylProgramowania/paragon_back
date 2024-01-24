@@ -11,7 +11,7 @@ class Database {
   ~Database();
 
   bool createUser(const std::string& username, const std::string& password,
-                  const std::string& email);
+                  const std::string& email) ;
   bool deleteUser(const std::string& id, const std::string& password);
   bool loginCheck(const std::string& id, const std::string& password) const;
 

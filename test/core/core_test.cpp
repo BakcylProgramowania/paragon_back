@@ -5,6 +5,7 @@
 #include "core/authenticator.hpp"
 
 TEST(GetProductsTest, RetrievesProductsCorrectly) {
+  Data data;
   const json jsonData = R"(
         {
             "receipt": [
@@ -35,7 +36,7 @@ TEST(GetProductsTest, RetrievesProductsCorrectly) {
   const std::vector<Product> expectProducts = {{"Item1", 10.5, 2, 1},
                                                {"Item2", 5.99, 1, 2}};
 
-  const std::vector<Product> actualProducts = getProducts(jsonData);
+  const std::vector<Product> actualProducts = data.getProducts(jsonData);
 
   EXPECT_EQ(actualProducts.size(), expectProducts.size());
 
@@ -48,6 +49,7 @@ TEST(GetProductsTest, RetrievesProductsCorrectly) {
 }
 
 TEST(GetUsersTest, RetrievesUsersCorrectly) {
+  Data data;
   const json jsonData = R"(
         {
             "users": [
@@ -68,7 +70,7 @@ TEST(GetUsersTest, RetrievesUsersCorrectly) {
   const std::vector<User> expectUsers = {{"John Doe", "123-456-7890", 1},
                                          {"Jane Doe", "987-654-3210", 2}};
 
-  const std::vector<User> actualUsers = getUsers(jsonData);
+  const std::vector<User> actualUsers = data.getUsers(jsonData);
 
   EXPECT_EQ(actualUsers.size(), expectUsers.size());
 
