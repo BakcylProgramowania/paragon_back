@@ -3,6 +3,7 @@
 #include <string>
 
 #include "database/database.hpp"
+#include "core/token.hpp"
 
 class Authenticator {
   Database database;

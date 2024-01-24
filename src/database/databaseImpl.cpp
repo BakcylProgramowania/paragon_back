@@ -60,7 +60,7 @@ bool DatabaseImpl::isUserPasswordEqualGivenPassword(
 // was not created)
 bool DatabaseImpl::createUser(const std::string& username,
                           const std::string& password,
-                          const std::string& email) {
+                          const std::string& email, const std::string& token) {
   auto collection = database["users"];
   if (isThereUserWithThisUsername(username) ||
       isThereUserWithThisEmail(email)) {
@@ -68,7 +68,7 @@ bool DatabaseImpl::createUser(const std::string& username,
   } else {
     auto resultOfInsert = collection.insert_one(
         make_document(kvp("UserName", username), kvp("Password", password),
-                      kvp("Email", email)));
+                      kvp("Email", email), kvp("Token", token)));
   }
   return true;
 }

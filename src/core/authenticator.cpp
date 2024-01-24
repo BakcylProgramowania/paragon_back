@@ -13,5 +13,6 @@ bool Authenticator::authenticateUser(const std::string& username,
 bool Authenticator::registerUser(const std::string& username,
                                  const std::string& password,
                                  const std::string& email) {
-  return database.createUser(username, password, email);
+  Token token;
+  return database.createUser(username, password, email, token.createToken(username, password));
 }
