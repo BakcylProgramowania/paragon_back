@@ -81,6 +81,10 @@ RUN curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.
     make install && \
     cd /app
 
+RUN apt-get install -y \
+    libboost-all-dev \
+    libssl-dev 
+
 COPY appbuild.sh /usr/local/bin/appbuild.sh
 COPY appstarter.sh /usr/local/bin/appstarter.sh
 
