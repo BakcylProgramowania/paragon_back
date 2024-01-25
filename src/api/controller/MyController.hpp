@@ -27,7 +27,8 @@ class MyController : public oatpp::web::server::api::ApiController {
   ENDPOINT("GET", "/my/secret/resource", getResource,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>, authObject)) 
   {
-    if (authObject->token != "4e99e8c12de7e01535248d2bac85e732") {
+    Authenticator auth;
+    if (!auth.tokenCheck(authObject->token)) {
         return createResponse(Status::CODE_401, "{\"success\":false}");
     }
     return createResponse(Status::CODE_200, "{\"success\":true}");
