@@ -14,6 +14,7 @@ class DatabaseImpl {
   bool deleteUser(const std::string& id, const std::string& password);
   bool loginCheck(const std::string& id, const std::string& password) const;
   std::string getToken(const std::string& username, const std::string& password);
+  bool tokenCheck(const std::string& token) const;
 
   private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,

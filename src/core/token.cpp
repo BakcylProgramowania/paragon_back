@@ -1,24 +1,17 @@
 #include "token.hpp"
+#include <openssl/rand.h>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 std::string Token::createToken(const std::string& username, const std::string& email) {
-    std::string input = username + email;
+    unsigned char randomChars[16];
+    RAND_bytes(randomChars, sizeof(randomChars));
 
-    // Inicjalizacja struktury MD5
-    MD5_CTX md5Context;
-    MD5_Init(&md5Context);
+    std::string input(reinterpret_cast<char*>(randomChars), sizeof(randomChars));
+    input += username + email;
 
-    // Aktualizacja kontekstu MD5 danymi wejściowymi
-    MD5_Update(&md5Context, input.c_str(), input.length());
+    boost::uuids::random_generator generator;
+    boost::uuids::uuid uuid = generator();
 
-    // Uzyskanie wyniku
-    unsigned char digest[MD5_DIGEST_LENGTH];
-    MD5_Final(digest, &md5Context);
-
-    // Konwersja wyniku na stringa szesnastkowego
-    std::stringstream ss;
-    for (int i = 0; i < MD5_DIGEST_LENGTH; i++) {
-        ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(digest[i]);
-    }
-
-    return ss.str();
+    return boost::uuids::to_string(uuid);
 }

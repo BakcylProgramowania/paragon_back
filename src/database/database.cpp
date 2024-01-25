@@ -25,3 +25,9 @@ Database::~Database() = default;
   {
     return impl->getToken(username, password);
   }
+
+  bool Database::tokenCheck(const std::string& token) const
+  {
+    return impl->tokenCheck(token);
+  }
+

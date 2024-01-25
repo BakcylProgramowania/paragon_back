@@ -1,7 +1,6 @@
 #pragma once
 
-#include <iomanip>
-#include <openssl/md5.h>
+#include <boost/uuid/uuid_generators.hpp>
 #include <string>
 
 class Token {

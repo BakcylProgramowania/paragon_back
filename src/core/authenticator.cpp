@@ -23,3 +23,7 @@ std::string Authenticator::registerUser(const std::string& username,
   }
   return "";
 }
+
+bool Authenticator::tokenCheck(const std::string& token) const {
+    return database.tokenCheck(token);
+}

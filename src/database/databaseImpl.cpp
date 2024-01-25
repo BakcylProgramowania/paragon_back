@@ -148,3 +148,11 @@ std::string DatabaseImpl::getToken(const std::string& username, const std::strin
 
   return "";
 }
+
+bool DatabaseImpl::tokenCheck(const std::string& token) const {
+  auto collection = database["users"];
+
+  auto cursor = collection.find_one(make_document(kvp("Token", token)));
+
+  return cursor ? true : false;
+}
