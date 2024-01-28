@@ -18,18 +18,19 @@ using namespace oatpp::web::server::handler;
  */
 class MyController : public oatpp::web::server::api::ApiController {
  public:
-  MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper) /* Inject object mapper */)
-    : oatpp::web::server::api::ApiController(objectMapper) 
-  {
-    setDefaultAuthorizationHandler(std::make_shared<BearerAuthorizationHandler>("my-realm"));
+  MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>,
+                               objectMapper) /* Inject object mapper */)
+      : oatpp::web::server::api::ApiController(objectMapper) {
+    setDefaultAuthorizationHandler(
+        std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
 
   ENDPOINT("GET", "/my/secret/resource", getResource,
-           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>, authObject)) 
-  {
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject)) {
     Authenticator auth;
     if (!auth.tokenCheck(authObject->token)) {
-        return createResponse(Status::CODE_401, "{\"success\":false}");
+      return createResponse(Status::CODE_401, "{\"success\":false}");
     }
     return createResponse(Status::CODE_200, "{\"success\":true}");
   }
@@ -52,18 +53,16 @@ class MyController : public oatpp::web::server::api::ApiController {
     if (json && json->username && json->password) {
       Authenticator auth;
 
-      std::string token =
-          auth.authenticateUser(json->username, json->password);
+      std::string token = auth.authenticateUser(json->username, json->password);
 
       bool loginSuccess = false;
-      if (token != "")
-        loginSuccess = true;
+      if (token != "") loginSuccess = true;
       responseDto->success = loginSuccess;
 
       if (loginSuccess) {
         auto response = createDtoResponse(Status::CODE_200, responseDto);
-            response->putHeader("Authorization", "Bearer " + token);
-            return response;
+        response->putHeader("Authorization", "Bearer " + token);
+        return response;
       } else {
         return createDtoResponse(Status::CODE_403, responseDto);
       }
@@ -72,10 +71,9 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
   }
-  
+
   ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
-    OATPP_LOGD("TEST", "Registered with username: %s",
-               body->c_str());
+    OATPP_LOGD("TEST", "Registered with username: %s", body->c_str());
 
     auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
                     ->readFromString<oatpp::Object<RegisterDto>>(body);
@@ -88,16 +86,14 @@ class MyController : public oatpp::web::server::api::ApiController {
       std::string token =
           auth.registerUser(json->username, json->password, json->email);
 
-
       bool registrationSuccess = false;
-      if (token != "")
-        registrationSuccess = true;
+      if (token != "") registrationSuccess = true;
       responseDto->success = registrationSuccess;
 
       if (registrationSuccess) {
         auto response = createDtoResponse(Status::CODE_201, responseDto);
-            response->putHeader("Authorization", "Bearer " + token);
-            return response;
+        response->putHeader("Authorization", "Bearer " + token);
+        return response;
       } else {
         return createDtoResponse(Status::CODE_500, responseDto);
       }

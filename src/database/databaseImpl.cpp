@@ -12,7 +12,7 @@ using bsoncxx::builder::basic::make_document;
 DatabaseImpl::DatabaseImpl(const std::string& address)
     : uri(mongocxx::uri(address)),
       client(mongocxx::client(uri)),
-      database(client["ParagonApp"]) {};
+      database(client["ParagonApp"]){};
 
 // Checks if is there user with given email
 bool DatabaseImpl::isThereUserWithThisEmail(const std::string& email) const {
@@ -27,7 +27,8 @@ bool DatabaseImpl::isThereUserWithThisEmail(const std::string& email) const {
 }
 
 // Checks if is there user with given Username
-bool DatabaseImpl::isThereUserWithThisUsername(const std::string& username) const {
+bool DatabaseImpl::isThereUserWithThisUsername(
+    const std::string& username) const {
   auto collection = database["users"];
 
   // searching for user with this username and returning result
@@ -59,8 +60,9 @@ bool DatabaseImpl::isUserPasswordEqualGivenPassword(
 // returns false if there is already user with that username or email(new user
 // was not created)
 bool DatabaseImpl::createUser(const std::string& username,
-                          const std::string& password,
-                          const std::string& email, const std::string& token) {
+                              const std::string& password,
+                              const std::string& email,
+                              const std::string& token) {
   auto collection = database["users"];
   if (isThereUserWithThisUsername(username) ||
       isThereUserWithThisEmail(email)) {
@@ -78,7 +80,8 @@ bool DatabaseImpl::createUser(const std::string& username,
 // needs password of this user
 // returns true if user was deleted and false if user was not deleted(password
 // is incorrect or there is no user with this id)
-bool DatabaseImpl::deleteUser(const std::string& id, const std::string& password) {
+bool DatabaseImpl::deleteUser(const std::string& id,
+                              const std::string& password) {
   auto collection = database["users"];
 
   // Checking if the 'id' is a Username or Email
@@ -109,7 +112,7 @@ bool DatabaseImpl::deleteUser(const std::string& id, const std::string& password
 // Checks if there is user with given 'id' and if user's password equals given
 // 'Password' returns true if 'id' and 'Password' are correct, false if not
 bool DatabaseImpl::loginCheck(const std::string& id,
-                          const std::string& password) const {
+                              const std::string& password) const {
   // id can be either email or username
   auto collection = database["users"];
 
@@ -128,7 +131,8 @@ bool DatabaseImpl::loginCheck(const std::string& id,
   return false;
 }
 
-std::string DatabaseImpl::getToken(const std::string& username, const std::string& password) {
+std::string DatabaseImpl::getToken(const std::string& username,
+                                   const std::string& password) {
   auto collection = database["users"];
 
   // Check if there is a user with the provided username

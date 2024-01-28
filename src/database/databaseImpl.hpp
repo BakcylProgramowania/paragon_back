@@ -6,17 +6,18 @@
 #include <mongocxx/uri.hpp>
 
 class DatabaseImpl {
-  public:
+ public:
   DatabaseImpl(const std::string& address);
   ~DatabaseImpl() = default;
   bool createUser(const std::string& username, const std::string& password,
                   const std::string& email, const std::string& token);
   bool deleteUser(const std::string& id, const std::string& password);
   bool loginCheck(const std::string& id, const std::string& password) const;
-  std::string getToken(const std::string& username, const std::string& password);
+  std::string getToken(const std::string& username,
+                       const std::string& password);
   bool tokenCheck(const std::string& token) const;
 
-  private:
+ private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
                                         const std::string& password) const;
   bool isThereUserWithThisUsername(const std::string& username) const;
