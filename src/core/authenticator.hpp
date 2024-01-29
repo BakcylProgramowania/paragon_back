@@ -7,15 +7,15 @@
 
 class Authenticator {
   Database database;
-
+  bool isPasswordStrong(const std::string& password) const;
  public:
   Authenticator();
+
   std::string authenticateUser(const std::string& username,
                                const std::string& password) const;
 
-  std::string registerUser(const std::string& username,
+   std::pair<int, std::string> registerUser(const std::string& username,
                            const std::string& password,
                            const std::string& email);
-
-  bool tokenCheck(const std::string& token) const;
+    bool tokenCheck(const std::string& token) const;
 };

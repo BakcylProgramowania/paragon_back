@@ -19,6 +19,7 @@ class RegisterResponseDto : public oatpp::DTO {
   DTO_INIT(RegisterResponseDto, DTO)
 
   DTO_FIELD(Boolean, success);
+  DTO_FIELD(Int32, errorCode);
 };
 
 #include OATPP_CODEGEN_END(DTO)
