@@ -5,6 +5,14 @@ Authenticator::Authenticator()
           "mongodb+srv://"
           "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/") {}
 
+bool Authenticator::isPasswordStrong(const std::string& password) const {
+  const size_t minPasswordLength = 8;
+  const bool hasUpperCase = std::any_of(password.begin(), password.end(), ::isupper);
+  const bool hasDigit = std::any_of(password.begin(), password.end(), ::isdigit);
+
+  return password.length() >= minPasswordLength && hasUpperCase && hasDigit;
+}
+
 std::string Authenticator::authenticateUser(const std::string& username,
                                             const std::string& password) const {
   if (database.loginCheck(username, password)) {
@@ -13,15 +21,19 @@ std::string Authenticator::authenticateUser(const std::string& username,
   return "";
 }
 
-std::string Authenticator::registerUser(const std::string& username,
+std::pair<int, std::string> Authenticator::registerUser(const std::string& username,
                                         const std::string& password,
                                         const std::string& email) {
   TokenGenerator tokenGen;
+
+  if (!isPasswordStrong(password))
+    return std::pair<int, std::string>(1, "");
+
   if (database.createUser(username, password, email,
                           tokenGen.generateToken(username, password))) {
-    return database.getToken(username, password);
+    return std::pair<int, std::string>(0, database.getToken(username, password));
   }
-  return "";
+  return std::pair<int, std::string>(2, "");
 }
 
 bool Authenticator::tokenCheck(const std::string& token) const {
