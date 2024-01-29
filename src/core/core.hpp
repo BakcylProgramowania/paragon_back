@@ -19,9 +19,8 @@ struct User {
   int id;
 };
 
-
-class Data{
-  public:
-    std::vector<Product> getProducts(const json& jsonData) const ;
-    std::vector<User> getUsers(const json& jsonData) const ;
+class Data {
+ public:
+  std::vector<Product> getProducts(const json& jsonData) const;
+  std::vector<User> getUsers(const json& jsonData) const;
 };
