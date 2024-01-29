@@ -1,9 +1,7 @@
-//#include <bsoncxx/builder/basic/document.hpp>
-//#include <bsoncxx/json.hpp>
 #include <mongocxx/client.hpp>
-//#include <mongocxx/instance.hpp>
-//#include <mongocxx/stdx.hpp>
 #include <mongocxx/uri.hpp>
+#include <vector>
+#include <utility>
 
 class DatabaseImpl {
  public:
@@ -16,6 +14,7 @@ class DatabaseImpl {
   std::string getToken(const std::string& username,
                        const std::string& password);
   bool tokenCheck(const std::string& token) const;
+  std::vector<std::pair<std::string, std::string>> returnUsersFriendList (const std::string& token);
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,

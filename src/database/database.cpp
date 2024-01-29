@@ -29,3 +29,7 @@ std::string Database::getToken(const std::string& username,
 bool Database::tokenCheck(const std::string& token) const {
   return impl->tokenCheck(token);
 }
+
+std::vector<std::pair<std::string, std::string>> Database::returnUsersFriendList (const std::string& token) {
+    return impl->returnUsersFriendList(token);
+}
