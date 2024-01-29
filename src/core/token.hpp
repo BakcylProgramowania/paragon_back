@@ -5,6 +5,5 @@
 
 class TokenGenerator {
  public:
-  std::string generateToken(const std::string& username,
-                            const std::string& email) const;
+  std::string generateToken() const;
 };

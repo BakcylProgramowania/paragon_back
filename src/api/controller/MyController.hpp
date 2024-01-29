@@ -85,13 +85,13 @@ class MyController : public oatpp::web::server::api::ApiController {
 
       std::pair<int, std::string> registerPair =
           auth.registerUser(json->username, json->password, json->email);
-      
+
       int errorCode = registerPair.first;
       std::string token = registerPair.second;
 
       if (errorCode == 0)
         responseDto->success = true;
-      else 
+      else
         responseDto->success = false;
       responseDto->errorCode = errorCode;
 
