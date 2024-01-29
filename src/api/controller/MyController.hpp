@@ -95,7 +95,7 @@ class MyController : public oatpp::web::server::api::ApiController {
         response->putHeader("Authorization", "Bearer " + token);
         return response;
       } else {
-        return createDtoResponse(Status::CODE_500, responseDto);
+        return createDtoResponse(Status::CODE_409, responseDto);
       }
     } else {
       responseDto->success = false;
