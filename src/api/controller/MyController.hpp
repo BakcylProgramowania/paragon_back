@@ -21,19 +21,19 @@ class MyController : public oatpp::web::server::api::ApiController {
   MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>,
                                objectMapper) /* Inject object mapper */)
       : oatpp::web::server::api::ApiController(objectMapper) {
-    setDefaultAuthorizationHandler(
-        std::make_shared<BearerAuthorizationHandler>("my-realm"));
+    // setDefaultAuthorizationHandler(
+    //     std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
 
-  ENDPOINT("GET", "/my/secret/resource", getResource,
-           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
-                         authObject)) {
-    Authenticator auth;
-    if (!auth.tokenCheck(authObject->token)) {
-      return createResponse(Status::CODE_401, "{\"success\":false}");
-    }
-    return createResponse(Status::CODE_200, "{\"success\":true}");
-  }
+  // ENDPOINT("GET", "/my/secret/resource", getResource,
+  //          AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+  //                        authObject)) {
+  //   Authenticator auth;
+  //   if (!auth.tokenCheck(authObject->token)) {
+  //     return createResponse(Status::CODE_401, "{\"success\":false}");
+  //   }
+  //   return createResponse(Status::CODE_200, "{\"success\":true}");
+  // }
 
   ENDPOINT("GET", "/", root) {
     auto dto = MyDto::createShared();
