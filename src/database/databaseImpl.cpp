@@ -5,7 +5,7 @@
 #include <mongocxx/instance.hpp>
 #include <mongocxx/stdx.hpp>
 #include <bsoncxx/builder/stream/document.hpp>
-
+#include <iostream>
 using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
@@ -164,40 +164,41 @@ bool DatabaseImpl::tokenCheck(const std::string& token) const {
 
 std::vector<std::pair<std::string, std::string>> DatabaseImpl::returnUsersFriendList (const std::string& token)
 {
-  auto collection_usersFriendList = database["usersFriendList"];
+  auto collection_usersFriendList = database["userFriendList"];
   auto collection_users = database["users"];
   std::vector<std::pair<std::string, std::string>> friendList;
 
   mongocxx::v_noabi::pipeline pipeline;
   pipeline.match(make_document(kvp("UsersToken" , token)));
-  pipeline.unwind("UsersFriendLists");
+  pipeline.unwind("$UsersFriendList");
   
   auto cursor = collection_usersFriendList.aggregate(pipeline);
-
+  
   for (auto&& doc : cursor) {
       bsoncxx::document::view view = doc;
 
       for (auto&& element : view) {
         std::string field_name = element.key().to_string();
 
-        if (field_name != "UsersFriendLists") {
-         auto field_value = element.get_string();
-          std::string idOfFriend = field_value.value.to_string();
-        
+        if (field_name != "UsersFriendLists" && field_name != "UsersToken") {
+
+          if (element.type() == bsoncxx::type::k_utf8) {
+          std::string idOfFriend = element.get_utf8().value.to_string();
+
           bsoncxx::oid document_id(idOfFriend);
+          
           auto cursorOfFriends = collection_users.find_one(make_document(kvp("_id", document_id)));
-        
+          
           if(cursorOfFriends)
-         {
-           auto doc_view = cursorOfFriends->view();
-           auto element = doc_view["UserName"];
-
-           if(element)
-           {
-             auto field_UserName = element.get_string();
-             std::string username = field_UserName.value.to_string();
-
+          {
+            auto doc_view = cursorOfFriends->view();
+            auto element = doc_view["UserName"];
+            if(element)
+            {
+              auto field_UserName = element.get_string();
+              std::string username = field_UserName.value.to_string();
               friendList.push_back(make_pair(idOfFriend, username));
+            }
             }
           }
         }
