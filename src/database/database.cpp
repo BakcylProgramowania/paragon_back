@@ -29,3 +29,11 @@ std::string Database::getToken(const std::string& username,
 bool Database::tokenCheck(const std::string& token) const {
   return impl->tokenCheck(token);
 }
+
+bool Database::changeBalance(const std::string& token, double amount) {
+  return impl->changeBalance(token, amount);
+}
+
+double Database::getBalance(const std::string& token) const {
+  return impl->getBalance(token);
+}

@@ -70,7 +70,7 @@ bool DatabaseImpl::createUser(const std::string& username,
   } else {
     auto resultOfInsert = collection.insert_one(
         make_document(kvp("UserName", username), kvp("Password", password),
-                      kvp("Email", email), kvp("Token", token)));
+                      kvp("Email", email), kvp("Token", token), kvp ("Balance", 0.00)));
   }
   return true;
 }
@@ -159,4 +159,60 @@ bool DatabaseImpl::tokenCheck(const std::string& token) const {
   auto cursor = collection.find_one(make_document(kvp("Token", token)));
 
   return cursor ? true : false;
+}
+
+bool DatabaseImpl::changeBalance(const std::string& token, double amount) {
+    auto collection = database["users"];
+
+    auto IsUser =  collection.find_one(make_document(kvp("Token", token)));
+
+    if (IsUser) {
+        bsoncxx::document::value userDoc = IsUser.value();
+        bsoncxx::document::view userView = userDoc.view();
+
+        auto balanceElement = userView["Balance"];
+        if (balanceElement) {
+            double currentBalance = balanceElement.get_double().value;
+
+            double newBalance = currentBalance + amount;
+
+            bsoncxx::stdx::optional<mongocxx::result::update> result =
+                collection.update_one(
+                    make_document(kvp("Token", token)),
+                    make_document(kvp("$set", make_document(kvp("Balance", newBalance)))));
+
+            if (result) {
+                return true;  // update succeed
+            } else {
+                return false; // error during update
+            }
+        } else {
+            return false;    // user document doesn't have "balance"
+        }
+    } else {
+        return false;  // user not found
+    }
+}
+
+double DatabaseImpl::getBalance(const std::string& token) const {
+    auto collection = database["users"];
+
+    bsoncxx::stdx::optional<bsoncxx::document::value> isUser =
+        collection.find_one(make_document(kvp("Token", token)));
+
+    if (isUser) {
+        bsoncxx::document::value userDoc = isUser.value();
+        bsoncxx::document::view userView = userDoc.view();
+
+        // Pobierz saldo uÅ¼ytkownika
+        auto balanceElement = userView["Balance"];
+        if (balanceElement) {
+            double balance = balanceElement.get_double().value;
+            return balance;
+        } else {
+            return 0.0;   //  user doesn't have balance "balance"
+        }
+    } else {
+        return 0.0;   // user not found
+    }
 }

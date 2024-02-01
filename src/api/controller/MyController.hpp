@@ -109,6 +109,16 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
   }
+
+  ENDPOINT("GET", "/balance", getBalance,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject)) {
+    Authenticator auth;
+    if (!auth.tokenCheck(authObject->token)) {
+      return createResponse(Status::CODE_401, "{\"success\":false}");
+    }
+    return createResponse(Status::CODE_200, "{\"success\":true}");
+  }
 };
 
 #include OATPP_CODEGEN_END(ApiController)  //<-- End Codegen
