@@ -1,9 +1,11 @@
 #pragma once
 
 #include "core/authenticator.hpp"
+#include "core/accountManager.hpp"
 #include "dto/DTOs.hpp"
 #include "dto/LoginDTOs.hpp"
 #include "dto/RegisterDTOs.hpp"
+#include "dto/BalanceDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
@@ -29,9 +31,9 @@ class MyController : public oatpp::web::server::api::ApiController {
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
     Authenticator auth;
-    if (!auth.tokenCheck(authObject->token)) {
+    if (!auth.tokenCheck(authObject->token))
       return createResponse(Status::CODE_401, "{\"success\":false}");
-    }
+
     return createResponse(Status::CODE_200, "{\"success\":true}");
   }
 
@@ -113,11 +115,20 @@ class MyController : public oatpp::web::server::api::ApiController {
   ENDPOINT("GET", "/balance", getBalance,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
+    auto responseDto = BalanceDto::createShared();
+
+    AccountManager accountMan;
     Authenticator auth;
+
     if (!auth.tokenCheck(authObject->token)) {
-      return createResponse(Status::CODE_401, "{\"success\":false}");
+      responseDto->success = false;
+      responseDto->balance = 0.00;
+      return createDtoResponse(Status::CODE_401, responseDto);
     }
-    return createResponse(Status::CODE_200, "{\"success\":true}");
+
+    responseDto->success = true;
+    responseDto->balance = accountMan.getBalance(authObject->token);
+    return createDtoResponse(Status::CODE_200, responseDto);
   }
 };
 

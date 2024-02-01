@@ -5,12 +5,12 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class MyDto : public oatpp::DTO {
+class BalanceDto : public oatpp::DTO {
  public:
-  DTO_INIT(MyDto, DTO)
+  DTO_INIT(BalanceDto, DTO)
 
-  DTO_FIELD(Int32, statusCode);  // Add this line
-  DTO_FIELD(String, message);    // Add this line
+  DTO_FIELD(Boolean, success);
+  DTO_FIELD(Float64, balance);    // Add this line
 };
 
 #include OATPP_CODEGEN_END(DTO)
