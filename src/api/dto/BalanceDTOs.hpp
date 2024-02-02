@@ -13,4 +13,18 @@ class BalanceDto : public oatpp::DTO {
   DTO_FIELD(Float64, balance);    // Add this line
 };
 
+class ChangeBalanceDto : public oatpp::DTO{
+ public:
+  DTO_INIT(ChangeBalanceDto, DTO)
+
+  DTO_FIELD(Float64, amount);
+  
+};
+
+class ChangeBalanceResponseDto : public oatpp::DTO{
+  DTO_INIT(ChangeBalanceResponseDto, DTO);
+
+  DTO_FIELD(Boolean, success);
+};
+
 #include OATPP_CODEGEN_END(DTO)
