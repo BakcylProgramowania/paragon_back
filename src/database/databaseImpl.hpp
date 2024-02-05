@@ -1,7 +1,7 @@
 #include <mongocxx/client.hpp>
 #include <mongocxx/uri.hpp>
-#include <vector>
 #include <utility>
+#include <vector>
 
 class DatabaseImpl {
  public:
@@ -14,7 +14,8 @@ class DatabaseImpl {
   std::string getToken(const std::string& username,
                        const std::string& password);
   bool tokenCheck(const std::string& token) const;
-  std::vector<std::pair<std::string, std::string>> returnUsersFriendList (const std::string& token) const;
+  std::vector<std::pair<std::string, std::string>> returnUsersFriendList(
+      const std::string& token) const;
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
