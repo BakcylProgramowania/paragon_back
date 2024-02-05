@@ -111,31 +111,7 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
   }
-  // ENDPOINT("POST", "/balance", changeBalance, BODY_STRING(String, body)){
-  //   OATPP_LOGD("TEST", "changing balance...%s", body->c_str());
 
-  //   auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-  //                   ->readFromString<oatpp::Object<ChangeBalanceDto>>(body);
-    
-  //   auto responseDto = ChangeBalanceDto::createShared();
-
-  //   if(json && json->token && json->amount){
-  //     AccountManager accountMan;
-
-  //     bool balanceChanged = accountMan.changeBalance(json->token, json->amount);
-
-  //     responseDto->success = balanceChanged;
-
-  //     if (balanceChanged){
-  //       return createDtoResponse(Status::CODE_200, responseDto);
-  //     }else{
-  //       return createDtoResponse(Status::CODE_500, responseDto);
-  //     }
-  //   }else{
-  //     responseDto->success = false;
-  //     return createDtoResponse(Status::CODE_400, responseDto);
-  //   }
-  // }
   ENDPOINT("POST", "/balance", changeBalance,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject), BODY_STRING(String, body)) {
