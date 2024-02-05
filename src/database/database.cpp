@@ -34,3 +34,11 @@ std::vector<std::pair<std::string, std::string>>
 Database::returnUsersFriendList(const std::string& token) const {
   return impl->returnUsersFriendList(token);
 }
+
+bool Database::addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const{
+  return impl->addUserToFriendList(token, friendIdToAdd);
+}
+
+bool Database::removeUserFromFriendList(const std::string& token, const std::string& friendIdToRemove) const{
+  return impl->removeUserFromFriendList(token, friendIdToRemove);
+}

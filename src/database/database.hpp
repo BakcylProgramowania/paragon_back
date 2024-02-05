@@ -21,7 +21,8 @@ class Database {
   bool tokenCheck(const std::string& token) const;
   std::vector<std::pair<std::string, std::string>> returnUsersFriendList(
       const std::string& token) const;
-
+  bool addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const;
+  bool removeUserFromFriendList(const std::string& token, const std::string& friendIdToRemove) const;
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };

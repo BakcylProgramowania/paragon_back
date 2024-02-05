@@ -204,3 +204,29 @@ DatabaseImpl::returnUsersFriendList(const std::string& token) const {
 
   return friendList;
 }
+
+bool DatabaseImpl::addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const{
+  auto collection = database["userFriendList"];
+
+  auto cursor = collection.find_one(make_document(kvp("UsersToken", token)));
+  if (cursor)
+  {
+    auto result = collection.update_one(make_document(kvp("UsersToken", token)) , make_document(kvp("$addToSet", make_document(kvp("UsersFriendList", friendIdToAdd)))));
+    if(result) return true;
+  }
+
+  return false;
+}
+
+bool DatabaseImpl::removeUserFromFriendList(const std::string& token, const std::string& friendIdToAdd) const{
+  auto collection = database["userFriendList"];
+  
+  auto cursor = collection.find_one(make_document(kvp("UsersToken", token)));
+  if (cursor)
+  {
+    auto result = collection.update_one(make_document(kvp("UsersToken", token)) , make_document(kvp("$pull", make_document(kvp("UsersFriendList", friendIdToAdd)))));
+    if(result) return true;
+  }
+
+  return false;
+}
