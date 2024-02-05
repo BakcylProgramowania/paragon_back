@@ -3,7 +3,6 @@
 #include <bsoncxx/builder/basic/document.hpp>
 #include <bsoncxx/builder/stream/document.hpp>
 #include <bsoncxx/json.hpp>
-#include <iostream>
 #include <mongocxx/instance.hpp>
 #include <mongocxx/stdx.hpp>
 using bsoncxx::builder::basic::kvp;
