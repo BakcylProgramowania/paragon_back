@@ -14,7 +14,7 @@ class DatabaseImpl {
   std::string getToken(const std::string& username,
                        const std::string& password);
   bool tokenCheck(const std::string& token) const;
-  std::vector<std::pair<std::string, std::string>> returnUsersFriendList (const std::string& token);
+  std::vector<std::pair<std::string, std::string>> returnUsersFriendList (const std::string& token) const;
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,

@@ -162,7 +162,7 @@ bool DatabaseImpl::tokenCheck(const std::string& token) const {
   return cursor ? true : false;
 }
 
-std::vector<std::pair<std::string, std::string>> DatabaseImpl::returnUsersFriendList (const std::string& token)
+std::vector<std::pair<std::string, std::string>> DatabaseImpl::returnUsersFriendList (const std::string& token) const
 {
   auto collection_usersFriendList = database["userFriendList"];
   auto collection_users = database["users"];
