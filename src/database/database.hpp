@@ -2,8 +2,8 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 class DatabaseImpl;
 
@@ -19,7 +19,9 @@ class Database {
   std::string getToken(const std::string& username,
                        const std::string& password) const;
   bool tokenCheck(const std::string& token) const;
-  std::vector<std::pair<std::string, std::string>> returnUsersFriendList (const std::string& token) const;
+  std::vector<std::pair<std::string, std::string>> returnUsersFriendList(
+      const std::string& token) const;
+
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };
