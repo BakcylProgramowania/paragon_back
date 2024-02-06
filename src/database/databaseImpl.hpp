@@ -16,6 +16,8 @@ class DatabaseImpl {
   std::string getToken(const std::string& username,
                        const std::string& password);
   bool tokenCheck(const std::string& token) const;
+  bool changeBalance(const std::string& token, double amount);
+  double getBalance(const std::string& token) const;
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,

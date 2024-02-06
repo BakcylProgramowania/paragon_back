@@ -1,9 +1,11 @@
 #pragma once
 
 #include "core/authenticator.hpp"
+#include "core/accountManager.hpp"
 #include "dto/DTOs.hpp"
 #include "dto/LoginDTOs.hpp"
 #include "dto/RegisterDTOs.hpp"
+#include "dto/BalanceDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
@@ -18,20 +20,28 @@ using namespace oatpp::web::server::handler;
  */
 class MyController : public oatpp::web::server::api::ApiController {
  public:
-  MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>,
-                               objectMapper) /* Inject object mapper */)
-      : oatpp::web::server::api::ApiController(objectMapper) {
+  Database database;
+
+  AccountManager accountMan;
+  Authenticator auth;
+
+MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
+      : oatpp::web::server::api::ApiController(objectMapper),
+        database("mongodb+srv://"
+                 "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/"),
+        accountMan(database),
+        auth(database) {
     setDefaultAuthorizationHandler(
         std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
 
+
   ENDPOINT("GET", "/my/secret/resource", getResource,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
-    Authenticator auth;
-    if (!auth.tokenCheck(authObject->token)) {
+    if (!auth.tokenCheck(authObject->token))
       return createResponse(Status::CODE_401, "{\"success\":false}");
-    }
+
     return createResponse(Status::CODE_200, "{\"success\":true}");
   }
 
@@ -51,7 +61,6 @@ class MyController : public oatpp::web::server::api::ApiController {
     auto responseDto = LoginResponseDto::createShared();
 
     if (json && json->username && json->password) {
-      Authenticator auth;
 
       std::string token = auth.authenticateUser(json->username, json->password);
 
@@ -81,7 +90,6 @@ class MyController : public oatpp::web::server::api::ApiController {
     auto responseDto = RegisterResponseDto::createShared();
 
     if (json && json->username && json->password && json->email) {
-      Authenticator auth;
 
       std::pair<int, std::string> registerPair =
           auth.registerUser(json->username, json->password, json->email);
@@ -108,6 +116,41 @@ class MyController : public oatpp::web::server::api::ApiController {
       responseDto->success = false;
       return createDtoResponse(Status::CODE_400, responseDto);
     }
+  }
+
+  ENDPOINT("POST", "/balance", changeBalance,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject), BODY_STRING(String, body)) {
+    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
+                    ->readFromString<oatpp::Object<ChangeBalanceDto>>(body);
+
+    auto responseDto = ChangeBalanceResponseDto::createShared();
+    
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }else{
+      auto amount = json->amount;
+      bool balanceChanged = accountMan.changeBalance(authObject->token, amount);
+      responseDto->success = balanceChanged;
+      return createDtoResponse(Status::CODE_200, responseDto);
+      }
+  }
+
+  ENDPOINT("GET", "/balance", getBalance,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject)) {
+    auto responseDto = BalanceDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      responseDto->balance = 0.00;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    responseDto->success = true;
+    responseDto->balance = accountMan.getBalance(authObject->token);
+    return createDtoResponse(Status::CODE_200, responseDto);
   }
 };
 

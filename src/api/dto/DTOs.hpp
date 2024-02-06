@@ -5,10 +5,6 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-/**
- *  Data Transfer Object. Object containing fields only.
- *  Used in API for serialization/deserialization and validation
- */
 class MyDto : public oatpp::DTO {
  public:
   DTO_INIT(MyDto, DTO)

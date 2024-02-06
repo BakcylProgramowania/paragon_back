@@ -1,9 +1,6 @@
 #include "authenticator.hpp"
 
-Authenticator::Authenticator()
-    : database(
-          "mongodb+srv://"
-          "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/") {}
+Authenticator::Authenticator(Database& db) : database(db) {} // Update constructor
 
 bool Authenticator::isPasswordStrong(const std::string& password) const {
   const size_t minPasswordLength = 8;
