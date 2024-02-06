@@ -1,9 +1,7 @@
 #include "accountManager.hpp"
 
-AccountManager::AccountManager()
-    : database(
-          "mongodb+srv://"
-          "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/") {}
+AccountManager::AccountManager(Database& db) : database(db) {} // Update constructor
+
           
 bool AccountManager::changeBalance(const std::string& token, double amount) {
     return database.changeBalance(token, amount);

@@ -6,11 +6,11 @@
 #include "database/database.hpp"
 
 class Authenticator {
-  Database database;
+  Database& database;
   bool isPasswordStrong(const std::string& password) const;
 
- public:
-  Authenticator();
+public:
+  Authenticator(Database& db);
 
   std::string authenticateUser(const std::string& username,
                                const std::string& password) const;
