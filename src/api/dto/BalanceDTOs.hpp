@@ -10,7 +10,7 @@ class BalanceDto : public oatpp::DTO {
   DTO_INIT(BalanceDto, DTO)
 
   DTO_FIELD(Boolean, success);
-  DTO_FIELD(Float64, balance);    // Add this line
+  DTO_FIELD(Float64, balance);
 };
 
 class ChangeBalanceDto : public oatpp::DTO{
