@@ -20,7 +20,7 @@ using namespace oatpp::web::server::handler;
  */
 class MyController : public oatpp::web::server::api::ApiController {
  public:
-  Database database; // Instantiate only one database object
+  Database database;
 
   AccountManager accountMan;
   Authenticator auth;
@@ -30,7 +30,7 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
         database("mongodb+srv://"
                  "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/"),
         accountMan(database),
-        auth(database) { // Pass the database to Authenticator constructor
+        auth(database) {
     setDefaultAuthorizationHandler(
         std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
