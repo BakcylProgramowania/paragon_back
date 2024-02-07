@@ -230,18 +230,17 @@ bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std
   return false;
 }
 
-//returns UserID of User with given username. returns "" if there is no user with this username
-std::string DatabaseImpl::getUserIDUsingUsername(const std::string& username) const{
+//returns UserID of User with given token. returns "" if there is no user with this token
+std::string DatabaseImpl::getUserIDUsingToken(const std::string& token) const{
   auto collection = database["users"];
-  if(isThereUserWithThisUsername(username))
-  {
-      auto cursor = collection.find(make_document(kvp("UserName", username)));
+  
+      auto cursor = collection.find(make_document(kvp("Token", token)));
       for(auto&& doc : cursor)
       {
         auto idElement = doc["_id"];
         return idElement.get_oid().value.to_string();
       }
-  }
+  
 
   return "";
 }

@@ -23,7 +23,7 @@ class Database {
       const std::string& token) const;
   bool addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const;
   bool removeUserFromFriendList(const std::string& token, const std::string& friendIdToRemove) const;
-  std::string getUserIDUsingUsername(const std::string& username) const;
+  std::string getUserIDUsingToken(const std::string& token) const;
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };

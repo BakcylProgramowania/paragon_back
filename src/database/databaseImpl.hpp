@@ -18,7 +18,7 @@ class DatabaseImpl {
       const std::string& token) const;
   bool addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const;
   bool removeUserFromFriendList(const std::string& token, const std::string& friendIdToRemove) const;
-  std::string getUserIDUsingUsername(const std::string& username) const;
+  std::string getUserIDUsingToken(const std::string& token) const;
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
                                         const std::string& password) const;
