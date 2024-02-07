@@ -42,3 +42,7 @@ bool Database::addUserToFriendList(const std::string& token, const std::string& 
 bool Database::removeUserFromFriendList(const std::string& token, const std::string& friendIdToRemove) const{
   return impl->removeUserFromFriendList(token, friendIdToRemove);
 }
+
+std::string Database::getUserIDUsingUsername(const std::string& username) const{
+  return impl->getUserIDUsingUsername(username);
+}

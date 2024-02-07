@@ -192,8 +192,6 @@ DatabaseImpl::returnUsersFriendList(const std::string& userID) const {
             auto doc_view = cursorOfFriends->view();
             auto element = doc_view["UserName"];
             if (element) {
-              //auto field_UserName = element.get_string();
-              //std::string username = field_UserName.value.to_string();
               std::string username = element.get_string().value.to_string();
               friendList.push_back(make_pair(idOfFriend, username));
             }
@@ -230,4 +228,20 @@ bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std
   }
 
   return false;
+}
+
+//returns UserID of User with given username. returns "" if there is no user with this username
+std::string DatabaseImpl::getUserIDUsingUsername(const std::string& username) const{
+  auto collection = database["users"];
+  if(isThereUserWithThisUsername(username))
+  {
+      auto cursor = collection.find(make_document(kvp("UserName", username)));
+      for(auto&& doc : cursor)
+      {
+        auto idElement = doc["_id"];
+        return idElement.get_oid().value.to_string();
+      }
+  }
+
+  return "";
 }
