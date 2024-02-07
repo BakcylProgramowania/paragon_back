@@ -169,7 +169,7 @@ DatabaseImpl::returnUsersFriendList(const std::string& userID) const {
 
   mongocxx::v_noabi::pipeline pipeline;
   pipeline.match(make_document(kvp("UserID", userID)));
-  pipeline.unwind("$UsersFriendList");
+  pipeline.unwind("$UserFriendList");
 
   auto cursor = collection_usersFriendList.aggregate(pipeline);
 
@@ -179,7 +179,7 @@ DatabaseImpl::returnUsersFriendList(const std::string& userID) const {
     for (const auto& element : view) {
       std::string field_name = element.key().to_string();
 
-      if (field_name != "UsersFriendLists" && field_name != "UserID") {
+      if (field_name != "UserFriendLists" && field_name != "UserID") {
         if (element.type() == bsoncxx::type::k_utf8) {
           std::string idOfFriend = element.get_string().value.to_string();
 
@@ -210,7 +210,7 @@ bool DatabaseImpl::addUserToFriendList(const std::string& userID, const std::str
   auto cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor)
   {
-    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$addToSet", make_document(kvp("UsersFriendList", friendIdToAdd)))));
+    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$addToSet", make_document(kvp("UserFriendList", friendIdToAdd)))));
     if(result) return true;
   }
 
@@ -223,7 +223,7 @@ bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std
   auto cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor)
   {
-    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$pull", make_document(kvp("UsersFriendList", friendIdToAdd)))));
+    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$pull", make_document(kvp("UserFriendList", friendIdToAdd)))));
     if(result) return true;
   }
 
