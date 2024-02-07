@@ -162,13 +162,13 @@ bool DatabaseImpl::tokenCheck(const std::string& token) const {
 }
 
 std::vector<std::pair<std::string, std::string>>
-DatabaseImpl::returnUsersFriendList(const std::string& token) const {
+DatabaseImpl::returnUsersFriendList(const std::string& userID) const {
   auto collection_usersFriendList = database["userFriendList"];
   auto collection_users = database["users"];
   std::vector<std::pair<std::string, std::string>> friendList;
 
   mongocxx::v_noabi::pipeline pipeline;
-  pipeline.match(make_document(kvp("UsersToken", token)));
+  pipeline.match(make_document(kvp("UserID", userID)));
   pipeline.unwind("$UsersFriendList");
 
   auto cursor = collection_usersFriendList.aggregate(pipeline);
@@ -179,7 +179,7 @@ DatabaseImpl::returnUsersFriendList(const std::string& token) const {
     for (const auto& element : view) {
       std::string field_name = element.key().to_string();
 
-      if (field_name != "UsersFriendLists" && field_name != "UsersToken") {
+      if (field_name != "UsersFriendLists" && field_name != "UserID") {
         if (element.type() == bsoncxx::type::k_utf8) {
           std::string idOfFriend = element.get_string().value.to_string();
 
@@ -192,8 +192,9 @@ DatabaseImpl::returnUsersFriendList(const std::string& token) const {
             auto doc_view = cursorOfFriends->view();
             auto element = doc_view["UserName"];
             if (element) {
-              auto field_UserName = element.get_string();
-              std::string username = field_UserName.value.to_string();
+              //auto field_UserName = element.get_string();
+              //std::string username = field_UserName.value.to_string();
+              std::string username = element.get_string().value.to_string();
               friendList.push_back(make_pair(idOfFriend, username));
             }
           }
@@ -205,26 +206,26 @@ DatabaseImpl::returnUsersFriendList(const std::string& token) const {
   return friendList;
 }
 
-bool DatabaseImpl::addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const{
+bool DatabaseImpl::addUserToFriendList(const std::string& userID, const std::string& friendIdToAdd) const{
   auto collection = database["userFriendList"];
 
-  auto cursor = collection.find_one(make_document(kvp("UsersToken", token)));
+  auto cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor)
   {
-    auto result = collection.update_one(make_document(kvp("UsersToken", token)) , make_document(kvp("$addToSet", make_document(kvp("UsersFriendList", friendIdToAdd)))));
+    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$addToSet", make_document(kvp("UsersFriendList", friendIdToAdd)))));
     if(result) return true;
   }
 
   return false;
 }
 
-bool DatabaseImpl::removeUserFromFriendList(const std::string& token, const std::string& friendIdToAdd) const{
+bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std::string& friendIdToAdd) const{
   auto collection = database["userFriendList"];
   
-  auto cursor = collection.find_one(make_document(kvp("UsersToken", token)));
+  auto cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor)
   {
-    auto result = collection.update_one(make_document(kvp("UsersToken", token)) , make_document(kvp("$pull", make_document(kvp("UsersFriendList", friendIdToAdd)))));
+    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$pull", make_document(kvp("UsersFriendList", friendIdToAdd)))));
     if(result) return true;
   }
 
