@@ -4,6 +4,7 @@
 #include "dto/DTOs.hpp"
 #include "dto/LoginDTOs.hpp"
 #include "dto/RegisterDTOs.hpp"
+#include "dto/FriendsDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
@@ -109,6 +110,20 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
   }
+  ENDPOINT("GET", "/friends", getFriends,
+          AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                        authObject)) {
+
+  auto responseDto = FriendsDto::createShared();
+
+  responseDto->friends = "maniek";
+
+  Authenticator auth;
+  if (!auth.tokenCheck(authObject->token)) {
+    return createResponse(Status::CODE_401, "{\"success\":false}");
+  }
+  return createResponse(Status::CODE_200, "{\"success\":true}");
+  }
 };
 
-#include OATPP_CODEGEN_END(ApiController)  //<-- End Codegen
+#include OATPP_CODEGEN_END(ApiController)
