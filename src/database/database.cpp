@@ -31,8 +31,8 @@ bool Database::tokenCheck(const std::string& token) const {
 }
 
 std::vector<std::pair<std::string, std::string>>
-Database::returnUsersFriendList(const std::string& token) const {
-  return impl->returnUsersFriendList(token);
+Database::returnUserFriendList(const std::string& userID) const {
+  return impl->returnUserFriendList(userID);
 }
 
 bool Database::addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const{

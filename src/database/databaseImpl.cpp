@@ -162,7 +162,7 @@ bool DatabaseImpl::tokenCheck(const std::string& token) const {
 }
 
 std::vector<std::pair<std::string, std::string>>
-DatabaseImpl::returnUsersFriendList(const std::string& userID) const {
+DatabaseImpl::returnUserFriendList(const std::string& userID) const {
   auto collection_usersFriendList = database["userFriendList"];
   auto collection_users = database["users"];
   std::vector<std::pair<std::string, std::string>> friendList;
@@ -207,7 +207,10 @@ DatabaseImpl::returnUsersFriendList(const std::string& userID) const {
 bool DatabaseImpl::addUserToFriendList(const std::string& userID, const std::string& friendIdToAdd) const{
   auto collection = database["userFriendList"];
 
-  auto cursor = collection.find_one(make_document(kvp("UserID", userID)));
+  auto cursor = collection.find_one(make_document(kvp("UserID", userID), kvp("UserFriendList", make_document(kvp("$in", make_array(friendIdToAdd))))));
+  if(cursor) return false; 
+
+  cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor)
   {
     auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$addToSet", make_document(kvp("UserFriendList", friendIdToAdd)))));
@@ -217,13 +220,16 @@ bool DatabaseImpl::addUserToFriendList(const std::string& userID, const std::str
   return false;
 }
 
-bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std::string& friendIdToAdd) const{
+bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std::string& friendIdToRemove) const{
   auto collection = database["userFriendList"];
   
-  auto cursor = collection.find_one(make_document(kvp("UserID", userID)));
+  auto cursor = collection.find_one(make_document(kvp("UserID", userID), kvp("UserFriendList", make_document(kvp("$in", make_array(friendIdToRemove))))));
+  if(!cursor) return false; 
+
+  cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor)
   {
-    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$pull", make_document(kvp("UserFriendList", friendIdToAdd)))));
+    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$pull", make_document(kvp("UserFriendList", friendIdToRemove)))));
     if(result) return true;
   }
 
