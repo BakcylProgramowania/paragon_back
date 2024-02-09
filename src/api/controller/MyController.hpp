@@ -110,19 +110,32 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
   }
+
   ENDPOINT("GET", "/friends", getFriends,
           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                         authObject)) {
 
   auto responseDto = FriendsDto::createShared();
 
-  responseDto->friends = "maniek";
-
   Authenticator auth;
   if (!auth.tokenCheck(authObject->token)) {
     return createResponse(Status::CODE_401, "{\"success\":false}");
   }
-  return createResponse(Status::CODE_200, "{\"success\":true}");
+
+  auto brother = FriendDto::createShared();
+  brother->id= "123456";
+  brother->username = "maniek1234";
+
+  auto brother2 = FriendDto::createShared();
+  brother2->id= "123456";
+  brother2->username = "maniek1234";
+
+  oatpp::List<oatpp::Object<FriendDto>> siblings = {brother, brother2};
+
+  responseDto->data = {};
+  responseDto->data->push_back({"friends", siblings});
+
+  return createDtoResponse(Status::CODE_200, responseDto);
   }
 };
 
