@@ -153,7 +153,6 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
     responseDto->balance = accountMan.getBalance(authObject->token);
     return createDtoResponse(Status::CODE_200, responseDto);
   }
-};
 
   ENDPOINT("GET", "/friends", getFriends,
           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
@@ -161,7 +160,6 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
 
   auto responseDto = FriendsDto::createShared();
 
-  Authenticator auth;
   if (!auth.tokenCheck(authObject->token)) {
     return createResponse(Status::CODE_401, "{\"success\":false}");
   }
