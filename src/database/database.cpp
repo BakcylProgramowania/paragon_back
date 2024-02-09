@@ -30,6 +30,14 @@ bool Database::tokenCheck(const std::string& token) const {
   return impl->tokenCheck(token);
 }
 
+bool Database::changeBalance(const std::string& token, double amount) {
+  return impl->changeBalance(token, amount);
+}
+
+double Database::getBalance(const std::string& token) const {
+  return impl->getBalance(token);
+}
+
 std::vector<std::pair<std::string, std::string>>
 Database::returnUserFriendList(const std::string& userID) const {
   return impl->returnUserFriendList(userID);
