@@ -64,13 +64,16 @@ bool DatabaseImpl::createUser(const std::string& username,
                               const std::string& email,
                               const std::string& token) {
   auto collection = database["users"];
+  auto collection_userFriendList = database["userFriendList"];
   if (isThereUserWithThisUsername(username) ||
       isThereUserWithThisEmail(email)) {
     return false;
   } else {
-    auto resultOfInsert = collection.insert_one(make_document(
+    collection.insert_one(make_document(
         kvp("UserName", username), kvp("Password", password),
         kvp("Email", email), kvp("Token", token), kvp("Balance", 0.00)));
+    
+    collection_userFriendList.insert_one(make_document(kvp("UserID", getUserIDUsingToken(token)), kvp("UserFriendList", make_array())));
   }
   return true;
 }
