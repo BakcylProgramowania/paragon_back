@@ -155,29 +155,33 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
   }
 
   ENDPOINT("GET", "/friends", getFriends,
-          AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
-                        authObject)) {
+            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                          authObject)) {
 
-  auto responseDto = FriendsDto::createShared();
+    auto responseDto = FriendsDto::createShared();
 
-  if (!auth.tokenCheck(authObject->token)) {
-    return createResponse(Status::CODE_401, "{\"success\":false}");
-  }
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      responseDto->data = {};
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
 
-  auto brother = FriendDto::createShared();
-  brother->id= "123456";
-  brother->username = "maniek1234";
+    std::vector<std::pair<std::string, std::string>> returnUserFriendList = accountMan.returnUserFriendList(authObject->token);
 
-  auto brother2 = FriendDto::createShared();
-  brother2->id= "123456";
-  brother2->username = "maniek1234";
+    oatpp::List<oatpp::Object<FriendDto>> siblings = oatpp::List<oatpp::Object<FriendDto>>::createShared();
 
-  oatpp::List<oatpp::Object<FriendDto>> siblings = {brother, brother2};
+    for(const auto& friendPair : returnUserFriendList) {
+      auto friendDto = FriendDto::createShared();
+      friendDto->id = friendPair.first;
+      friendDto->username = friendPair.second;
+      siblings->push_back(friendDto);
+    }
 
-  responseDto->data = {};
-  responseDto->data->push_back({"friends", siblings});
+    responseDto->success = true;
+    responseDto->data = {};
+    responseDto->data->push_back({"friends", siblings});
 
-  return createDtoResponse(Status::CODE_200, responseDto);
+    return createDtoResponse(Status::CODE_200, responseDto);
   }
 };
 
