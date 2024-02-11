@@ -1,9 +1,7 @@
-//#include <bsoncxx/builder/basic/document.hpp>
-//#include <bsoncxx/json.hpp>
 #include <mongocxx/client.hpp>
-//#include <mongocxx/instance.hpp>
-//#include <mongocxx/stdx.hpp>
 #include <mongocxx/uri.hpp>
+#include <utility>
+#include <vector>
 
 class DatabaseImpl {
  public:
@@ -19,6 +17,11 @@ class DatabaseImpl {
   bool changeBalance(const std::string& token, double amount);
   double getBalance(const std::string& token) const;
 
+  std::vector<std::pair<std::string, std::string>> returnUserFriendList(
+      const std::string& userID) const;
+  bool addUserToFriendList(const std::string& userID, const std::string& friendIdToAdd) const;
+  bool removeUserFromFriendList(const std::string& userID, const std::string& friendIdToRemove) const;
+  std::string getUserIDUsingToken(const std::string& token) const;
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
                                         const std::string& password) const;

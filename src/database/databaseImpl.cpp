@@ -1,10 +1,10 @@
 #include "databaseImpl.hpp"
 
 #include <bsoncxx/builder/basic/document.hpp>
+#include <bsoncxx/builder/stream/document.hpp>
 #include <bsoncxx/json.hpp>
 #include <mongocxx/instance.hpp>
 #include <mongocxx/stdx.hpp>
-
 using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
@@ -64,13 +64,16 @@ bool DatabaseImpl::createUser(const std::string& username,
                               const std::string& email,
                               const std::string& token) {
   auto collection = database["users"];
+  auto collection_userFriendList = database["userFriendList"];
   if (isThereUserWithThisUsername(username) ||
       isThereUserWithThisEmail(email)) {
     return false;
   } else {
-    auto resultOfInsert = collection.insert_one(make_document(
+    collection.insert_one(make_document(
         kvp("UserName", username), kvp("Password", password),
         kvp("Email", email), kvp("Token", token), kvp("Balance", 0.00)));
+    
+    collection_userFriendList.insert_one(make_document(kvp("UserID", getUserIDUsingToken(token)), kvp("UserFriendList", make_array())));
   }
   return true;
 }
@@ -200,4 +203,94 @@ double DatabaseImpl::getBalance(const std::string& token) const {
   } else {
     return 0.0;  // user not found
   }
+}
+
+std::vector<std::pair<std::string, std::string>>
+DatabaseImpl::returnUserFriendList(const std::string& userID) const {
+  auto collection_usersFriendList = database["userFriendList"];
+  auto collection_users = database["users"];
+  std::vector<std::pair<std::string, std::string>> friendList;
+
+  mongocxx::v_noabi::pipeline pipeline;
+  pipeline.match(make_document(kvp("UserID", userID)));
+  pipeline.unwind("$UserFriendList");
+
+  auto cursor = collection_usersFriendList.aggregate(pipeline);
+
+  for (const auto& doc : cursor) {
+    bsoncxx::document::view view = doc;
+
+    for (const auto& element : view) {
+      std::string field_name = element.key().to_string();
+
+      if (field_name != "UserFriendLists" && field_name != "UserID") {
+        if (element.type() == bsoncxx::type::k_utf8) {
+          std::string idOfFriend = element.get_string().value.to_string();
+
+          bsoncxx::oid document_id(idOfFriend);
+
+          auto cursorOfFriends =
+              collection_users.find_one(make_document(kvp("_id", document_id)));
+
+          if (cursorOfFriends) {
+            auto doc_view = cursorOfFriends->view();
+            auto element = doc_view["UserName"];
+            if (element) {
+              std::string username = element.get_string().value.to_string();
+              friendList.push_back(make_pair(idOfFriend, username));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return friendList;
+}
+
+bool DatabaseImpl::addUserToFriendList(const std::string& userID, const std::string& friendIdToAdd) const{
+  auto collection = database["userFriendList"];
+
+  auto cursor = collection.find_one(make_document(kvp("UserID", userID), kvp("UserFriendList", make_document(kvp("$in", make_array(friendIdToAdd))))));
+  if(cursor) return false; 
+
+  cursor = collection.find_one(make_document(kvp("UserID", userID)));
+  if (cursor)
+  {
+    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$addToSet", make_document(kvp("UserFriendList", friendIdToAdd)))));
+    if(result) return true;
+  }
+
+  return false;
+}
+
+bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std::string& friendIdToRemove) const{
+  auto collection = database["userFriendList"];
+  
+  auto cursor = collection.find_one(make_document(kvp("UserID", userID), kvp("UserFriendList", make_document(kvp("$in", make_array(friendIdToRemove))))));
+  if(!cursor) return false; 
+
+  cursor = collection.find_one(make_document(kvp("UserID", userID)));
+  if (cursor)
+  {
+    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$pull", make_document(kvp("UserFriendList", friendIdToRemove)))));
+    if(result) return true;
+  }
+
+  return false;
+}
+
+//returns UserID of User with given token. returns "" if there is no user with this token
+std::string DatabaseImpl::getUserIDUsingToken(const std::string& token) const{
+  auto collection = database["users"];
+  
+      auto cursor = collection.find(make_document(kvp("Token", token)));
+      for(auto&& doc : cursor)
+      {
+        auto idElement = doc["_id"];
+        return idElement.get_oid().value.to_string();
+      }
+  
+
+  return "";
 }

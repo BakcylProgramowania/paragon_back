@@ -6,6 +6,7 @@
 #include "dto/LoginDTOs.hpp"
 #include "dto/RegisterDTOs.hpp"
 #include "dto/BalanceDTOs.hpp"
+#include "dto/FriendsDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
@@ -152,6 +153,72 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
     responseDto->balance = accountMan.getBalance(authObject->token);
     return createDtoResponse(Status::CODE_200, responseDto);
   }
+
+  ENDPOINT("GET", "/friends", getFriends,
+            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                          authObject)) {
+
+    auto responseDto = FriendsDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      responseDto->data = {};
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    std::vector<std::pair<std::string, std::string>> returnUserFriendList = accountMan.returnUserFriendList(authObject->token);
+
+    oatpp::List<oatpp::Object<FriendDto>> siblings = oatpp::List<oatpp::Object<FriendDto>>::createShared();
+
+    for(const auto& friendPair : returnUserFriendList) {
+      auto friendDto = FriendDto::createShared();
+      friendDto->id = friendPair.first;
+      friendDto->username = friendPair.second;
+      siblings->push_back(friendDto);
+    }
+
+    responseDto->success = true;
+    responseDto->data = {};
+    responseDto->data->push_back({"friends", siblings});
+
+    return createDtoResponse(Status::CODE_200, responseDto);
+  }
+
+  ENDPOINT("POST", "/addFriend", addFriend,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject), BODY_STRING(String, body)) {
+    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
+                    ->readFromString<oatpp::Object<AddFriendDto>>(body);
+
+    auto responseDto = AddFriendResponseDto::createShared();
+    
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }else{
+      bool addUserToFriendList = accountMan.addUserToFriendList(authObject->token, json->id);
+      responseDto->success = addUserToFriendList;
+      return createDtoResponse(Status::CODE_200, responseDto);
+      }
+  }
+
+  ENDPOINT("POST", "/removeFriend", removeFriend,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject), BODY_STRING(String, body)) {
+    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
+                    ->readFromString<oatpp::Object<RemoveFriendDto>>(body);
+
+    auto responseDto = RemoveFriendResponseDto::createShared();
+    
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }else{
+      bool removeUserFromFriendList = accountMan.removeUserFromFriendList(authObject->token, json->id);
+      responseDto->success = removeUserFromFriendList;
+      return createDtoResponse(Status::CODE_200, responseDto);
+      }
+  }
 };
 
-#include OATPP_CODEGEN_END(ApiController)  //<-- End Codegen
+#include OATPP_CODEGEN_END(ApiController)
