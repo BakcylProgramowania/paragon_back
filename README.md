@@ -39,12 +39,12 @@ Run `cd paragon_back` to enter project folder.
 
 ### Run tests
 ```bash
-cmake --build build
+ninja -C build
 ctest --test-dir build
 ```
 ### Run code
 ```bash
-cmake --build build
+ninja -C build
 ./build/src/example-main
 ```
 
