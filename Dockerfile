@@ -83,7 +83,9 @@ RUN curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.9.
 
 RUN apt-get install -y \
     libboost-all-dev \
-    libssl-dev 
+    libssl-dev
+
+RUN apt install ninja-build 
 
 COPY appbuild.sh /usr/local/bin/appbuild.sh
 COPY appstarter.sh /usr/local/bin/appstarter.sh
