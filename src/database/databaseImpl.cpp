@@ -164,14 +164,15 @@ bool DatabaseImpl::tokenCheck(const std::string& token) const {
   return cursor ? true : false;
 }
 
-bool DatabaseImpl::changeBalance(const std::string& token, double amount) {
+bool DatabaseImpl::changeBalance(const std::string& userID, double amount) {
   auto collection = database["users"];
 
-  auto filter = make_document(kvp("Token", token));
-  auto update =
-      make_document(kvp("$set", make_document(kvp("Balance", amount))));
+  bsoncxx::oid document_id(userID);
 
-  auto result = collection.update_one(filter.view(), update.view());
+  auto doc = make_document(kvp("_id", document_id));
+  auto update = make_document(kvp("$set", make_document(kvp("Balance", amount))));
+
+  auto result = collection.update_one(doc.view(), update.view());
 
   if (result) {
     if (result.value().modified_count() > 0)
