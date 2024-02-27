@@ -34,15 +34,16 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
         auth(database) {
     setDefaultAuthorizationHandler(
         std::make_shared<BearerAuthorizationHandler>("my-realm"));
-  }
+    }
 
 
   ENDPOINT("GET", "/my/secret/resource", getResource,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
-    if (!auth.tokenCheck(authObject->token))
+    Authenticator auth;
+    if (!auth.tokenCheck(authObject->token)) {
       return createResponse(Status::CODE_401, "{\"success\":false}");
-
+    }
     return createResponse(Status::CODE_200, "{\"success\":true}");
   }
 
