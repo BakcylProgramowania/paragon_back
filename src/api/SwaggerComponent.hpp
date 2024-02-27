@@ -28,7 +28,7 @@ class SwaggerComponent {
     .setLicenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
     
     .addServer("http://localhost:8000", "server on localhost")
-    .addSecurityScheme("basic_auth", oatpp::swagger::DocumentInfo::SecuritySchemeBuilder::DefaultBasicAuthorizationSecurityScheme());
+    .addSecurityScheme("bearer_auth", oatpp::swagger::DocumentInfo::SecuritySchemeBuilder::DefaultBearerAuthorizationSecurityScheme("JWT"));
     
     return builder.build();
     
