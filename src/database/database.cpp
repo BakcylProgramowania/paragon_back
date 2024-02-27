@@ -34,8 +34,8 @@ bool Database::changeBalance(const std::string& userID, double amount) {
   return impl->changeBalance(userID, amount);
 }
 
-double Database::getBalance(const std::string& token) const {
-  return impl->getBalance(token);
+double Database::getBalance(const std::string& userID) const {
+  return impl->getBalance(userID);
 }
 
 std::vector<std::pair<std::string, std::string>>

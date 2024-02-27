@@ -183,11 +183,13 @@ bool DatabaseImpl::changeBalance(const std::string& userID, double amount) {
     return false;
 }
 
-double DatabaseImpl::getBalance(const std::string& token) const {
+double DatabaseImpl::getBalance(const std::string& userID) const {
   auto collection = database["users"];
 
+  bsoncxx::oid document_id(userID);
+
   bsoncxx::stdx::optional<bsoncxx::document::value> isUser =
-      collection.find_one(make_document(kvp("Token", token)));
+      collection.find_one(make_document(kvp("_id", document_id)));
 
   if (isUser) {
     bsoncxx::document::value userDoc = isUser.value();
