@@ -1,5 +1,7 @@
 #include "CalculateOperationOnReceipt.hpp"
 
+CalculateOperationOnReceipt::CalculateOperationOnReceipt(Database& db) : database(db) {}
+
 std::vector<User>& CalculateOperationOnReceipt::calculateReceipt(const std::vector<Item>& items) const{
     std::vector<User> users;
 
@@ -17,6 +19,10 @@ std::vector<User>& CalculateOperationOnReceipt::calculateReceipt(const std::vect
             User user = {item.whoBuy, cost};
             users.push_back(user);
         }
+    }
+
+    for(auto user : users){
+        database.changeBalance(user.userID, database.getBalance(user.userID) + user.price);
     }
     return users;
 };
