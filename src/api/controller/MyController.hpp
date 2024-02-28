@@ -36,6 +36,10 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
         std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
 
+  ENDPOINT_INFO(getResource){
+    info->summary = "getResource endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
 
   ENDPOINT("GET", "/my/secret/resource", getResource,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
@@ -119,6 +123,11 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
     }
   }
 
+  ENDPOINT_INFO(changeBalance){
+    info->summary = "changeBalance endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
   ENDPOINT("POST", "/balance", changeBalance,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject), BODY_STRING(String, body)) {
@@ -138,6 +147,11 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
       }
   }
 
+  ENDPOINT_INFO(getBalance){
+    info->summary = "getBalance endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
   ENDPOINT("GET", "/balance", getBalance,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
@@ -152,6 +166,11 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
     responseDto->success = true;
     responseDto->balance = accountMan.getBalance(authObject->token);
     return createDtoResponse(Status::CODE_200, responseDto);
+  }
+
+  ENDPOINT_INFO(getFriends){
+    info->summary = "getFriends endpoint";
+    info->addSecurityRequirement("bearer_auth");
   }
 
   ENDPOINT("GET", "/friends", getFriends,
@@ -184,6 +203,11 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 
+  ENDPOINT_INFO(addFriend){
+    info->summary = "addFriends endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
   ENDPOINT("POST", "/addFriend", addFriend,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject), BODY_STRING(String, body)) {
@@ -200,6 +224,11 @@ MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
       responseDto->success = addUserToFriendList;
       return createDtoResponse(Status::CODE_200, responseDto);
       }
+  }
+
+  ENDPOINT_INFO(removeFriend){
+    info->summary = "removeFriends endpoint";
+    info->addSecurityRequirement("bearer_auth");
   }
 
   ENDPOINT("POST", "/removeFriend", removeFriend,

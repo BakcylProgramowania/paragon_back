@@ -14,11 +14,14 @@ void run() {
 
   oatpp::web::server::api::Endpoints docEndpoints;
 
-  // docEndpoints.append(router->addController(UserController::createShared())->getEndpoints());
+  auto myController = std::make_shared<MyController>();
+
+  docEndpoints.append(router->addController(myController)->getEndpoints());
+  // docEndpoints.append(router->addController())
 
   /* Create MyController and add all of its endpoints to router */
   router->addController(oatpp::swagger::Controller::createShared(docEndpoints));
-  router->addController(std::make_shared<MyController>());
+  router->addController(myController);
 
   /* Get connection handler component */
   OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>,
