@@ -42,11 +42,11 @@ class MyController : public oatpp::web::server::api::ApiController {
         std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
 
-  ENDPOINT_INFO(getResource){
+  ENDPOINT_INFO(getResource) {
     info->summary = "getResource endpoint";
     info->addSecurityRequirement("bearer_auth");
   }
-  
+
   ENDPOINT("GET", "/my/secret/resource", getResource,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
@@ -127,7 +127,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
-  ENDPOINT_INFO(changeBalance){
+  ENDPOINT_INFO(changeBalance) {
     info->summary = "changeBalance endpoint";
     info->addSecurityRequirement("bearer_auth");
   }
@@ -152,7 +152,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
-  ENDPOINT_INFO(getBalance){
+  ENDPOINT_INFO(getBalance) {
     info->summary = "getBalance endpoint";
     info->addSecurityRequirement("bearer_auth");
   }
@@ -173,7 +173,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 
-  ENDPOINT_INFO(getFriends){
+  ENDPOINT_INFO(getFriends) {
     info->summary = "getFriends endpoint";
     info->addSecurityRequirement("bearer_auth");
   }
@@ -209,7 +209,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 
-  ENDPOINT_INFO(addFriend){
+  ENDPOINT_INFO(addFriend) {
     info->summary = "addFriends endpoint";
     info->addSecurityRequirement("bearer_auth");
   }
@@ -234,7 +234,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
-  ENDPOINT_INFO(removeFriend){
+  ENDPOINT_INFO(removeFriend) {
     info->summary = "removeFriends endpoint";
     info->addSecurityRequirement("bearer_auth");
   }
@@ -288,10 +288,10 @@ class MyController : public oatpp::web::server::api::ApiController {
           oatpp::List<oatpp::Object<ReciptFriendsDto>>::createShared();
 
       for (const auto& friendItem : friends) {
-          auto reciptFriendsDto = ReciptFriendsDto::createShared();
-          reciptFriendsDto->userID = friendItem.userID;
-          reciptFriendsDto->price = friendItem.price;
-          friendsDto->push_back(reciptFriendsDto);
+        auto reciptFriendsDto = ReciptFriendsDto::createShared();
+        reciptFriendsDto->userID = friendItem.userID;
+        reciptFriendsDto->price = friendItem.price;
+        friendsDto->push_back(reciptFriendsDto);
       }
 
       responseDto->success = true;

@@ -1,6 +1,7 @@
 #include "authenticator.hpp"
 
-Authenticator::Authenticator(Database& db) : database(db) {} // Update constructor
+Authenticator::Authenticator(Database& db)
+    : database(db) {}  // Update constructor
 
 bool Authenticator::isPasswordStrong(const std::string& password) const {
   const size_t minPasswordLength = 8;

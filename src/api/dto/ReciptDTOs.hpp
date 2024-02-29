@@ -23,16 +23,15 @@ class ReciptFriendsDto : public oatpp::DTO {
   DTO_FIELD(Int32, price);
 };
 
-class ReciptDto : public oatpp::DTO{
+class ReciptDto : public oatpp::DTO {
  public:
   DTO_INIT(ReciptDto, DTO)
 
   DTO_FIELD(String, reciptName);
   DTO_FIELD(Fields<List<Object<ReciptItemsDto>>>, data);
-  
 };
 
-class ReciptResponseDto : public oatpp::DTO{
+class ReciptResponseDto : public oatpp::DTO {
   DTO_INIT(ReciptResponseDto, DTO);
 
   DTO_FIELD(Boolean, success);

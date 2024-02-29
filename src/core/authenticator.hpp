@@ -9,7 +9,7 @@ class Authenticator {
   Database& database;
   bool isPasswordStrong(const std::string& password) const;
 
-public:
+ public:
   Authenticator(Database& db);
 
   std::string authenticateUser(const std::string& username,
