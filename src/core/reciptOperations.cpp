@@ -2,7 +2,7 @@
 
 ReciptOperations::ReciptOperations(Database& db) : database(db) {}
 
-std::vector<User>& ReciptOperations::calculateReceipt(const std::vector<Item>& items) const{
+std::vector<User> ReciptOperations::calculateReceipt(const std::vector<Item>& items) const{
     std::vector<User> users;
 
     for(auto item : items){

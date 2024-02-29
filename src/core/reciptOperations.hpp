@@ -8,5 +8,5 @@ class ReciptOperations {
     public:
     ReciptOperations(Database& db);
 
-    std::vector<User>& calculateReceipt(const std::vector<Item>& items) const;
+    std::vector<User> calculateReceipt(const std::vector<Item>& items) const;
 };
