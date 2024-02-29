@@ -2,11 +2,11 @@
 #include "structures.hpp"
 #include "database/database.hpp"
 
-class CalculateOperationOnReceipt{
+class ReciptOperations {
     Database& database;
 
     public:
-    CalculateOperationOnReceipt(Database& db);
+    ReciptOperations(Database& db);
 
     std::vector<User>& calculateReceipt(const std::vector<Item>& items) const;
 };
