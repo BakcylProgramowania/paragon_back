@@ -42,6 +42,11 @@ class MyController : public oatpp::web::server::api::ApiController {
         std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
 
+  ENDPOINT_INFO(getResource){
+    info->summary = "getResource endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+  
   ENDPOINT("GET", "/my/secret/resource", getResource,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
@@ -122,6 +127,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
+  ENDPOINT_INFO(changeBalance){
+    info->summary = "changeBalance endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
   ENDPOINT("POST", "/balance", changeBalance,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
@@ -142,6 +152,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
+  ENDPOINT_INFO(getBalance){
+    info->summary = "getBalance endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
   ENDPOINT("GET", "/balance", getBalance,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject)) {
@@ -156,6 +171,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     responseDto->success = true;
     responseDto->balance = accountMan.getBalance(authObject->token);
     return createDtoResponse(Status::CODE_200, responseDto);
+  }
+
+  ENDPOINT_INFO(getFriends){
+    info->summary = "getFriends endpoint";
+    info->addSecurityRequirement("bearer_auth");
   }
 
   ENDPOINT("GET", "/friends", getFriends,
@@ -189,6 +209,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 
+  ENDPOINT_INFO(addFriend){
+    info->summary = "addFriends endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
   ENDPOINT("POST", "/addFriend", addFriend,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
@@ -207,6 +232,11 @@ class MyController : public oatpp::web::server::api::ApiController {
       responseDto->success = addUserToFriendList;
       return createDtoResponse(Status::CODE_200, responseDto);
     }
+  }
+
+  ENDPOINT_INFO(removeFriend){
+    info->summary = "removeFriends endpoint";
+    info->addSecurityRequirement("bearer_auth");
   }
 
   ENDPOINT("POST", "/removeFriend", removeFriend,
