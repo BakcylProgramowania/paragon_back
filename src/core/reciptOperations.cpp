@@ -10,6 +10,11 @@ std::vector<User> ReciptOperations::calculateReceipt(
     int cost = item.price * item.amount;
     bool foundEqualUserID = false;
 
+    if (!database.isThereUserWithThisID(item.whoBuy)) {
+      std::vector<User> usersNull;
+      return usersNull;
+    }
+    
     for (auto& user : users) {
       if (user.userID == item.whoBuy) {
         user.price += cost;

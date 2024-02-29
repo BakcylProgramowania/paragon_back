@@ -56,3 +56,7 @@ bool Database::removeUserFromFriendList(
 std::string Database::getUserIDUsingToken(const std::string& token) const {
   return impl->getUserIDUsingToken(token);
 }
+
+bool Database::isThereUserWithThisID(const std::string& userID) const {
+  return impl->isThereUserWithThisID(userID);
+}
