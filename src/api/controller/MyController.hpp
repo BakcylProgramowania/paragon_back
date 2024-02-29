@@ -253,9 +253,20 @@ class MyController : public oatpp::web::server::api::ApiController {
       }
 
       auto friends = reciptOper.calculateReceipt(items);
-      
+
+      oatpp::List<oatpp::Object<ReciptFriendsDto>> friendsDto =
+          oatpp::List<oatpp::Object<ReciptFriendsDto>>::createShared();
+
+      for (const auto& friendItem : friends) {
+          auto reciptFriendsDto = ReciptFriendsDto::createShared();
+          reciptFriendsDto->userID = friendItem.userID;
+          reciptFriendsDto->price = friendItem.price;
+          friendsDto->push_back(reciptFriendsDto);
+      }
 
       responseDto->success = true;
+      responseDto->data = {};
+      responseDto->data->push_back({"friends", friendsDto});
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }
