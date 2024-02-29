@@ -20,8 +20,8 @@ TEST(DatabaseBalanceTest, ExpectedValidBalanceToWork) {
   Database database(
       "mongodb+srv://"
       "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/");
-  EXPECT_TRUE(database.changeBalance("1a3d281d-64ae-47e0-8971-56720375a3d7", 0.00));
-  EXPECT_EQ(database.getBalance("1a3d281d-64ae-47e0-8971-56720375a3d7"), 0.00);
-  EXPECT_TRUE(database.changeBalance("1a3d281d-64ae-47e0-8971-56720375a3d7", 15.55));
-  EXPECT_EQ(database.getBalance("1a3d281d-64ae-47e0-8971-56720375a3d7"), 15.55);
+  EXPECT_TRUE(database.changeBalance("65b3c6e05cf3bd901c04aa52", 0.00));
+  EXPECT_EQ(database.getBalance("65b3c6e05cf3bd901c04aa52"), 0.00);
+  EXPECT_TRUE(database.changeBalance("65b3c6e05cf3bd901c04aa52", 15.55));
+  EXPECT_EQ(database.getBalance("65b3c6e05cf3bd901c04aa52"), 15.55);
 }

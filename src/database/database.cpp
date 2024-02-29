@@ -30,27 +30,29 @@ bool Database::tokenCheck(const std::string& token) const {
   return impl->tokenCheck(token);
 }
 
-bool Database::changeBalance(const std::string& token, double amount) {
-  return impl->changeBalance(token, amount);
+bool Database::changeBalance(const std::string& userID, double amount) {
+  return impl->changeBalance(userID, amount);
 }
 
-double Database::getBalance(const std::string& token) const {
-  return impl->getBalance(token);
+double Database::getBalance(const std::string& userID) const {
+  return impl->getBalance(userID);
 }
 
-std::vector<std::pair<std::string, std::string>>
-Database::returnUserFriendList(const std::string& userID) const {
+std::vector<std::pair<std::string, std::string>> Database::returnUserFriendList(
+    const std::string& userID) const {
   return impl->returnUserFriendList(userID);
 }
 
-bool Database::addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const{
+bool Database::addUserToFriendList(const std::string& token,
+                                   const std::string& friendIdToAdd) const {
   return impl->addUserToFriendList(token, friendIdToAdd);
 }
 
-bool Database::removeUserFromFriendList(const std::string& token, const std::string& friendIdToRemove) const{
+bool Database::removeUserFromFriendList(
+    const std::string& token, const std::string& friendIdToRemove) const {
   return impl->removeUserFromFriendList(token, friendIdToRemove);
 }
 
-std::string Database::getUserIDUsingToken(const std::string& token) const{
+std::string Database::getUserIDUsingToken(const std::string& token) const {
   return impl->getUserIDUsingToken(token);
 }

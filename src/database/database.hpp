@@ -19,14 +19,17 @@ class Database {
   std::string getToken(const std::string& username,
                        const std::string& password) const;
   bool tokenCheck(const std::string& token) const;
-  bool changeBalance(const std::string& token, double amount);
-  double getBalance(const std::string& token) const;
+  bool changeBalance(const std::string& userID, double amount);
+  double getBalance(const std::string& userID) const;
 
   std::vector<std::pair<std::string, std::string>> returnUserFriendList(
       const std::string& userID) const;
-  bool addUserToFriendList(const std::string& token, const std::string& friendIdToAdd) const;
-  bool removeUserFromFriendList(const std::string& token, const std::string& friendIdToRemove) const;
+  bool addUserToFriendList(const std::string& token,
+                           const std::string& friendIdToAdd) const;
+  bool removeUserFromFriendList(const std::string& token,
+                                const std::string& friendIdToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
+
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };

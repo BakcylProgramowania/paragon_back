@@ -13,15 +13,14 @@ class BalanceDto : public oatpp::DTO {
   DTO_FIELD(Float64, balance);
 };
 
-class ChangeBalanceDto : public oatpp::DTO{
+class ChangeBalanceDto : public oatpp::DTO {
  public:
   DTO_INIT(ChangeBalanceDto, DTO)
 
   DTO_FIELD(Float64, amount);
-  
 };
 
-class ChangeBalanceResponseDto : public oatpp::DTO{
+class ChangeBalanceResponseDto : public oatpp::DTO {
   DTO_INIT(ChangeBalanceResponseDto, DTO);
 
   DTO_FIELD(Boolean, success);
