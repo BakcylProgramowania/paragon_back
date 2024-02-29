@@ -259,6 +259,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
+  ENDPOINT_INFO(receipt) {
+    info->summary = "receipt endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
   ENDPOINT("POST", "/receipt", receipt,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
