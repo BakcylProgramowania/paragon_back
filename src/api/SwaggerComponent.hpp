@@ -18,16 +18,19 @@ class SwaggerComponent {
   ([] {
     oatpp::swagger::DocumentInfo::Builder builder;
 
-    builder.setTitle("User entity service")
-        .setDescription("CRUD API Example project with swagger docs")
+    builder.setTitle("PARAGON")
+        .setDescription("Example project for scanning receipts and splitting bills with friends, accompanied by Swagger documentation.")
         .setVersion("1.0")
-        .setContactName("Ivan Ovsyanochka")
-        .setContactUrl("https://oatpp.io/")
+        .setContactName("Bakcyl programowania 2024")
+        .setContactUrl("https://paragon.wroc.ovh/")
 
         .setLicenseName("Apache License, Version 2.0")
         .setLicenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
 
         .addServer("http://localhost:8000", "server on localhost")
+        .addServer("https://paragon.wroc.ovh/", "Paragon")
+        .addServer("https://paragon-staging.wroc.ovh/", "Paragon-staging")
+
         .addSecurityScheme("bearer_auth",
                            oatpp::swagger::DocumentInfo::SecuritySchemeBuilder::
                                DefaultBearerAuthorizationSecurityScheme("JWT"));
