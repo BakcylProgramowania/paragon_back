@@ -29,6 +29,7 @@ class Database {
   bool removeUserFromFriendList(const std::string& token,
                                 const std::string& friendIdToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
+  bool isThereUserWithThisID(const std::string& userID) const;
 
  private:
   std::unique_ptr<DatabaseImpl> impl;
