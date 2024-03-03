@@ -5,6 +5,9 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
+namespace bakcyl {
+namespace api {
+
 class MyDto : public oatpp::DTO {
  public:
   DTO_INIT(MyDto, DTO)
@@ -13,4 +16,8 @@ class MyDto : public oatpp::DTO {
   DTO_FIELD(String, message);    // Add this line
 };
 
+}
+}
+
 #include OATPP_CODEGEN_END(DTO)
+

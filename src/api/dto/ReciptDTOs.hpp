@@ -5,6 +5,9 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
+namespace bakcyl {
+namespace api {
+
 class ReciptItemsDto : public oatpp::DTO {
  public:
   DTO_INIT(ReciptItemsDto, DTO)
@@ -37,5 +40,8 @@ class ReciptResponseDto : public oatpp::DTO {
   DTO_FIELD(Boolean, success);
   DTO_FIELD(Fields<List<Object<ReciptFriendsDto>>>, data);
 };
+
+}
+}
 
 #include OATPP_CODEGEN_END(DTO)

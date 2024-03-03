@@ -9,6 +9,9 @@ using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
 
+namespace bakcyl {
+namespace database {
+
 DatabaseImpl::DatabaseImpl(const std::string& address)
     : uri(mongocxx::uri(address)),
       client(mongocxx::client(uri)),
@@ -310,4 +313,7 @@ std::string DatabaseImpl::getUserIDUsingToken(const std::string& token) const {
   }
 
   return "";
+}
+
+}
 }
