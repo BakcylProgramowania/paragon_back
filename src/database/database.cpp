@@ -60,5 +60,9 @@ std::string bakcyl::database::Database::getUserIDUsingToken(const std::string& t
   return bakcyl::database::Database::impl->getUserIDUsingToken(token);
 }
 
+bool bakcyl::database::Database::isThereUserWithThisID(const std::string& userID) const {
+  return bakcyl::database::Database::impl->isThereUserWithThisID(userID);
+}
+
 }
 }

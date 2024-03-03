@@ -291,6 +291,13 @@ class MyController : public oatpp::web::server::api::ApiController {
 
       auto friends = reciptOper.calculateReceipt(items);
 
+      if (friends.empty()) {
+        responseDto->success = false;
+        return createDtoResponse(
+            Status::CODE_400,
+            responseDto);
+      }
+
       oatpp::List<oatpp::Object<bakcyl::api::ReciptFriendsDto>> friendsDto =
           oatpp::List<oatpp::Object<bakcyl::api::ReciptFriendsDto>>::createShared();
 

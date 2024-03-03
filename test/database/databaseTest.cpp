@@ -14,6 +14,7 @@ TEST(DatabaseLogingTest, ExpectedValidLoginToWork) {
   EXPECT_FALSE(database.loginCheck("nonExistingEmail@wrong.wrong", "ycuL"));
   EXPECT_TRUE(database.loginCheck("Lucy", "ycuL"));
   EXPECT_TRUE(database.loginCheck("lucy00@test.com", "ycuL"));
+  EXPECT_TRUE(database.isThereUserWithThisID("65786066b8bbf529cbc56fc1"));
 }
 
 TEST(DatabaseBalanceTest, ExpectedValidBalanceToWork) {

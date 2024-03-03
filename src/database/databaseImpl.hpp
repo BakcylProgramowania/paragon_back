@@ -27,6 +27,7 @@ class DatabaseImpl {
   bool removeUserFromFriendList(const std::string& userID,
                                 const std::string& friendIdToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
+  bool isThereUserWithThisID(const std::string& userID) const;
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,

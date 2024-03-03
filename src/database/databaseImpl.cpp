@@ -315,5 +315,21 @@ std::string DatabaseImpl::getUserIDUsingToken(const std::string& token) const {
   return "";
 }
 
+bool DatabaseImpl::isThereUserWithThisID(const std::string& userID) const {
+  auto collection = database["users"];
+  
+  try {
+    bsoncxx::oid oid(userID);
+    auto cursor = collection.find_one(make_document(kvp("_id", oid)));
+    
+    if (cursor)
+      return true;
+    else
+      return false;
+  } catch(const std::exception& e) {
+    return false;
+  }
+}
+
 }
 }
