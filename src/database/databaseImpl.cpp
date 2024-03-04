@@ -9,6 +9,9 @@ using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
 
+namespace bakcyl {
+namespace database {
+
 DatabaseImpl::DatabaseImpl(const std::string& address)
     : uri(mongocxx::uri(address)),
       client(mongocxx::client(uri)),
@@ -72,8 +75,10 @@ bool DatabaseImpl::createUser(const std::string& username,
     collection.insert_one(make_document(
         kvp("UserName", username), kvp("Password", password),
         kvp("Email", email), kvp("Token", token), kvp("Balance", 0.00)));
-    
-    collection_userFriendList.insert_one(make_document(kvp("UserID", getUserIDUsingToken(token)), kvp("UserFriendList", make_array())));
+
+    collection_userFriendList.insert_one(
+        make_document(kvp("UserID", getUserIDUsingToken(token)),
+                      kvp("UserFriendList", make_array())));
   }
   return true;
 }
@@ -164,14 +169,16 @@ bool DatabaseImpl::tokenCheck(const std::string& token) const {
   return cursor ? true : false;
 }
 
-bool DatabaseImpl::changeBalance(const std::string& token, double amount) {
+bool DatabaseImpl::changeBalance(const std::string& userID, double amount) {
   auto collection = database["users"];
 
-  auto filter = make_document(kvp("Token", token));
+  bsoncxx::oid document_id(userID);
+
+  auto doc = make_document(kvp("_id", document_id));
   auto update =
       make_document(kvp("$set", make_document(kvp("Balance", amount))));
 
-  auto result = collection.update_one(filter.view(), update.view());
+  auto result = collection.update_one(doc.view(), update.view());
 
   if (result) {
     if (result.value().modified_count() > 0)
@@ -182,11 +189,13 @@ bool DatabaseImpl::changeBalance(const std::string& token, double amount) {
     return false;
 }
 
-double DatabaseImpl::getBalance(const std::string& token) const {
+double DatabaseImpl::getBalance(const std::string& userID) const {
   auto collection = database["users"];
 
+  bsoncxx::oid document_id(userID);
+
   bsoncxx::stdx::optional<bsoncxx::document::value> isUser =
-      collection.find_one(make_document(kvp("Token", token)));
+      collection.find_one(make_document(kvp("_id", document_id)));
 
   if (isUser) {
     bsoncxx::document::value userDoc = isUser.value();
@@ -248,49 +257,79 @@ DatabaseImpl::returnUserFriendList(const std::string& userID) const {
   return friendList;
 }
 
-bool DatabaseImpl::addUserToFriendList(const std::string& userID, const std::string& friendIdToAdd) const{
+bool DatabaseImpl::addUserToFriendList(const std::string& userID,
+                                       const std::string& friendIdToAdd) const {
   auto collection = database["userFriendList"];
 
-  auto cursor = collection.find_one(make_document(kvp("UserID", userID), kvp("UserFriendList", make_document(kvp("$in", make_array(friendIdToAdd))))));
-  if(cursor) return false; 
+  auto cursor = collection.find_one(
+      make_document(kvp("UserID", userID),
+                    kvp("UserFriendList",
+                        make_document(kvp("$in", make_array(friendIdToAdd))))));
+  if (cursor) return false;
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
-  if (cursor)
-  {
-    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$addToSet", make_document(kvp("UserFriendList", friendIdToAdd)))));
-    if(result) return true;
+  if (cursor) {
+    auto result = collection.update_one(
+        make_document(kvp("UserID", userID)),
+        make_document(kvp(
+            "$addToSet", make_document(kvp("UserFriendList", friendIdToAdd)))));
+    if (result) return true;
   }
 
   return false;
 }
 
-bool DatabaseImpl::removeUserFromFriendList(const std::string& userID, const std::string& friendIdToRemove) const{
+bool DatabaseImpl::removeUserFromFriendList(
+    const std::string& userID, const std::string& friendIdToRemove) const {
   auto collection = database["userFriendList"];
-  
-  auto cursor = collection.find_one(make_document(kvp("UserID", userID), kvp("UserFriendList", make_document(kvp("$in", make_array(friendIdToRemove))))));
-  if(!cursor) return false; 
+
+  auto cursor = collection.find_one(make_document(
+      kvp("UserID", userID),
+      kvp("UserFriendList",
+          make_document(kvp("$in", make_array(friendIdToRemove))))));
+  if (!cursor) return false;
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
-  if (cursor)
-  {
-    auto result = collection.update_one(make_document(kvp("UserID", userID)) , make_document(kvp("$pull", make_document(kvp("UserFriendList", friendIdToRemove)))));
-    if(result) return true;
+  if (cursor) {
+    auto result = collection.update_one(
+        make_document(kvp("UserID", userID)),
+        make_document(kvp(
+            "$pull", make_document(kvp("UserFriendList", friendIdToRemove)))));
+    if (result) return true;
   }
 
   return false;
 }
 
-//returns UserID of User with given token. returns "" if there is no user with this token
-std::string DatabaseImpl::getUserIDUsingToken(const std::string& token) const{
+// returns UserID of User with given token. returns "" if there is no user with
+// this token
+std::string DatabaseImpl::getUserIDUsingToken(const std::string& token) const {
   auto collection = database["users"];
-  
-      auto cursor = collection.find(make_document(kvp("Token", token)));
-      for(auto&& doc : cursor)
-      {
-        auto idElement = doc["_id"];
-        return idElement.get_oid().value.to_string();
-      }
-  
+
+  auto cursor = collection.find(make_document(kvp("Token", token)));
+  for (auto&& doc : cursor) {
+    auto idElement = doc["_id"];
+    return idElement.get_oid().value.to_string();
+  }
 
   return "";
+}
+
+bool DatabaseImpl::isThereUserWithThisID(const std::string& userID) const {
+  auto collection = database["users"];
+  
+  try {
+    bsoncxx::oid oid(userID);
+    auto cursor = collection.find_one(make_document(kvp("_id", oid)));
+    
+    if (cursor)
+      return true;
+    else
+      return false;
+  } catch(const std::exception& e) {
+    return false;
+  }
+}
+
+}
 }

@@ -5,20 +5,26 @@
 #include "oatpp-swagger/Controller.hpp"
 #include "oatpp/network/Server.hpp"
 
+namespace bakcyl {
+namespace api {
+
 void run() {
   /* Register Components in scope of run() method */
-  AppComponent components;
+  bakcyl::api::AppComponent components;
 
   /* Get router component */
   OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
 
   oatpp::web::server::api::Endpoints docEndpoints;
 
-  // docEndpoints.append(router->addController(UserController::createShared())->getEndpoints());
+  auto myController = std::make_shared<bakcyl::api::MyController>();
+
+  docEndpoints.append(router->addController(myController)->getEndpoints());
+  // docEndpoints.append(router->addController())
 
   /* Create MyController and add all of its endpoints to router */
   router->addController(oatpp::swagger::Controller::createShared(docEndpoints));
-  router->addController(std::make_shared<MyController>());
+  router->addController(myController);
 
   /* Get connection handler component */
   OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>,
@@ -38,4 +44,7 @@ void run() {
 
   /* Run server */
   server.run();
+}
+
+}
 }
