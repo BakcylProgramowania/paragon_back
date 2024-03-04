@@ -3,11 +3,17 @@
 #include "database/database.hpp"
 #include "structures.hpp"
 
+namespace bakcyl {
+namespace core {
+
 class ReciptOperations {
-  Database& database;
+  bakcyl::database::Database& database;
 
  public:
-  ReciptOperations(Database& db);
+  ReciptOperations(bakcyl::database::Database& db);
 
-  std::vector<User> calculateReceipt(const std::vector<Item>& items) const;
+  std::vector<bakcyl::core::User> calculateReceipt(const std::vector<bakcyl::core::Item>& items) const;
 };
+
+}
+}

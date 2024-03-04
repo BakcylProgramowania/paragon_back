@@ -1,6 +1,9 @@
 #include "accountManager.hpp"
 
-AccountManager::AccountManager(Database& db)
+namespace bakcyl {
+namespace core {
+
+AccountManager::AccountManager(bakcyl::database::Database& db)
     : database(db) {}  // Update constructor
 
 bool AccountManager::changeBalance(const std::string& token, double amount) {
@@ -25,4 +28,7 @@ bool AccountManager::removeUserFromFriendList(
     const std::string& token, const std::string& friendIdToRemove) const {
   return database.removeUserFromFriendList(database.getUserIDUsingToken(token),
                                            friendIdToRemove);
+}
+
+}
 }

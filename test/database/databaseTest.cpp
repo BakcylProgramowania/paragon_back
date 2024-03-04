@@ -6,7 +6,7 @@
 using namespace ::testing;
 
 TEST(DatabaseLogingTest, ExpectedValidLoginToWork) {
-  Database database(
+  bakcyl::database::Database database(
       "mongodb+srv://"
       "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/");
   EXPECT_FALSE(database.loginCheck("Lucy", "wrongPassword"));
@@ -18,7 +18,7 @@ TEST(DatabaseLogingTest, ExpectedValidLoginToWork) {
 }
 
 TEST(DatabaseBalanceTest, ExpectedValidBalanceToWork) {
-  Database database(
+  bakcyl::database::Database database(
       "mongodb+srv://"
       "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/");
   EXPECT_TRUE(database.changeBalance("65b3c6e05cf3bd901c04aa52", 0.00));

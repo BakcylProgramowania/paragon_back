@@ -3,6 +3,9 @@
 #include <utility>
 #include <vector>
 
+namespace bakcyl {
+namespace database {
+
 class DatabaseImpl {
  public:
   DatabaseImpl(const std::string& address);
@@ -36,3 +39,6 @@ class DatabaseImpl {
   mongocxx::client client;
   mongocxx::database database;
 };
+
+}
+}

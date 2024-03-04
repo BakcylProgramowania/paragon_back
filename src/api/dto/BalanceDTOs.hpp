@@ -5,6 +5,9 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
+namespace bakcyl {
+namespace api {
+
 class BalanceDto : public oatpp::DTO {
  public:
   DTO_INIT(BalanceDto, DTO)
@@ -25,5 +28,8 @@ class ChangeBalanceResponseDto : public oatpp::DTO {
 
   DTO_FIELD(Boolean, success);
 };
+
+}
+}
 
 #include OATPP_CODEGEN_END(DTO)

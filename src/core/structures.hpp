@@ -1,5 +1,8 @@
 #include <string>
 
+namespace bakcyl {
+namespace core {
+
 struct User {
   std::string userID;
   int price;
@@ -11,3 +14,6 @@ struct Item {
   int price;
   int amount;
 };
+
+}
+}

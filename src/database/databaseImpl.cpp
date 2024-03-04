@@ -9,6 +9,9 @@ using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::make_array;
 using bsoncxx::builder::basic::make_document;
 
+namespace bakcyl {
+namespace database {
+
 DatabaseImpl::DatabaseImpl(const std::string& address)
     : uri(mongocxx::uri(address)),
       client(mongocxx::client(uri)),
@@ -326,4 +329,7 @@ bool DatabaseImpl::isThereUserWithThisID(const std::string& userID) const {
   } catch(const std::exception& e) {
     return false;
   }
+}
+
+}
 }

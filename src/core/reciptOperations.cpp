@@ -1,10 +1,13 @@
 #include "reciptOperations.hpp"
 
-ReciptOperations::ReciptOperations(Database& db) : database(db) {}
+namespace bakcyl {
+namespace core {
 
-std::vector<User> ReciptOperations::calculateReceipt(
-    const std::vector<Item>& items) const {
-  std::vector<User> users;
+ReciptOperations::ReciptOperations(bakcyl::database::Database& db) : database(db) {}
+
+std::vector<bakcyl::core::User> ReciptOperations::calculateReceipt(
+    const std::vector<bakcyl::core::Item>& items) const {
+  std::vector<bakcyl::core::User> users;
 
   for (const auto& item : items) {
     int cost = item.price * item.amount;
@@ -22,7 +25,7 @@ std::vector<User> ReciptOperations::calculateReceipt(
     }
 
     if (!foundEqualUserID) {
-      User user = {item.whoBuy, cost};
+      bakcyl::core::User user = {item.whoBuy, cost};
       users.push_back(user);
     }
   }
@@ -32,4 +35,8 @@ std::vector<User> ReciptOperations::calculateReceipt(
   }
 
   return users;
+};
+
 }
+}
+

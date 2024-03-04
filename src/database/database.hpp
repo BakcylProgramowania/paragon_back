@@ -5,6 +5,9 @@
 #include <utility>
 #include <vector>
 
+namespace bakcyl {
+namespace database {
+
 class DatabaseImpl;
 
 class Database {
@@ -34,3 +37,6 @@ class Database {
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };
+
+}
+}

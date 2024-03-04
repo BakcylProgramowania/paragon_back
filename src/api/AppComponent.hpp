@@ -7,6 +7,9 @@
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 #include "oatpp/web/server/HttpRouter.hpp"
 
+namespace bakcyl {
+namespace api {
+
 /**
  *  Class which creates and holds Application components and registers
  * components in oatpp::base::Environment Order of components initialization is
@@ -17,7 +20,7 @@ class AppComponent {
   /**
    *  Swagger component
    */
-  SwaggerComponent swaggerComponent;
+  bakcyl::api::SwaggerComponent swaggerComponent;
 
   OATPP_CREATE_COMPONENT(
       std::shared_ptr<oatpp::network::ServerConnectionProvider>,
@@ -54,3 +57,6 @@ class AppComponent {
                          apiObjectMapper)
   ([] { return oatpp::parser::json::mapping::ObjectMapper::createShared(); }());
 };
+
+}
+}

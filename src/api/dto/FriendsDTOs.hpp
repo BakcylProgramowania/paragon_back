@@ -5,6 +5,9 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
+namespace bakcyl {
+namespace api {
+
 class FriendDto : public oatpp::DTO {
  public:
   DTO_INIT(FriendDto, DTO)
@@ -48,5 +51,8 @@ class RemoveFriendResponseDto : public oatpp::DTO {
 
   DTO_FIELD(Boolean, success);
 };
+
+}
+}
 
 #include OATPP_CODEGEN_END(DTO)

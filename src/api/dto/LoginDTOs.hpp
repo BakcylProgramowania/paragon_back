@@ -5,6 +5,9 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
+namespace bakcyl {
+namespace api {
+
 class LoginDto : public oatpp::DTO {
  public:
   DTO_INIT(LoginDto, DTO)
@@ -19,5 +22,8 @@ class LoginResponseDto : public oatpp::DTO {
 
   DTO_FIELD(Boolean, success);
 };
+
+}
+}
 
 #include OATPP_CODEGEN_END(DTO)

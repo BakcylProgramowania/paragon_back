@@ -4,6 +4,9 @@
 #include "oatpp-swagger/Resources.hpp"
 #include "oatpp/core/macro/component.hpp"
 
+namespace bakcyl {
+namespace api {
+
 /**
  *  Swagger ui is served at
  *  http://host:port/swagger/ui
@@ -48,3 +51,6 @@ class SwaggerComponent {
     return oatpp::swagger::Resources::loadResources(OATPP_SWAGGER_RES_PATH);
   }());
 };
+
+}
+}

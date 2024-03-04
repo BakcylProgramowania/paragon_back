@@ -2,61 +2,67 @@
 
 #include "databaseImpl.hpp"
 
+namespace bakcyl {
+namespace database {
+
 Database::Database(const std::string& address)
     : impl(new DatabaseImpl(address)){};
 Database::~Database() = default;
 
-bool Database::createUser(const std::string& username,
+bool bakcyl::database::Database::createUser(const std::string& username,
                           const std::string& password, const std::string& email,
                           const std::string& token) {
-  return impl->createUser(username, password, email, token);
+  return bakcyl::database::Database::impl->createUser(username, password, email, token);
 }
 
-bool Database::deleteUser(const std::string& id, const std::string& password) {
-  return impl->deleteUser(id, password);
+bool bakcyl::database::Database::deleteUser(const std::string& id, const std::string& password) {
+  return bakcyl::database::Database::impl->deleteUser(id, password);
 }
 
-bool Database::loginCheck(const std::string& id,
+bool bakcyl::database::Database::loginCheck(const std::string& id,
                           const std::string& password) const {
-  return impl->loginCheck(id, password);
+  return bakcyl::database::Database::impl->loginCheck(id, password);
 }
 
-std::string Database::getToken(const std::string& username,
+std::string bakcyl::database::Database::getToken(const std::string& username,
                                const std::string& password) const {
-  return impl->getToken(username, password);
+  return bakcyl::database::Database::impl->getToken(username, password);
 }
 
-bool Database::tokenCheck(const std::string& token) const {
-  return impl->tokenCheck(token);
+bool bakcyl::database::Database::tokenCheck(const std::string& token) const {
+  return bakcyl::database::Database::impl->tokenCheck(token);
 }
 
-bool Database::changeBalance(const std::string& userID, double amount) {
-  return impl->changeBalance(userID, amount);
+bool bakcyl::database::Database::changeBalance(const std::string& userID, double amount) {
+  return bakcyl::database::Database::impl->changeBalance(userID, amount);
 }
 
-double Database::getBalance(const std::string& userID) const {
-  return impl->getBalance(userID);
+double bakcyl::database::Database::getBalance(const std::string& userID) const {
+  return bakcyl::database::Database::impl->getBalance(userID);
 }
 
-std::vector<std::pair<std::string, std::string>> Database::returnUserFriendList(
+std::vector<std::pair<std::string, std::string>> bakcyl::database::Database::returnUserFriendList(
     const std::string& userID) const {
-  return impl->returnUserFriendList(userID);
+  return bakcyl::database::Database::impl->returnUserFriendList(userID);
 }
 
-bool Database::addUserToFriendList(const std::string& token,
+bool bakcyl::database::Database::addUserToFriendList(const std::string& token,
                                    const std::string& friendIdToAdd) const {
-  return impl->addUserToFriendList(token, friendIdToAdd);
+  return bakcyl::database::Database::impl->addUserToFriendList(token, friendIdToAdd);
 }
 
-bool Database::removeUserFromFriendList(
+bool bakcyl::database::Database::removeUserFromFriendList(
     const std::string& token, const std::string& friendIdToRemove) const {
-  return impl->removeUserFromFriendList(token, friendIdToRemove);
+  return bakcyl::database::Database::impl->removeUserFromFriendList(token, friendIdToRemove);
 }
 
-std::string Database::getUserIDUsingToken(const std::string& token) const {
-  return impl->getUserIDUsingToken(token);
+std::string bakcyl::database::Database::getUserIDUsingToken(const std::string& token) const {
+  return bakcyl::database::Database::impl->getUserIDUsingToken(token);
 }
 
-bool Database::isThereUserWithThisID(const std::string& userID) const {
-  return impl->isThereUserWithThisID(userID);
+bool bakcyl::database::Database::isThereUserWithThisID(const std::string& userID) const {
+  return bakcyl::database::Database::impl->isThereUserWithThisID(userID);
+}
+
+}
 }

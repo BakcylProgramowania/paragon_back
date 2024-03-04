@@ -1,6 +1,9 @@
 #include "authenticator.hpp"
 
-Authenticator::Authenticator(Database& db)
+namespace bakcyl {
+namespace core {
+
+Authenticator::Authenticator(bakcyl::database::Database& db)
     : database(db) {}  // Update constructor
 
 bool Authenticator::isPasswordStrong(const std::string& password) const {
@@ -38,4 +41,7 @@ std::pair<int, std::string> Authenticator::registerUser(
 
 bool Authenticator::tokenCheck(const std::string& token) const {
   return database.tokenCheck(token);
+}
+
+}
 }
