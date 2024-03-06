@@ -348,9 +348,9 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
 
   collection.insert_one(make_document(
     kvp("author", receipt.author),
-    kvp("usersIncluded", usersIncluded),
     kvp("receiptName", receipt.receiptName),
     kvp("date", receipt.date),
+    kvp("usersIncluded", usersIncluded),
     kvp("items", items)
   ));
 
