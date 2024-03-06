@@ -331,5 +331,9 @@ bool DatabaseImpl::isThereUserWithThisID(const std::string& userID) const {
   }
 }
 
+int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
+  return 0;
+}
+
 }
 }

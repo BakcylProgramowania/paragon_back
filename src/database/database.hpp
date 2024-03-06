@@ -1,4 +1,5 @@
 #pragma once
+#include "core/structures.hpp"
 
 #include <memory>
 #include <string>
@@ -33,6 +34,7 @@ class Database {
                                 const std::string& friendIdToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
+  int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
 
  private:
   std::unique_ptr<DatabaseImpl> impl;

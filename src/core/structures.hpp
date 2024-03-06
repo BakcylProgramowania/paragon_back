@@ -1,4 +1,6 @@
+#pragma once
 #include <string>
+#include <vector>
 
 namespace bakcyl {
 namespace core {
@@ -20,7 +22,7 @@ struct Receipt {
     std::vector<std::string> usersIncluded;
     std::string receiptName;
     std::string date;
-    std::vector<Item> items;
+    std::vector<bakcyl::core::Item> items;
 };
 
 }

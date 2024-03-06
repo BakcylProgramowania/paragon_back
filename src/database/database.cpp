@@ -64,5 +64,8 @@ bool bakcyl::database::Database::isThereUserWithThisID(const std::string& userID
   return bakcyl::database::Database::impl->isThereUserWithThisID(userID);
 }
 
+int bakcyl::database::Database::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
+  return bakcyl::database::Database::impl->createReceiptInHistory(receipt);
+}
 }
 }
