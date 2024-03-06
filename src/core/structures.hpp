@@ -21,7 +21,7 @@ struct Receipt {
     std::string receiptName;
     std::string date;
     std::vector<Item> items;
-}
+};
 
 }
 }
