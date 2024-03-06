@@ -13,6 +13,7 @@ class ReceiptOperations {
   ReceiptOperations(bakcyl::database::Database& db);
 
   std::vector<bakcyl::core::User> calculateReceipt(const std::vector<bakcyl::core::Item>& items) const;
+  int saveReceipt(bakcyl::core::Receipt& receipt) const;
 };
 
 }

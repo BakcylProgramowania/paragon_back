@@ -298,6 +298,13 @@ class MyController : public oatpp::web::server::api::ApiController {
             responseDto);
       }
 
+      bakcyl::core::Receipt receipt;
+      receipt.author = database.getUserIDUsingToken(authObject->token);
+      receipt.receiptName = json->receiptName;
+      receipt.items = items;
+
+      auto errorCode = receiptOper.saveReceipt(receipt);
+
       oatpp::List<oatpp::Object<bakcyl::api::ReceiptFriendsDto>> friendsDto =
           oatpp::List<oatpp::Object<bakcyl::api::ReceiptFriendsDto>>::createShared();
 

@@ -3,7 +3,8 @@
 namespace bakcyl {
 namespace core {
 
-ReceiptOperations::ReceiptOperations(bakcyl::database::Database& db) : database(db) {}
+ReceiptOperations::ReceiptOperations(bakcyl::database::Database& db)
+    : database(db) {}
 
 std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
     const std::vector<bakcyl::core::Item>& items) const {
@@ -13,9 +14,8 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
     int cost = item.price * item.amount;
     bool foundEqualUserID = false;
 
-    if (!database.isThereUserWithThisID(item.whoBuy))
-      return {};
-    
+    if (!database.isThereUserWithThisID(item.whoBuy)) return {};
+
     for (auto& user : users) {
       if (user.userID == item.whoBuy) {
         user.price += cost;
@@ -31,12 +31,17 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
   }
 
   for (const auto& user : users) {
-    database.changeBalance(user.userID, database.getBalance(user.userID) + user.price);
+    database.changeBalance(user.userID,
+                           database.getBalance(user.userID) + user.price);
   }
 
   return users;
 };
 
-}
-}
+int ReceiptOperations::saveReceipt(
+    bakcyl::core::Receipt& receipt) const {
 
+};
+
+}  // namespace core
+}  // namespace bakcyl
