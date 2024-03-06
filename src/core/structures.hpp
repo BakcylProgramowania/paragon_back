@@ -15,5 +15,13 @@ struct Item {
   int amount;
 };
 
+struct Receipt {
+    std::string author;
+    std::vector<std::string> usersIncluded;
+    std::string receiptName;
+    std::string date;
+    std::vector<Item> items;
+}
+
 }
 }
