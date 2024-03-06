@@ -1,11 +1,11 @@
-#include "reciptOperations.hpp"
+#include "ReceiptOperations.hpp"
 
 namespace bakcyl {
 namespace core {
 
-ReciptOperations::ReciptOperations(bakcyl::database::Database& db) : database(db) {}
+ReceiptOperations::ReceiptOperations(bakcyl::database::Database& db) : database(db) {}
 
-std::vector<bakcyl::core::User> ReciptOperations::calculateReceipt(
+std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
     const std::vector<bakcyl::core::Item>& items) const {
   std::vector<bakcyl::core::User> users;
 
