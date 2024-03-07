@@ -41,7 +41,7 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
 int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
   std::vector<std::string> usersIncluded;
   
-  receipt.date = time(0);
+  receipt.date = std::to_string(time(0));
   for (auto& item : receipt.items) {
     item.price = item.price * item.amount;
     item.amount = 0;
@@ -57,8 +57,7 @@ int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
       usersIncluded.push_back(item.whoBuy);
   }
   receipt.usersIncluded = usersIncluded;
-  // return database.saveReceipt(receipt);
-  return 0;
+  return database.createReceiptInHistory(receipt);
 };
 
 }  // namespace core
