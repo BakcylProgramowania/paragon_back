@@ -1,3 +1,5 @@
+#include "core/structures.hpp"
+
 #include <mongocxx/client.hpp>
 #include <mongocxx/uri.hpp>
 #include <utility>
@@ -28,6 +30,7 @@ class DatabaseImpl {
                                 const std::string& friendIdToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
+  int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,

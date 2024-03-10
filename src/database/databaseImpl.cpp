@@ -331,5 +331,31 @@ bool DatabaseImpl::isThereUserWithThisID(const std::string& userID) const {
   }
 }
 
+int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
+  auto collection = database["receiptHistory"];
+  auto usersIncluded = bsoncxx::builder::basic::array{};
+  auto items = bsoncxx::builder::basic::array{};
+
+  for(const auto& element : receipt.usersIncluded)
+  {
+    usersIncluded.append(element);
+  }
+
+  for(const auto& element : receipt.items)
+  {
+    items.append(make_document(kvp("whoBuy", element.whoBuy), kvp("itemName", element.itemName), kvp("price", element.price)));
+  }
+
+  collection.insert_one(make_document(
+    kvp("author", receipt.author),
+    kvp("receiptName", receipt.receiptName),
+    kvp("date", receipt.date),
+    kvp("usersIncluded", usersIncluded),
+    kvp("items", items)
+  ));
+
+  return 0;
+}
+
 }
 }

@@ -36,3 +36,5 @@
 
 # Temp files
 /Testing/*
+.vscode/settings.json
+.gitignore

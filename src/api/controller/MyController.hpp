@@ -68,8 +68,9 @@ class MyController : public oatpp::web::server::api::ApiController {
   ENDPOINT("POST", "/login", postUsers, BODY_STRING(String, body)) {
     OATPP_LOGD("Test", "Request Body: %s", body->c_str());
 
-    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-                    ->readFromString<oatpp::Object<bakcyl::api::LoginDto>>(body);
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::LoginDto>>(body);
 
     auto responseDto = bakcyl::api::LoginResponseDto::createShared();
 
@@ -96,8 +97,9 @@ class MyController : public oatpp::web::server::api::ApiController {
   ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
     OATPP_LOGD("TEST", "Registered with username: %s", body->c_str());
 
-    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-                    ->readFromString<oatpp::Object<bakcyl::api::RegisterDto>>(body);
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::RegisterDto>>(body);
 
     auto responseDto = bakcyl::api::RegisterResponseDto::createShared();
 
@@ -138,8 +140,10 @@ class MyController : public oatpp::web::server::api::ApiController {
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
            BODY_STRING(String, body)) {
-    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-                    ->readFromString<oatpp::Object<bakcyl::api::ChangeBalanceDto>>(body);
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::ChangeBalanceDto>>(
+                body);
 
     auto responseDto = bakcyl::api::ChangeBalanceResponseDto::createShared();
 
@@ -220,8 +224,9 @@ class MyController : public oatpp::web::server::api::ApiController {
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
            BODY_STRING(String, body)) {
-    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-                    ->readFromString<oatpp::Object<bakcyl::api::AddFriendDto>>(body);
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::AddFriendDto>>(body);
 
     auto responseDto = bakcyl::api::AddFriendResponseDto::createShared();
 
@@ -245,8 +250,9 @@ class MyController : public oatpp::web::server::api::ApiController {
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
            BODY_STRING(String, body)) {
-    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-                    ->readFromString<oatpp::Object<bakcyl::api::RemoveFriendDto>>(body);
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::RemoveFriendDto>>(body);
 
     auto responseDto = bakcyl::api::RemoveFriendResponseDto::createShared();
 
@@ -270,8 +276,9 @@ class MyController : public oatpp::web::server::api::ApiController {
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
            BODY_STRING(String, body)) {
-    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-                    ->readFromString<oatpp::Object<bakcyl::api::ReceiptDto>>(body);
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::ReceiptDto>>(body);
 
     auto responseDto = bakcyl::api::ReceiptResponseDto::createShared();
 
@@ -283,8 +290,9 @@ class MyController : public oatpp::web::server::api::ApiController {
       for (const auto& pair : *json->data) {
         auto& itemsList = pair.second;
         for (const auto& itemJson : *itemsList) {
-          auto item = bakcyl::core::Item{itemJson->whoBuy->c_str(), itemJson->item->c_str(),
-                           itemJson->price, itemJson->amount};
+          auto item = bakcyl::core::Item{itemJson->whoBuy->c_str(),
+                                         itemJson->item->c_str(),
+                                         itemJson->price, itemJson->amount};
           items.push_back(item);
         }
       }
@@ -293,13 +301,24 @@ class MyController : public oatpp::web::server::api::ApiController {
 
       if (friends.empty()) {
         responseDto->success = false;
-        return createDtoResponse(
-            Status::CODE_400,
-            responseDto);
+        return createDtoResponse(Status::CODE_400, responseDto);
+      }
+
+      bakcyl::core::Receipt receipt;
+      receipt.author = database.getUserIDUsingToken(authObject->token);
+      receipt.receiptName = json->receiptName;
+      receipt.items = items;
+
+      auto errorCode = receiptOper.saveReceipt(receipt);
+
+      if (errorCode != 0) {
+        responseDto->success = false;
+        return createDtoResponse(Status::CODE_400, responseDto);
       }
 
       oatpp::List<oatpp::Object<bakcyl::api::ReceiptFriendsDto>> friendsDto =
-          oatpp::List<oatpp::Object<bakcyl::api::ReceiptFriendsDto>>::createShared();
+          oatpp::List<
+              oatpp::Object<bakcyl::api::ReceiptFriendsDto>>::createShared();
 
       for (const auto& friendItem : friends) {
         auto receiptFriendsDto = bakcyl::api::ReceiptFriendsDto::createShared();
@@ -316,7 +335,7 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl
 
 #include OATPP_CODEGEN_END(ApiController)
