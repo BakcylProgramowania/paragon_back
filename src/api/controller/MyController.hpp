@@ -2,12 +2,12 @@
 
 #include "core/accountManager.hpp"
 #include "core/authenticator.hpp"
-#include "core/reciptOperations.hpp"
+#include "core/receiptOperations.hpp"
 #include "dto/BalanceDTOs.hpp"
 #include "dto/DTOs.hpp"
 #include "dto/FriendsDTOs.hpp"
 #include "dto/LoginDTOs.hpp"
-#include "dto/ReciptDTOs.hpp"
+#include "dto/ReceiptDTOs.hpp"
 #include "dto/RegisterDTOs.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
@@ -30,7 +30,7 @@ class MyController : public oatpp::web::server::api::ApiController {
 
   bakcyl::core::AccountManager accountMan;
   bakcyl::core::Authenticator auth;
-  bakcyl::core::ReciptOperations reciptOper;
+  bakcyl::core::ReceiptOperations receiptOper;
 
   MyController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
       : oatpp::web::server::api::ApiController(objectMapper),
@@ -39,7 +39,7 @@ class MyController : public oatpp::web::server::api::ApiController {
             "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/"),
         accountMan(database),
         auth(database),
-        reciptOper(database) {
+        receiptOper(database) {
     setDefaultAuthorizationHandler(
         std::make_shared<BearerAuthorizationHandler>("my-realm"));
   }
@@ -271,9 +271,9 @@ class MyController : public oatpp::web::server::api::ApiController {
                          authObject),
            BODY_STRING(String, body)) {
     auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
-                    ->readFromString<oatpp::Object<bakcyl::api::ReciptDto>>(body);
+                    ->readFromString<oatpp::Object<bakcyl::api::ReceiptDto>>(body);
 
-    auto responseDto = bakcyl::api::ReciptResponseDto::createShared();
+    auto responseDto = bakcyl::api::ReceiptResponseDto::createShared();
 
     if (!auth.tokenCheck(authObject->token)) {
       responseDto->success = false;
@@ -289,7 +289,7 @@ class MyController : public oatpp::web::server::api::ApiController {
         }
       }
 
-      auto friends = reciptOper.calculateReceipt(items);
+      auto friends = receiptOper.calculateReceipt(items);
 
       if (friends.empty()) {
         responseDto->success = false;
@@ -298,14 +298,14 @@ class MyController : public oatpp::web::server::api::ApiController {
             responseDto);
       }
 
-      oatpp::List<oatpp::Object<bakcyl::api::ReciptFriendsDto>> friendsDto =
-          oatpp::List<oatpp::Object<bakcyl::api::ReciptFriendsDto>>::createShared();
+      oatpp::List<oatpp::Object<bakcyl::api::ReceiptFriendsDto>> friendsDto =
+          oatpp::List<oatpp::Object<bakcyl::api::ReceiptFriendsDto>>::createShared();
 
       for (const auto& friendItem : friends) {
-        auto reciptFriendsDto = bakcyl::api::ReciptFriendsDto::createShared();
-        reciptFriendsDto->userID = friendItem.userID;
-        reciptFriendsDto->price = friendItem.price;
-        friendsDto->push_back(reciptFriendsDto);
+        auto receiptFriendsDto = bakcyl::api::ReceiptFriendsDto::createShared();
+        receiptFriendsDto->userID = friendItem.userID;
+        receiptFriendsDto->price = friendItem.price;
+        friendsDto->push_back(receiptFriendsDto);
       }
 
       responseDto->success = true;
