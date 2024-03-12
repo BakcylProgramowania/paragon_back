@@ -35,7 +35,8 @@ class Database {
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
   int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
-
+  bakcyl::core::Receipt getReceipt(const std::string& receiptID);
+  
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };

@@ -68,5 +68,9 @@ int bakcyl::database::Database::createReceiptInHistory(const bakcyl::core::Recei
   return bakcyl::database::Database::impl->createReceiptInHistory(receipt);
 }
 
+bakcyl::core::Receipt bakcyl::database::Database::getReceipt(const std::string& receiptID) {
+  return bakcyl::database::Database::impl->getReceipt(receiptID);
+}
+
 }
 }

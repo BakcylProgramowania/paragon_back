@@ -199,7 +199,7 @@ double DatabaseImpl::getBalance(const std::string& userID) const {
 
   if (isUser) {
     bsoncxx::document::value userDoc = isUser.value();
-    bsoncxx::document::view userView = userDoc.view();
+    bsoncxx::document::view userView = userDoc.view(); 
 
     // Pobierz saldo uÅ¼ytkownika
     auto balanceElement = userView["Balance"];
@@ -355,6 +355,51 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
   ));
 
   return 0;
+}
+
+bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
+  
+  auto collection = database["receiptHistory"];
+  bakcyl::core::Receipt receipt;
+
+  bsoncxx::oid document_id(receiptID);
+  auto cursor = collection.find_one(make_document(kvp("_id", document_id)));
+
+  auto doc_view = cursor->view();
+
+  receipt.author = doc_view["author"].get_string().value.to_string();
+  receipt.date = doc_view["date"].get_string().value.to_string();
+  receipt.receiptName = doc_view["receiptName"].get_string().value.to_string();
+
+  auto array_value_usersIncluded = doc_view["usersIncluded"];
+  if (array_value_usersIncluded && array_value_usersIncluded.type() == bsoncxx::type::k_array) {
+            
+    for (const auto& element : array_value_usersIncluded.get_array().value) {
+      receipt.usersIncluded.push_back(element.get_string().value.to_string());
+    }
+  }
+  
+  auto array_value_items = doc_view["items"];
+  
+  if (array_value_items && array_value_items.type() == bsoncxx::type::k_array) {
+    for (auto& object : array_value_items.get_array().value) {
+      bakcyl::core::Item item;
+
+      item.itemName = object["itemName"].get_string().value.to_string();
+      if(object["price"].type() == bsoncxx::type::k_double) {
+        item.price = object["price"].get_double().value;  
+      }
+      else
+      {
+        item.price = object["price"].get_int32().value;
+      }
+      item.whoBuy = object["whoBuy"].get_string().value.to_string();
+
+      receipt.items.push_back(item); 
+    }
+  }
+
+  return receipt;
 }
 
 }

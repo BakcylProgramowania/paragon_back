@@ -1,3 +1,4 @@
+#pragma once
 #include "core/structures.hpp"
 
 #include <mongocxx/client.hpp>
@@ -31,6 +32,7 @@ class DatabaseImpl {
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
   int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
+  bakcyl::core::Receipt getReceipt(const std::string& receiptID);
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
