@@ -36,16 +36,6 @@ RUN git clone --branch 1.3.0 --depth 1 https://github.com/oatpp/oatpp-swagger.gi
     make install && \
     cd ../../
 
-# Clone and build json
-RUN git clone https://github.com/nlohmann/json.git && \
-    cd json && \
-    mkdir build  && \
-    cd build && \
-    cmake .. && \
-    make && \
-    make install && \
-    cd ../..
-
 # download and build mongo
 ARG DEBIAN_FRONTEND=noninteractive
 
