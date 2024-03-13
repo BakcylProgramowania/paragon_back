@@ -41,6 +41,13 @@ class ReceiptResponseDto : public oatpp::DTO {
   DTO_FIELD(Fields<List<Object<ReceiptFriendsDto>>>, data);
 };
 
+class ReceiptsResponseDto : public oatpp::DTO {
+  DTO_INIT(ReceiptsResponseDto, DTO);
+
+  DTO_FIELD(Boolean, success);
+  DTO_FIELD(Fields<List<Object<ReceiptItemsDto>>>, data);
+};
+
 }
 }
 

@@ -333,6 +333,27 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }
+
+  ENDPOINT_INFO(getReceipts) {
+    info->summary = "getFriends endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+  ENDPOINT("GET", "/receipts", getReceipts,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject)) {
+    auto responseDto = bakcyl::api::ReceiptsResponseDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      responseDto->data = {};
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    responseDto->success = true;
+
+    return createDtoResponse(Status::CODE_200, responseDto);
+  }
 };
 
 }  // namespace api
