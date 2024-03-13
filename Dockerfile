@@ -80,6 +80,8 @@ RUN apt install ninja-build
 COPY appbuild.sh /usr/local/bin/appbuild.sh
 COPY appstarter.sh /usr/local/bin/appstarter.sh
 
+RUN chmod +x /usr/local/bin/appbuild.sh /usr/local/bin/appstarter.sh
+
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
 ENTRYPOINT ["appstarter.sh"]
