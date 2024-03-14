@@ -423,6 +423,7 @@ bool bakcyl::database::DatabaseImpl::changeIfMerged(const std::string& receiptID
 
 std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getReceipts(const std::string& authorID) {
   auto collection = database["receiptHistory"];
+  
   std::vector<bakcyl::core::ReceiptShortView> receipts;
 
   auto cursor = collection.find(make_document(kvp("author", authorID), kvp("merged", false)));
