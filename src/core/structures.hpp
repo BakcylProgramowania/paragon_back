@@ -26,5 +26,10 @@ struct Receipt {
     std::vector<std::string> mergedReceipts;
 };
 
+struct ReceiptShortView {
+  std::string receiptName;
+  std::string receiptID;
+}
+
 }
 }
