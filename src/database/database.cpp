@@ -72,5 +72,9 @@ bakcyl::core::Receipt bakcyl::database::Database::getReceipt(const std::string& 
   return bakcyl::database::Database::impl->getReceipt(receiptID);
 }
 
+bool bakcyl::database::Database::changeIfMerged(const std::string& receiptID, const bool& newState) {
+  return bakcyl::database::Database::impl->changeIfMerged(receiptID, newState);
+}
+
 }
 }

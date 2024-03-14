@@ -36,7 +36,7 @@ class Database {
   bool isThereUserWithThisID(const std::string& userID) const;
   int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
   bakcyl::core::Receipt getReceipt(const std::string& receiptID);
-  
+  bool changeIfMerged(const std::string& receiptID, const bool& newState);
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };

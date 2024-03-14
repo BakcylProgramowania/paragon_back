@@ -23,6 +23,7 @@ struct Receipt {
     std::string receiptName;
     std::string date;
     std::vector<bakcyl::core::Item> items;
+    std::vector<std::string> mergedReceipts;
 };
 
 }

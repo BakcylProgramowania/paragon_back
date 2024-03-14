@@ -351,7 +351,8 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
     kvp("receiptName", receipt.receiptName),
     kvp("date", receipt.date),
     kvp("usersIncluded", usersIncluded),
-    kvp("items", items)
+    kvp("items", items),
+    kvp("merged", false)
   ));
 
   return 0;
@@ -386,6 +387,7 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
       bakcyl::core::Item item;
 
       item.itemName = object["itemName"].get_string().value.to_string();
+
       if(object["price"].type() == bsoncxx::type::k_double) {
         item.price = object["price"].get_double().value;  
       }
@@ -393,6 +395,7 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
       {
         item.price = object["price"].get_int32().value;
       }
+
       item.whoBuy = object["whoBuy"].get_string().value.to_string();
 
       receipt.items.push_back(item); 
@@ -400,6 +403,22 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
   }
 
   return receipt;
+}
+
+bool bakcyl::database::DatabaseImpl::changeIfMerged(const std::string& receiptID, const bool& newState) {
+  auto collection = database["receiptHistory"];
+
+  bsoncxx::oid document_id(receiptID);
+  auto cursor = collection.find_one(make_document(kvp("_id", document_id)));
+  auto doc_view = cursor->view();
+  if(doc_view["merged"].get_bool().value == newState)
+  {
+    return false;
+  }
+
+  collection.update_one(make_document(kvp("_id", document_id)) ,make_document(kvp("$set", make_document(kvp("merged", newState)))));
+
+  return true;
 }
 
 }
