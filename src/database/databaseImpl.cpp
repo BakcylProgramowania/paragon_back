@@ -421,5 +421,21 @@ bool bakcyl::database::DatabaseImpl::changeIfMerged(const std::string& receiptID
   return true;
 }
 
+std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getReceipts(const std::string& authorID) {
+  auto collection = database["receiptHistory"];
+  std::vector<bakcyl::core::ReceiptShortView> receipts;
+
+  auto cursor = collection.find(make_document(kvp("author", authorID), kvp("merged", false)));
+  for(auto doc : cursor)
+  {
+    bakcyl::core::ReceiptShortView receipt;
+
+    receipt.receiptName = doc["receiptName"].get_string().value.to_string();
+    receipt.receiptID = doc["_id"].get_oid().value.to_string();
+    receipts.push_back(receipt);
+  }
+  return receipts;
+}
+
 }
 }

@@ -29,7 +29,7 @@ struct Receipt {
 struct ReceiptShortView {
   std::string receiptName;
   std::string receiptID;
-}
+};
 
 }
 }

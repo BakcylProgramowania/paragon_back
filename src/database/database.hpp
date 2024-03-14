@@ -37,6 +37,7 @@ class Database {
   int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
   bakcyl::core::Receipt getReceipt(const std::string& receiptID);
   bool changeIfMerged(const std::string& receiptID, const bool& newState);
+  std::vector<bakcyl::core::ReceiptShortView> getReceipts(const std::string& authorID);
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };
