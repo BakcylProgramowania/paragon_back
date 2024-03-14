@@ -400,6 +400,14 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
     }
   }
   
+  auto array_value_mergedReceipts = doc_view["mergedReceipts"];
+  if (array_value_mergedReceipts && array_value_mergedReceipts.type() == bsoncxx::type::k_array) {
+            
+    for (const auto& element : array_value_mergedReceipts.get_array().value) {
+      receipt.mergedReceipts.push_back(element.get_string().value.to_string());
+    }
+  }
+
   auto array_value_items = doc_view["items"];
   
   if (array_value_items && array_value_items.type() == bsoncxx::type::k_array) {
