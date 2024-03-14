@@ -335,6 +335,7 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
   auto collection = database["receiptHistory"];
   auto usersIncluded = bsoncxx::builder::basic::array{};
   auto items = bsoncxx::builder::basic::array{};
+  auto mergedReceipts = bsoncxx::builder::basic::array{};
 
   for(const auto& element : receipt.usersIncluded)
   {
@@ -346,14 +347,33 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
     items.append(make_document(kvp("whoBuy", element.whoBuy), kvp("itemName", element.itemName), kvp("price", element.price)));
   }
 
-  collection.insert_one(make_document(
-    kvp("author", receipt.author),
-    kvp("receiptName", receipt.receiptName),
-    kvp("date", receipt.date),
-    kvp("usersIncluded", usersIncluded),
-    kvp("items", items),
-    kvp("merged", false)
-  ));
+  if(receipt.mergedReceipts.size() > 0)
+  {
+    for(const auto& element : receipt.mergedReceipts)
+    {
+      mergedReceipts.append(element);
+    }
+    collection.insert_one(make_document(
+      kvp("author", receipt.author),
+      kvp("receiptName", receipt.receiptName),
+      kvp("date", receipt.date),
+      kvp("usersIncluded", usersIncluded),
+      kvp("items", items),
+      kvp("merged", false),
+      kvp("mergedReceipts", mergedReceipts)
+    ));
+  }
+  else
+  {
+    collection.insert_one(make_document(
+      kvp("author", receipt.author),
+      kvp("receiptName", receipt.receiptName),
+      kvp("date", receipt.date),
+      kvp("usersIncluded", usersIncluded),
+      kvp("items", items),
+      kvp("merged", false)
+    ));
+  }
 
   return 0;
 }
@@ -423,7 +443,7 @@ bool bakcyl::database::DatabaseImpl::changeIfMerged(const std::string& receiptID
 
 std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getReceipts(const std::string& authorID) {
   auto collection = database["receiptHistory"];
-  
+
   std::vector<bakcyl::core::ReceiptShortView> receipts;
 
   auto cursor = collection.find(make_document(kvp("author", authorID), kvp("merged", false)));
