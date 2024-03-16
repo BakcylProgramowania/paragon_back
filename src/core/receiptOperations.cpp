@@ -46,6 +46,7 @@ int ReceiptOperations::mergeReceipt(std::vector<std::string>& receiptIDs, std::s
 
   mergedReceipt.receiptName = receiptName;
   mergedReceipt.author = author;
+  mergedReceipt.mergedReceipts = receiptIDs;
   
   for (auto& receiptId : receiptIDs) {
     bakcyl::core::Receipt receipt = database.getReceipt(receiptId);
@@ -55,6 +56,22 @@ int ReceiptOperations::mergeReceipt(std::vector<std::string>& receiptIDs, std::s
   }
 
   return saveReceipt(mergedReceipt);
+};
+
+int ReceiptOperations::unmergeReceipt(std::string& mergedReceiptID) const{
+  bakcyl::core::Receipt receipt = database.getReceipt(mergedReceiptID);
+  std::vector<bakcyl::core::ReceiptShortView> receiptsShortView = database.getReceipts(receipt.author);
+  
+  for (auto& receiptID : receipt.mergedReceipts) {
+    for (auto& receiptShortView : receiptsShortView) {
+      if (receiptID == receiptShortView.receiptID) {
+        database.changeIfMerged(receiptID, false);
+        break;
+      }
+    }
+  }
+
+  return database.changeIfMerged(mergedReceiptID, true);
 };
 
 int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
