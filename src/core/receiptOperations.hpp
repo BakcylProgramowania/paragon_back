@@ -18,7 +18,7 @@ class ReceiptOperations {
   int mergeReceipt(std::vector<std::string>& receiptIDs,
                    std::string& receiptName,
                    std::string& author)  const;
-  int ReceiptOperations::unmergeReceipt(std::string& mergedReceiptID) const;
+  int unmergeReceipt(std::string& mergedReceiptID) const;
   int saveReceipt(bakcyl::core::Receipt& receipt) const;
 };
 
