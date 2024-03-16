@@ -15,6 +15,9 @@ class ReceiptOperations {
 
   std::vector<bakcyl::core::User> calculateReceipt(
       const std::vector<bakcyl::core::Item>& items) const;
+  int mergeReceipt(std::vector<std::string>& receiptIDs,
+                   std::string& receiptName,
+                   std::string& author)  const;
   int saveReceipt(bakcyl::core::Receipt& receipt) const;
 };
 

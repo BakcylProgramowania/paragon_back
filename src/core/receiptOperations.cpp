@@ -38,6 +38,25 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
   return users;
 };
 
+int ReceiptOperations::mergeReceipt(std::vector<std::string>& receiptIDs, std::string& receiptName, std::string& author) const{
+  bakcyl::core::Receipt mergedReceipt;
+  std::vector<bakcyl::core::Item> items;
+  
+  if (!database.isThereUserWithThisID(author)) return {};
+
+  mergedReceipt.receiptName = receiptName;
+  mergedReceipt.author = author;
+  
+  for (auto& receiptId : receiptIDs) {
+    bakcyl::core::Receipt receipt = database.getReceipt(receiptId);
+    items.insert(items.end(), receipt.items.begin(), receipt.items.end());
+    
+    database.changeIfMerged(receiptId, true);
+  }
+
+  return saveReceipt(mergedReceipt);
+};
+
 int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
   std::vector<std::string> usersIncluded;
   
