@@ -63,6 +63,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     dto->statusCode = 200;
     dto->message = "Hello World!";
     return createDtoResponse(Status::CODE_200, dto);
+  
+  }
+  ENDPOINT_INFO(postUsers) {
+    info->summary = "Authenticate users";
+    info->addConsumes<oatpp::Object<bakcyl::api::LoginDto>>("application/json");
   }
 
   ENDPOINT("POST", "/login", postUsers, BODY_STRING(String, body)) {
@@ -94,6 +99,10 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
+  ENDPOINT_INFO(postRegister) {
+    info->summary = "Create users";
+    info->addConsumes<oatpp::Object<bakcyl::api::RegisterDto>>("application/json");
+  }
   ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
     OATPP_LOGD("TEST", "Registered with username: %s", body->c_str());
 
@@ -132,7 +141,8 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 
   ENDPOINT_INFO(changeBalance) {
-    info->summary = "changeBalance endpoint";
+    info->summary = "Change balance";
+    info->addConsumes<oatpp::Object<bakcyl::api::ChangeBalanceDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -216,7 +226,8 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 
   ENDPOINT_INFO(addFriend) {
-    info->summary = "addFriends endpoint";
+    info->summary = "Add Friend";
+    info->addConsumes<oatpp::Object<bakcyl::api::AddFriendDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -242,7 +253,8 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 
   ENDPOINT_INFO(removeFriend) {
-    info->summary = "removeFriends endpoint";
+    info->summary = "Remove Friend";
+    info->addConsumes<oatpp::Object<bakcyl::api::RemoveFriendDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -268,7 +280,8 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 
   ENDPOINT_INFO(receipt) {
-    info->summary = "receipt endpoint";
+    info->summary = "Create receipt";
+    info->addConsumes<oatpp::Object<bakcyl::api::ReceiptDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
