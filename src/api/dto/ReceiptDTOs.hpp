@@ -18,6 +18,35 @@ class ReceiptItemsDto : public oatpp::DTO {
   DTO_FIELD(Int32, amount);
 };
 
+class ReceiptItemToPayDto : public oatpp::DTO {
+  DTO_INIT(ReceiptItemToPayDto, DTO);
+
+  DTO_FIELD(Int32, price);
+  DTO_FIELD(String, itemName);
+  DTO_FIELD(String, receiptID);
+};
+
+class ReceiptItemsToPayDto : public oatpp::DTO {
+  DTO_INIT(ReceiptItemsToPayDto, DTO);
+
+  DTO_FIELD(Fields<List<Object<ReceiptItemToPayDto>>>, items);
+};
+
+class ReceiptItemPaidDto : public oatpp::DTO {
+  DTO_INIT(ReceiptItemPaidDto, DTO);
+
+  DTO_FIELD(String, itemName);
+  DTO_FIELD(String, receiptID);
+};
+
+class ReceiptResponseItemPaidDto : public oatpp::DTO {
+  DTO_INIT(ReceiptResponseItemPaidDto, DTO);
+
+  DTO_FIELD(Boolean, success);
+};
+
+
+
 class ReceiptFriendsDto : public oatpp::DTO {
  public:
   DTO_INIT(ReceiptFriendsDto, DTO)
