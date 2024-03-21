@@ -47,13 +47,13 @@ std::vector<std::pair<std::string, std::string>> bakcyl::database::Database::ret
 }
 
 bool bakcyl::database::Database::addUserToFriendList(const std::string& token,
-                                   const std::string& friendUsernameToAdd) const {
-  return bakcyl::database::Database::impl->addUserToFriendList(token, friendUsernameToAdd);
+                                   const std::string& friendIdToAdd) const {
+  return bakcyl::database::Database::impl->addUserToFriendList(token, friendIdToAdd);
 }
 
 bool bakcyl::database::Database::removeUserFromFriendList(
-    const std::string& token, const std::string& friendUsernameToRemove) const {
-  return bakcyl::database::Database::impl->removeUserFromFriendList(token, friendUsernameToRemove);
+    const std::string& token, const std::string& friendIdToRemove) const {
+  return bakcyl::database::Database::impl->removeUserFromFriendList(token, friendIdToRemove);
 }
 
 std::string bakcyl::database::Database::getUserIDUsingToken(const std::string& token) const {
@@ -78,10 +78,6 @@ bool bakcyl::database::Database::changeIfMerged(const std::string& receiptID, co
 
 std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::Database::getReceipts(const std::string& authorID) {
   return bakcyl::database::Database::impl->getReceipts(authorID);
-}
-
-std::string bakcyl::database::Database::getUserIDUsingUsername(const std::string& username) const {
-  return bakcyl::database::Database::impl->getUserIDUsingUsername(username);
 }
 
 }
