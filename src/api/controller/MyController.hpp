@@ -350,8 +350,27 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_401, responseDto);
     }
 
-    responseDto->success = true;
+    auto recipts = receiptOper.getReceipts(authObject->token);
 
+    if (recipts.empty()) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_400, responseDto);
+    }
+
+    oatpp::List<oatpp::Object<bakcyl::api::ReceiptShortDto>> receiptsDto =
+        oatpp::List<
+            oatpp::Object<bakcyl::api::ReceiptShortDto>>::createShared();
+
+    for (const auto& recipt : recipts) {
+      auto receiptDto = bakcyl::api::ReceiptShortDto::createShared();
+      receiptDto->receiptName = recipt.receiptName;
+      receiptDto->receiptID = recipt.receiptID;
+      receiptsDto->push_back(receiptDto);
+    }
+
+    responseDto->success = true;
+    responseDto->data = {};
+    responseDto->data->push_back({"receipts", receiptsDto});
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 };

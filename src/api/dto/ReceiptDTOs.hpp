@@ -18,6 +18,14 @@ class ReceiptItemsDto : public oatpp::DTO {
   DTO_FIELD(Int32, amount);
 };
 
+class ReceiptShortDto : public oatpp::DTO {
+ public:
+  DTO_INIT(ReceiptShortDto, DTO)
+
+  DTO_FIELD(String, receiptName);
+  DTO_FIELD(String, receiptID);
+};
+
 class ReceiptFriendsDto : public oatpp::DTO {
  public:
   DTO_INIT(ReceiptFriendsDto, DTO)
@@ -45,7 +53,7 @@ class ReceiptsResponseDto : public oatpp::DTO {
   DTO_INIT(ReceiptsResponseDto, DTO);
 
   DTO_FIELD(Boolean, success);
-  DTO_FIELD(Fields<List<Object<ReceiptItemsDto>>>, data);
+  DTO_FIELD(Fields<List<Object<ReceiptShortDto>>>, data);
 };
 
 }

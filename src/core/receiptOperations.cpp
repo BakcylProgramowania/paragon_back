@@ -60,5 +60,9 @@ int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
   return database.createReceiptInHistory(receipt);
 };
 
+std::vector<bakcyl::core::ReceiptShortView> ReceiptOperations::getReceipts(const std::string& token) {
+  return database.getReceipts(database.getUserIDUsingToken(token));
+};
+
 }  // namespace core
 }  // namespace bakcyl
