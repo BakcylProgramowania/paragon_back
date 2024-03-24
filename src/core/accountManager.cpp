@@ -20,14 +20,14 @@ AccountManager::returnUserFriendList(const std::string& token) const {
 }
 
 bool AccountManager::addUserToFriendList(
-    const std::string& token, const std::string& friendIdToAdd) const {
+    const std::string& token, const std::string& friendUsernameToAdd) const {
   return database.addUserToFriendList(database.getUserIDUsingToken(token),
-                                      friendIdToAdd);
+                                      friendUsernameToAdd);
 }
 bool AccountManager::removeUserFromFriendList(
-    const std::string& token, const std::string& friendIdToRemove) const {
+    const std::string& token, const std::string& friendIdUsernameRemove) const {
   return database.removeUserFromFriendList(database.getUserIDUsingToken(token),
-                                           friendIdToRemove);
+                                           friendIdUsernameRemove);
 }
 
 }

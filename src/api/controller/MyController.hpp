@@ -235,7 +235,7 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_401, responseDto);
     } else {
       bool addUserToFriendList =
-          accountMan.addUserToFriendList(authObject->token, json->id);
+          accountMan.addUserToFriendList(authObject->token, json->username);
       responseDto->success = addUserToFriendList;
       return createDtoResponse(Status::CODE_200, responseDto);
     }
@@ -261,7 +261,7 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_401, responseDto);
     } else {
       bool removeUserFromFriendList =
-          accountMan.removeUserFromFriendList(authObject->token, json->id);
+          accountMan.removeUserFromFriendList(authObject->token, json->username);
       responseDto->success = removeUserFromFriendList;
       return createDtoResponse(Status::CODE_200, responseDto);
     }
