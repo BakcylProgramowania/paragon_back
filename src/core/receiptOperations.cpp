@@ -11,7 +11,8 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
   std::vector<bakcyl::core::User> users;
 
   for (const auto& item : items) {
-    int cost = item.price * item.amount;
+    double cost = item.price * item.amount;
+    
     bool foundEqualUserID = false;
 
     if (!database.isThereUserWithThisID(item.whoBuy)) return {};

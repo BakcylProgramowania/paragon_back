@@ -1,5 +1,6 @@
 #include <ctime>
 #include <vector>
+#include <cmath>
 
 #include "database/database.hpp"
 #include "structures.hpp"

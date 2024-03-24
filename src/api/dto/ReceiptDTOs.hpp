@@ -14,8 +14,8 @@ class ReceiptItemsDto : public oatpp::DTO {
 
   DTO_FIELD(String, whoBuy);
   DTO_FIELD(String, item);
-  DTO_FIELD(Int32, price);
-  DTO_FIELD(Int32, amount);
+  DTO_FIELD(Float32, price);
+  DTO_FIELD(Float32, amount);
 };
 
 class ReceiptShortDto : public oatpp::DTO {
@@ -31,7 +31,7 @@ class ReceiptFriendsDto : public oatpp::DTO {
   DTO_INIT(ReceiptFriendsDto, DTO)
 
   DTO_FIELD(String, userID);
-  DTO_FIELD(Int32, price);
+  DTO_FIELD(Float32, price);
 };
 
 class ReceiptDto : public oatpp::DTO {
