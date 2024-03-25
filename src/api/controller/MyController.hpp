@@ -335,7 +335,7 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 
   ENDPOINT_INFO(getReceipts) {
-    info->summary = "getFriends endpoint";
+    info->summary = "getReceipts endpoint";
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -372,6 +372,49 @@ class MyController : public oatpp::web::server::api::ApiController {
     responseDto->data = {};
     responseDto->data->push_back({"receipts", receiptsDto});
     return createDtoResponse(Status::CODE_200, responseDto);
+  }
+
+  ENDPOINT_INFO(getReceipt) {
+    info->summary = "getReceipt endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+  ENDPOINT("POST", "/getReceipt", getReceipt,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject),
+           BODY_STRING(String, body)) {
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::getReceiptDto>>(body);
+
+    auto responseDto = bakcyl::api::getReceiptResponseDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    } else {
+      auto receipt = receiptOper.getReceipt(json->receiptID);
+
+      oatpp::List<oatpp::Object<bakcyl::api::ReceiptItemsDto>> receiptItemsDto =
+          oatpp::List<
+              oatpp::Object<bakcyl::api::ReceiptItemsDto>>::createShared();
+
+      for (const auto& item : receipt.items) {
+        auto receiptItemDto = bakcyl::api::ReceiptItemsDto::createShared();
+        receiptItemDto->whoBuy = item.whoBuy;
+        receiptItemDto->item = item.itemName;
+        receiptItemDto->price = item.price;
+        receiptItemsDto->push_back(receiptItemDto);
+      }
+
+      responseDto->success = true;
+      responseDto->author = receipt.author;
+      responseDto->receiptName = receipt.receiptName;
+      responseDto->date = receipt.date;
+      responseDto->data = {};
+      responseDto->data->push_back({"items", receiptItemsDto});
+      return createDtoResponse(Status::CODE_200, responseDto);
+    }
   }
 };
 

@@ -42,6 +42,24 @@ class ReceiptDto : public oatpp::DTO {
   DTO_FIELD(Fields<List<Object<ReceiptItemsDto>>>, data);
 };
 
+class getReceiptDto : public oatpp::DTO {
+ public:
+  DTO_INIT(getReceiptDto, DTO)
+
+  DTO_FIELD(String, receiptID);
+};
+
+class getReceiptResponseDto : public oatpp::DTO {
+ public:
+  DTO_INIT(getReceiptResponseDto, DTO)
+
+  DTO_FIELD(Boolean, success);
+  DTO_FIELD(String, author);
+  DTO_FIELD(String, receiptName);
+  DTO_FIELD(String, date);
+  DTO_FIELD(Fields<List<Object<ReceiptItemsDto>>>, data);
+};
+
 class ReceiptResponseDto : public oatpp::DTO {
   DTO_INIT(ReceiptResponseDto, DTO);
 

@@ -18,6 +18,7 @@ class ReceiptOperations {
       const std::vector<bakcyl::core::Item>& items) const;
   int saveReceipt(bakcyl::core::Receipt& receipt) const;
   std::vector<bakcyl::core::ReceiptShortView> getReceipts(const std::string& token);
+  bakcyl::core::Receipt getReceipt(const std::string& receiptID);
 };
 
 }  // namespace core

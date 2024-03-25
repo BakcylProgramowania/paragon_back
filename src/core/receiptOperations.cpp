@@ -65,5 +65,9 @@ std::vector<bakcyl::core::ReceiptShortView> ReceiptOperations::getReceipts(const
   return database.getReceipts(database.getUserIDUsingToken(token));
 };
 
+bakcyl::core::Receipt ReceiptOperations::getReceipt(const std::string& receiptID) {
+  return database.getReceipt(receiptID);
+};
+
 }  // namespace core
 }  // namespace bakcyl
