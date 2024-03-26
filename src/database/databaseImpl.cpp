@@ -451,14 +451,11 @@ bool bakcyl::database::DatabaseImpl::changeIfMerged(const std::string& receiptID
   return true;
 }
 
-std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getReceipts(const std::string& authorID) {
+std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getReceipts(const std::string& userID) {
   auto collection = database["receiptHistory"];
 
   std::vector<bakcyl::core::ReceiptShortView> receipts;
-  //make_document(kvp("author", authorID), kvp("merged", false))
-  //make_document(kvp("usersIncluded", make_document(kvp("$in", make_array(authorID)))), kvp("merged", false));
-  //kvp("$or", make_array(filter1, filter2))
-  auto cursor = collection.find(make_document(kvp("$or", make_array(make_document(kvp("author", authorID), kvp("merged", false)), make_document(kvp("usersIncluded", make_document(kvp("$in", make_array(authorID)))), kvp("merged", false))))));
+  auto cursor = collection.find(make_document(kvp("$or", make_array(make_document(kvp("author", userID), kvp("merged", false)), make_document(kvp("usersIncluded", make_document(kvp("$in", make_array(userID)))), kvp("merged", false))))));
   for(auto doc : cursor)
   {
     bakcyl::core::ReceiptShortView receipt;
@@ -473,7 +470,7 @@ std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getR
 bool bakcyl::database::DatabaseImpl::paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy) {
   auto collection = database["receiptHistory"];
   bsoncxx::oid document_id(receiptID);
-  //make_document(kvp("usersIncluded", make_document(kvp("$in", make_array(authorID)))) )
+  
   auto cursor = collection.find_one(make_document(kvp("_id", document_id), kvp("items", make_document(kvp("$elemMatch", make_document(kvp("whoBuy", whoBuy), kvp("itemName", itemName)))))));
   auto doc_view = cursor->view();
   if(!cursor) 

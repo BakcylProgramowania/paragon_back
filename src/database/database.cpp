@@ -76,8 +76,8 @@ bool bakcyl::database::Database::changeIfMerged(const std::string& receiptID, co
   return bakcyl::database::Database::impl->changeIfMerged(receiptID, newState);
 }
 
-std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::Database::getReceipts(const std::string& authorID) {
-  return bakcyl::database::Database::impl->getReceipts(authorID);
+std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::Database::getReceipts(const std::string& userID) {
+  return bakcyl::database::Database::impl->getReceipts(userID);
 }
 
 bool bakcyl::database::Database::paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy) {
