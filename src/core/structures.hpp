@@ -15,6 +15,7 @@ struct Item {
   std::string itemName;
   double price;
   double amount;
+  bool paid;
 };
 
 struct Receipt {

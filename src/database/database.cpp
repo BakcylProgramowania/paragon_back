@@ -80,5 +80,9 @@ std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::Database::getRecei
   return bakcyl::database::Database::impl->getReceipts(authorID);
 }
 
+bool bakcyl::database::Database::paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy) {
+  return bakcyl::database::Database::impl->paidForItem(receiptID, itemName, whoBuy);
+}
+
 }
 }
