@@ -453,8 +453,10 @@ std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getR
   auto collection = database["receiptHistory"];
 
   std::vector<bakcyl::core::ReceiptShortView> receipts;
-
-  auto cursor = collection.find(make_document(kvp("author", authorID), kvp("merged", false)));
+  //make_document(kvp("author", authorID), kvp("merged", false))
+  //make_document(kvp("usersIncluded", make_document(kvp("$in", make_array(authorID)))), kvp("merged", false));
+  //kvp("$or", make_array(filter1, filter2))
+  auto cursor = collection.find(make_document(kvp("$or", make_array(make_document(kvp("author", authorID), kvp("merged", false)), make_document(kvp("usersIncluded", make_document(kvp("$in", make_array(authorID)))), kvp("merged", false))))));
   for(auto doc : cursor)
   {
     bakcyl::core::ReceiptShortView receipt;
