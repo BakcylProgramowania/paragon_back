@@ -39,6 +39,7 @@ class Database {
   bool changeIfMerged(const std::string& receiptID, const bool& newState);
   std::vector<bakcyl::core::ReceiptShortView> getReceipts(const std::string& userID);
   bool paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy);
+  std::vector<bakcyl::core::ItemToPay> getItemsToPay(const std::string& userID);
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };

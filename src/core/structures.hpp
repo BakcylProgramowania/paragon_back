@@ -30,6 +30,12 @@ struct Receipt {
 struct ReceiptShortView {
   std::string receiptName;
   std::string receiptID;
+}; 
+
+struct ItemToPay {
+  std::string receiptID;
+  std::string itemName;
+  double price;
 };
 
 }

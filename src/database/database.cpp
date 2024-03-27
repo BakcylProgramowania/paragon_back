@@ -84,5 +84,9 @@ bool bakcyl::database::Database::paidForItem(const std::string& receiptID, const
   return bakcyl::database::Database::impl->paidForItem(receiptID, itemName, whoBuy);
 }
 
+std::vector<bakcyl::core::ItemToPay> bakcyl::database::Database::getItemsToPay(const std::string& userID) {
+  return bakcyl::database::Database::impl->getItemsToPay(userID);
+}
+
 }
 }

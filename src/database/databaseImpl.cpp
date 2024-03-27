@@ -491,5 +491,29 @@ bool bakcyl::database::DatabaseImpl::paidForItem(const std::string& receiptID, c
   return true;
 }
 
+std::vector<bakcyl::core::ItemToPay> bakcyl::database::DatabaseImpl::getItemsToPay(const std::string& userID) {
+  std::vector<bakcyl::core::ItemToPay> itemsToPay;
+  std::vector<bakcyl::core::ReceiptShortView> receipts = getReceipts(userID);
+  for(auto receiptShortView : receipts) {
+    std::string receiptID = receiptShortView.receiptID;
+    bakcyl::core::ItemToPay itemToPay;
+    
+    auto receipt = getReceipt(receiptID);
+    std::vector<bakcyl::core::Item> items = receipt.items;
+
+    for(auto item : items) {
+      if(item.whoBuy == userID && item.paid == false)
+      {
+        itemToPay.itemName = item.itemName;
+        itemToPay.price = item.price;
+        itemToPay.receiptID = receiptID;
+        itemsToPay.push_back(itemToPay);
+      }
+    }  
+  }
+
+  return itemsToPay;
+}
+
 }
 }
