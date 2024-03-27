@@ -29,13 +29,16 @@ class Database {
   std::vector<std::pair<std::string, std::string>> returnUserFriendList(
       const std::string& userID) const;
   bool addUserToFriendList(const std::string& token,
-                           const std::string& friendIdToAdd) const;
+                           const std::string& friendUsernameToAdd) const;
   bool removeUserFromFriendList(const std::string& token,
-                                const std::string& friendIdToRemove) const;
+                                const std::string& friendUsernameToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
   int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
-
+  bakcyl::core::Receipt getReceipt(const std::string& receiptID);
+  bool changeIfMerged(const std::string& receiptID, const bool& newState);
+  std::vector<bakcyl::core::ReceiptShortView> getReceipts(const std::string& authorID);
+  std::string getUserIDUsingUsername(const std::string& username) const;
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };
