@@ -258,13 +258,13 @@ DatabaseImpl::returnUserFriendList(const std::string& userID) const {
 }
 
 bool DatabaseImpl::addUserToFriendList(const std::string& userID,
-                                       const std::string& friendIdToAdd) const {
+                                       const std::string& friendUsernameToAdd) const {
   auto collection = database["userFriendList"];
 
   auto cursor = collection.find_one(
       make_document(kvp("UserID", userID),
                     kvp("UserFriendList",
-                        make_document(kvp("$in", make_array(friendIdToAdd))))));
+                        make_document(kvp("$in", make_array(getUserIDUsingUsername(friendUsernameToAdd)))))));
   if (cursor) return false;
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
@@ -272,7 +272,7 @@ bool DatabaseImpl::addUserToFriendList(const std::string& userID,
     auto result = collection.update_one(
         make_document(kvp("UserID", userID)),
         make_document(kvp(
-            "$addToSet", make_document(kvp("UserFriendList", friendIdToAdd)))));
+            "$addToSet", make_document(kvp("UserFriendList", getUserIDUsingUsername(friendUsernameToAdd))))));
     if (result) return true;
   }
 
@@ -280,13 +280,13 @@ bool DatabaseImpl::addUserToFriendList(const std::string& userID,
 }
 
 bool DatabaseImpl::removeUserFromFriendList(
-    const std::string& userID, const std::string& friendIdToRemove) const {
+    const std::string& userID, const std::string& friendUsernameToRemove) const {
   auto collection = database["userFriendList"];
 
   auto cursor = collection.find_one(make_document(
       kvp("UserID", userID),
       kvp("UserFriendList",
-          make_document(kvp("$in", make_array(friendIdToRemove))))));
+          make_document(kvp("$in", make_array(getUserIDUsingUsername(friendUsernameToRemove)))))));
   if (!cursor) return false;
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
@@ -294,7 +294,7 @@ bool DatabaseImpl::removeUserFromFriendList(
     auto result = collection.update_one(
         make_document(kvp("UserID", userID)),
         make_document(kvp(
-            "$pull", make_document(kvp("UserFriendList", friendIdToRemove)))));
+            "$pull", make_document(kvp("UserFriendList", getUserIDUsingUsername(friendUsernameToRemove))))));
     if (result) return true;
   }
 
@@ -427,7 +427,7 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
       item.whoBuy = object["whoBuy"].get_string().value.to_string();
 
       item.paid = object["paid"].get_bool().value;
-
+      
       receipt.items.push_back(item); 
     }
   }
@@ -456,6 +456,7 @@ std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getR
 
   std::vector<bakcyl::core::ReceiptShortView> receipts;
   auto cursor = collection.find(make_document(kvp("$or", make_array(make_document(kvp("author", userID), kvp("merged", false)), make_document(kvp("usersIncluded", make_document(kvp("$in", make_array(userID)))), kvp("merged", false))))));
+
   for(auto doc : cursor)
   {
     bakcyl::core::ReceiptShortView receipt;
@@ -513,6 +514,19 @@ std::vector<bakcyl::core::ItemToPay> bakcyl::database::DatabaseImpl::getItemsToP
   }
 
   return itemsToPay;
+}
+
+std::string bakcyl::database::DatabaseImpl::getUserIDUsingUsername(const std::string& username) const {
+  auto collection = database["users"];
+
+  auto cursor = collection.find(make_document(kvp("UserName", username)));
+
+  for (auto&& doc : cursor) {
+    auto idElement = doc["_id"];
+    return idElement.get_oid().value.to_string();
+  }
+
+  return "";
 }
 
 }

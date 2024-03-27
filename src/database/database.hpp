@@ -29,9 +29,9 @@ class Database {
   std::vector<std::pair<std::string, std::string>> returnUserFriendList(
       const std::string& userID) const;
   bool addUserToFriendList(const std::string& token,
-                           const std::string& friendIdToAdd) const;
+                           const std::string& friendUsernameToAdd) const;
   bool removeUserFromFriendList(const std::string& token,
-                                const std::string& friendIdToRemove) const;
+                                const std::string& friendUsernameToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
   int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
@@ -40,6 +40,7 @@ class Database {
   std::vector<bakcyl::core::ReceiptShortView> getReceipts(const std::string& userID);
   bool paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy);
   std::vector<bakcyl::core::ItemToPay> getItemsToPay(const std::string& userID);
+  std::string getUserIDUsingUsername(const std::string& username) const;
  private:
   std::unique_ptr<DatabaseImpl> impl;
 };

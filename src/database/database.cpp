@@ -47,13 +47,13 @@ std::vector<std::pair<std::string, std::string>> bakcyl::database::Database::ret
 }
 
 bool bakcyl::database::Database::addUserToFriendList(const std::string& token,
-                                   const std::string& friendIdToAdd) const {
-  return bakcyl::database::Database::impl->addUserToFriendList(token, friendIdToAdd);
+                                   const std::string& friendUsernameToAdd) const {
+  return bakcyl::database::Database::impl->addUserToFriendList(token, friendUsernameToAdd);
 }
 
 bool bakcyl::database::Database::removeUserFromFriendList(
-    const std::string& token, const std::string& friendIdToRemove) const {
-  return bakcyl::database::Database::impl->removeUserFromFriendList(token, friendIdToRemove);
+    const std::string& token, const std::string& friendUsernameToRemove) const {
+  return bakcyl::database::Database::impl->removeUserFromFriendList(token, friendUsernameToRemove);
 }
 
 std::string bakcyl::database::Database::getUserIDUsingToken(const std::string& token) const {
@@ -86,6 +86,10 @@ bool bakcyl::database::Database::paidForItem(const std::string& receiptID, const
 
 std::vector<bakcyl::core::ItemToPay> bakcyl::database::Database::getItemsToPay(const std::string& userID) {
   return bakcyl::database::Database::impl->getItemsToPay(userID);
+}
+
+std::string bakcyl::database::Database::getUserIDUsingUsername(const std::string& username) const {
+  return bakcyl::database::Database::impl->getUserIDUsingUsername(username);
 }
 
 }

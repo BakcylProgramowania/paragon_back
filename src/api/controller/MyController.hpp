@@ -63,6 +63,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     dto->statusCode = 200;
     dto->message = "Hello World!";
     return createDtoResponse(Status::CODE_200, dto);
+  
+  }
+  ENDPOINT_INFO(postUsers) {
+    info->summary = "Authenticate users";
+    info->addConsumes<oatpp::Object<bakcyl::api::LoginDto>>("application/json");
   }
 
   ENDPOINT("POST", "/login", postUsers, BODY_STRING(String, body)) {
@@ -94,6 +99,10 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
   }
 
+  ENDPOINT_INFO(postRegister) {
+    info->summary = "Create users";
+    info->addConsumes<oatpp::Object<bakcyl::api::RegisterDto>>("application/json");
+  }
   ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
     OATPP_LOGD("TEST", "Registered with username: %s", body->c_str());
 
@@ -132,7 +141,8 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 
   ENDPOINT_INFO(changeBalance) {
-    info->summary = "changeBalance endpoint";
+    info->summary = "Change balance";
+    info->addConsumes<oatpp::Object<bakcyl::api::ChangeBalanceDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -216,7 +226,8 @@ class MyController : public oatpp::web::server::api::ApiController {
   }
 
   ENDPOINT_INFO(addFriend) {
-    info->summary = "addFriends endpoint";
+    info->summary = "Add Friend";
+    info->addConsumes<oatpp::Object<bakcyl::api::AddFriendDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -235,14 +246,15 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_401, responseDto);
     } else {
       bool addUserToFriendList =
-          accountMan.addUserToFriendList(authObject->token, json->id);
+          accountMan.addUserToFriendList(authObject->token, json->username);
       responseDto->success = addUserToFriendList;
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }
 
   ENDPOINT_INFO(removeFriend) {
-    info->summary = "removeFriends endpoint";
+    info->summary = "Remove Friend";
+    info->addConsumes<oatpp::Object<bakcyl::api::RemoveFriendDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -261,14 +273,15 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_401, responseDto);
     } else {
       bool removeUserFromFriendList =
-          accountMan.removeUserFromFriendList(authObject->token, json->id);
+          accountMan.removeUserFromFriendList(authObject->token, json->username);
       responseDto->success = removeUserFromFriendList;
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }
 
   ENDPOINT_INFO(receipt) {
-    info->summary = "receipt endpoint";
+    info->summary = "Create receipt";
+    info->addConsumes<oatpp::Object<bakcyl::api::ReceiptDto>>("application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -330,6 +343,89 @@ class MyController : public oatpp::web::server::api::ApiController {
       responseDto->success = true;
       responseDto->data = {};
       responseDto->data->push_back({"friends", friendsDto});
+      return createDtoResponse(Status::CODE_200, responseDto);
+    }
+  }
+
+  ENDPOINT_INFO(getReceipts) {
+    info->summary = "getReceipts endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+  ENDPOINT("GET", "/receipts", getReceipts,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject)) {
+    auto responseDto = bakcyl::api::ReceiptsResponseDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      responseDto->data = {};
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    auto recipts = receiptOper.getReceipts(authObject->token);
+
+    if (recipts.empty()) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_400, responseDto);
+    }
+
+    oatpp::List<oatpp::Object<bakcyl::api::ReceiptShortDto>> receiptsDto =
+        oatpp::List<
+            oatpp::Object<bakcyl::api::ReceiptShortDto>>::createShared();
+
+    for (const auto& recipt : recipts) {
+      auto receiptDto = bakcyl::api::ReceiptShortDto::createShared();
+      receiptDto->receiptName = recipt.receiptName;
+      receiptDto->receiptID = recipt.receiptID;
+      receiptsDto->push_back(receiptDto);
+    }
+
+    responseDto->success = true;
+    responseDto->data = {};
+    responseDto->data->push_back({"receipts", receiptsDto});
+    return createDtoResponse(Status::CODE_200, responseDto);
+  }
+
+  ENDPOINT_INFO(getReceipt) {
+    info->summary = "getReceipt endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+  ENDPOINT("POST", "/getReceipt", getReceipt,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject),
+           BODY_STRING(String, body)) {
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::getReceiptDto>>(body);
+
+    auto responseDto = bakcyl::api::getReceiptResponseDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    } else {
+      auto receipt = receiptOper.getReceipt(json->receiptID);
+
+      oatpp::List<oatpp::Object<bakcyl::api::ReceiptItemsDto>> receiptItemsDto =
+          oatpp::List<
+              oatpp::Object<bakcyl::api::ReceiptItemsDto>>::createShared();
+
+      for (const auto& item : receipt.items) {
+        auto receiptItemDto = bakcyl::api::ReceiptItemsDto::createShared();
+        receiptItemDto->whoBuy = item.whoBuy;
+        receiptItemDto->item = item.itemName;
+        receiptItemDto->price = item.price;
+        receiptItemsDto->push_back(receiptItemDto);
+      }
+
+      responseDto->success = true;
+      responseDto->author = receipt.author;
+      responseDto->receiptName = receipt.receiptName;
+      responseDto->date = receipt.date;
+      responseDto->data = {};
+      responseDto->data->push_back({"items", receiptItemsDto});
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }

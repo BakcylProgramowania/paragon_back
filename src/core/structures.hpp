@@ -7,14 +7,14 @@ namespace core {
 
 struct User {
   std::string userID;
-  double price;
+  float price;
 };
 
 struct Item {
   std::string whoBuy;
   std::string itemName;
-  double price;
-  double amount;
+  float price;
+  float amount;
   bool paid;
 };
 
