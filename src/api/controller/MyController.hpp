@@ -441,10 +441,27 @@ class MyController : public oatpp::web::server::api::ApiController {
     auto responseDto = bakcyl::api::ReceiptItemsToPayDto::createShared();
 
     if (!auth.tokenCheck(authObject->token)) {
-      
+      responseDto->success = false;
       return createDtoResponse(Status::CODE_401, responseDto);
     }
 
+    auto itemsToPay = receiptOper.getItemsToPay(authObject->token);
+
+    oatpp::List<oatpp::Object<bakcyl::api::ReceiptItemToPayDto>> receiptItemsToPayDto =
+        oatpp::List<
+            oatpp::Object<bakcyl::api::ReceiptItemToPayDto>>::createShared();
+
+    for (const auto& item : itemsToPay) {
+      auto receiptItemToPayDto = bakcyl::api::ReceiptItemToPayDto::createShared();
+      receiptItemToPayDto->receiptID = item.receiptID;
+      receiptItemToPayDto->itemName = item.itemName;
+      receiptItemToPayDto->price = item.price;
+      receiptItemsToPayDto->push_back(receiptItemToPayDto);
+    }
+
+    responseDto->success = true;
+    responseDto->data = {};
+    responseDto->data->push_back({"items", receiptItemsToPayDto});
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 

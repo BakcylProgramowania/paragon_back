@@ -19,6 +19,8 @@ class ReceiptOperations {
   int saveReceipt(bakcyl::core::Receipt& receipt) const;
   std::vector<bakcyl::core::ReceiptShortView> getReceipts(const std::string& token);
   bakcyl::core::Receipt getReceipt(const std::string& receiptID);
+  bool paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy);
+  std::vector<bakcyl::core::ItemToPay> getItemsToPay(const std::string& userID);
 };
 
 }  // namespace core
