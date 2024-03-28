@@ -429,6 +429,51 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }
+  
+  ENDPOINT_INFO(getItemsToPay) {
+    info->summary = "Get items to pay";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+  ENDPOINT("GET", "/itemsToPay", getItemsToPay,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject)) {
+    auto responseDto = bakcyl::api::ReceiptItemsToPayDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    return createDtoResponse(Status::CODE_200, responseDto);
+  }
+
+
+  ENDPOINT_INFO(itemPaid) {
+    info->summary = "The item will be marked as purchased";
+    info->addConsumes<oatpp::Object<bakcyl::api::ReceiptItemPaidDto>>("application/json");
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+  ENDPOINT("POST", "/itemPaid", itemPaid,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
+                         authObject),
+          BODY_STRING(String, body)) {
+
+    auto json =
+        oatpp::parser::json::mapping::ObjectMapper::createShared()
+            ->readFromString<oatpp::Object<bakcyl::api::ReceiptItemPaidDto>>(body);  
+
+    auto responseDto = bakcyl::api::ReceiptResponseItemPaidDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    responseDto->success = true;
+    return createDtoResponse(Status::CODE_200, responseDto);
+  }
 };
 
 }  // namespace api
