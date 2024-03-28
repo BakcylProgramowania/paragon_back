@@ -11,7 +11,7 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
   std::vector<bakcyl::core::User> users;
 
   for (const auto& item : items) {
-    double cost = floor((item.price * item.amount) * 1000) / 1000;
+    float cost = item.price * item.amount;
 
     bool foundEqualUserID = false;
 
@@ -67,6 +67,14 @@ std::vector<bakcyl::core::ReceiptShortView> ReceiptOperations::getReceipts(const
 
 bakcyl::core::Receipt ReceiptOperations::getReceipt(const std::string& receiptID) {
   return database.getReceipt(receiptID);
+};
+
+bool ReceiptOperations::paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy) {
+  return database.paidForItem(receiptID, itemName, whoBuy);
+};
+
+std::vector<bakcyl::core::ItemToPay> ReceiptOperations::getItemsToPay(const std::string& userID) {
+  return database.getItemsToPay(database.getUserIDUsingToken(userID));
 };
 
 }  // namespace core
