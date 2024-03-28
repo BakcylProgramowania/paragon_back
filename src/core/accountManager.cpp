@@ -25,6 +25,9 @@ bool AccountManager::addUserToFriendList(
   if (friendUsernameToAdd.empty())
     return false;
   
+  if (!database.isThereUserWithThisUsername(friendUsernameToAdd))
+    return false;
+
   return database.addUserToFriendList(database.getUserIDUsingToken(token),
                                       friendUsernameToAdd);
 }

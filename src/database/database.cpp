@@ -92,5 +92,9 @@ std::string bakcyl::database::Database::getUserIDUsingUsername(const std::string
   return bakcyl::database::Database::impl->getUserIDUsingUsername(username);
 }
 
+bool bakcyl::database::Database::isThereUserWithThisUsername(const std::string& username) const {
+  return bakcyl::database::Database::impl->isThereUserWithThisUsername(username);
+}
+
 }
 }
