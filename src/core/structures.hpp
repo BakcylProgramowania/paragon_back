@@ -7,14 +7,15 @@ namespace core {
 
 struct User {
   std::string userID;
-  int price;
+  float price;
 };
 
 struct Item {
   std::string whoBuy;
   std::string itemName;
-  int price;
-  int amount;
+  float price;
+  float amount;
+  bool paid;
 };
 
 struct Receipt {
@@ -23,6 +24,18 @@ struct Receipt {
     std::string receiptName;
     std::string date;
     std::vector<bakcyl::core::Item> items;
+    std::vector<std::string> mergedReceipts;
+};
+
+struct ReceiptShortView {
+  std::string receiptName;
+  std::string receiptID;
+}; 
+
+struct ItemToPay {
+  std::string receiptID;
+  std::string itemName;
+  double price;
 };
 
 }
