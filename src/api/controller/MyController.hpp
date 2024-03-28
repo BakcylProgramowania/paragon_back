@@ -488,7 +488,7 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_401, responseDto);
     }
 
-    responseDto->success = true;
+    responseDto->success = receiptOper.paidForItem(json->receiptID, json->itemName, authObject->token);
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 };

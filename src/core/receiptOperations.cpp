@@ -69,12 +69,12 @@ bakcyl::core::Receipt ReceiptOperations::getReceipt(const std::string& receiptID
   return database.getReceipt(receiptID);
 };
 
-bool ReceiptOperations::paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& whoBuy) {
-  return database.paidForItem(receiptID, itemName, whoBuy);
+bool ReceiptOperations::paidForItem(const std::string& receiptID, const std::string& itemName, const std::string& token) {
+  return database.paidForItem(receiptID, itemName, database.getUserIDUsingToken(token));
 };
 
-std::vector<bakcyl::core::ItemToPay> ReceiptOperations::getItemsToPay(const std::string& userID) {
-  return database.getItemsToPay(database.getUserIDUsingToken(userID));
+std::vector<bakcyl::core::ItemToPay> ReceiptOperations::getItemsToPay(const std::string& token) {
+  return database.getItemsToPay(database.getUserIDUsingToken(token));
 };
 
 }  // namespace core
