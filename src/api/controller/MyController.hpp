@@ -63,7 +63,6 @@ class MyController : public oatpp::web::server::api::ApiController {
     dto->statusCode = 200;
     dto->message = "Hello World!";
     return createDtoResponse(Status::CODE_200, dto);
-  
   }
   ENDPOINT_INFO(postUsers) {
     info->summary = "Authenticate users";
@@ -101,7 +100,8 @@ class MyController : public oatpp::web::server::api::ApiController {
 
   ENDPOINT_INFO(postRegister) {
     info->summary = "Create users";
-    info->addConsumes<oatpp::Object<bakcyl::api::RegisterDto>>("application/json");
+    info->addConsumes<oatpp::Object<bakcyl::api::RegisterDto>>(
+        "application/json");
   }
   ENDPOINT("POST", "/register", postRegister, BODY_STRING(String, body)) {
     OATPP_LOGD("TEST", "Registered with username: %s", body->c_str());
@@ -142,7 +142,8 @@ class MyController : public oatpp::web::server::api::ApiController {
 
   ENDPOINT_INFO(changeBalance) {
     info->summary = "Change balance";
-    info->addConsumes<oatpp::Object<bakcyl::api::ChangeBalanceDto>>("application/json");
+    info->addConsumes<oatpp::Object<bakcyl::api::ChangeBalanceDto>>(
+        "application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -227,7 +228,8 @@ class MyController : public oatpp::web::server::api::ApiController {
 
   ENDPOINT_INFO(addFriend) {
     info->summary = "Add Friend";
-    info->addConsumes<oatpp::Object<bakcyl::api::AddFriendDto>>("application/json");
+    info->addConsumes<oatpp::Object<bakcyl::api::AddFriendDto>>(
+        "application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -254,7 +256,8 @@ class MyController : public oatpp::web::server::api::ApiController {
 
   ENDPOINT_INFO(removeFriend) {
     info->summary = "Remove Friend";
-    info->addConsumes<oatpp::Object<bakcyl::api::RemoveFriendDto>>("application/json");
+    info->addConsumes<oatpp::Object<bakcyl::api::RemoveFriendDto>>(
+        "application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -272,8 +275,8 @@ class MyController : public oatpp::web::server::api::ApiController {
       responseDto->success = false;
       return createDtoResponse(Status::CODE_401, responseDto);
     } else {
-      bool removeUserFromFriendList =
-          accountMan.removeUserFromFriendList(authObject->token, json->username);
+      bool removeUserFromFriendList = accountMan.removeUserFromFriendList(
+          authObject->token, json->username);
       responseDto->success = removeUserFromFriendList;
       return createDtoResponse(Status::CODE_200, responseDto);
     }
@@ -281,7 +284,8 @@ class MyController : public oatpp::web::server::api::ApiController {
 
   ENDPOINT_INFO(receipt) {
     info->summary = "Create receipt";
-    info->addConsumes<oatpp::Object<bakcyl::api::ReceiptDto>>("application/json");
+    info->addConsumes<oatpp::Object<bakcyl::api::ReceiptDto>>(
+        "application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
@@ -429,7 +433,7 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }
-  
+
   ENDPOINT_INFO(getItemsToPay) {
     info->summary = "Get items to pay";
     info->addSecurityRequirement("bearer_auth");
@@ -447,12 +451,13 @@ class MyController : public oatpp::web::server::api::ApiController {
 
     auto itemsToPay = receiptOper.getItemsToPay(authObject->token);
 
-    oatpp::List<oatpp::Object<bakcyl::api::ReceiptItemToPayDto>> receiptItemsToPayDto =
-        oatpp::List<
+    oatpp::List<oatpp::Object<bakcyl::api::ReceiptItemToPayDto>>
+        receiptItemsToPayDto = oatpp::List<
             oatpp::Object<bakcyl::api::ReceiptItemToPayDto>>::createShared();
 
     for (const auto& item : itemsToPay) {
-      auto receiptItemToPayDto = bakcyl::api::ReceiptItemToPayDto::createShared();
+      auto receiptItemToPayDto =
+          bakcyl::api::ReceiptItemToPayDto::createShared();
       receiptItemToPayDto->receiptID = item.receiptID;
       receiptItemToPayDto->itemName = item.itemName;
       receiptItemToPayDto->price = item.price;
@@ -465,21 +470,21 @@ class MyController : public oatpp::web::server::api::ApiController {
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 
-
   ENDPOINT_INFO(itemPaid) {
     info->summary = "The item will be marked as purchased";
-    info->addConsumes<oatpp::Object<bakcyl::api::ReceiptItemPaidDto>>("application/json");
+    info->addConsumes<oatpp::Object<bakcyl::api::ReceiptItemPaidDto>>(
+        "application/json");
     info->addSecurityRequirement("bearer_auth");
   }
 
   ENDPOINT("POST", "/itemPaid", itemPaid,
            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>,
                          authObject),
-          BODY_STRING(String, body)) {
-
+           BODY_STRING(String, body)) {
     auto json =
         oatpp::parser::json::mapping::ObjectMapper::createShared()
-            ->readFromString<oatpp::Object<bakcyl::api::ReceiptItemPaidDto>>(body);  
+            ->readFromString<oatpp::Object<bakcyl::api::ReceiptItemPaidDto>>(
+                body);
 
     auto responseDto = bakcyl::api::ReceiptResponseItemPaidDto::createShared();
 
@@ -488,7 +493,8 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_401, responseDto);
     }
 
-    responseDto->success = receiptOper.paidForItem(json->receiptID, json->itemName, authObject->token);
+    responseDto->success = receiptOper.paidForItem(
+        json->receiptID, json->itemName, authObject->token);
     return createDtoResponse(Status::CODE_200, responseDto);
   }
 };

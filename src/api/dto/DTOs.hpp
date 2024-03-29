@@ -16,8 +16,7 @@ class MyDto : public oatpp::DTO {
   DTO_FIELD(String, message);    // Add this line
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl
 
 #include OATPP_CODEGEN_END(DTO)
-

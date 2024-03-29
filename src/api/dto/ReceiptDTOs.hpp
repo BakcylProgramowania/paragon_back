@@ -54,8 +54,6 @@ class ReceiptResponseItemPaidDto : public oatpp::DTO {
   DTO_FIELD(Boolean, success);
 };
 
-
-
 class ReceiptFriendsDto : public oatpp::DTO {
  public:
   DTO_INIT(ReceiptFriendsDto, DTO)
@@ -104,7 +102,7 @@ class ReceiptsResponseDto : public oatpp::DTO {
   DTO_FIELD(Fields<List<Object<ReceiptShortDto>>>, data);
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl
 
 #include OATPP_CODEGEN_END(DTO)

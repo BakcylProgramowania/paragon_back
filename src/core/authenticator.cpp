@@ -43,5 +43,5 @@ bool Authenticator::tokenCheck(const std::string& token) const {
   return database.tokenCheck(token);
 }
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

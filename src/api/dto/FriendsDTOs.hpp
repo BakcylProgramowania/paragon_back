@@ -52,7 +52,7 @@ class RemoveFriendResponseDto : public oatpp::DTO {
   DTO_FIELD(Boolean, success);
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl
 
 #include OATPP_CODEGEN_END(DTO)

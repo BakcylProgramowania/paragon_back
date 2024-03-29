@@ -11,5 +11,5 @@ class TokenGenerator {
   std::string generateToken() const;
 };
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

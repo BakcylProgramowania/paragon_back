@@ -22,7 +22,9 @@ class SwaggerComponent {
     oatpp::swagger::DocumentInfo::Builder builder;
 
     builder.setTitle("PARAGON")
-        .setDescription("Example project for scanning receipts and splitting bills with friends, accompanied by Swagger documentation.")
+        .setDescription(
+            "Example project for scanning receipts and splitting bills with "
+            "friends, accompanied by Swagger documentation.")
         .setVersion("1.0")
         .setContactName("Bakcyl programowania 2024")
         .setContactUrl("https://paragon.wroc.ovh/")
@@ -52,5 +54,5 @@ class SwaggerComponent {
   }());
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl
