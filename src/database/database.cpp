@@ -52,15 +52,15 @@ bakcyl::database::Database::returnUserFriendList(
 }
 
 bool bakcyl::database::Database::addUserToFriendList(
-    const std::string& token, const std::string& friendUsernameToAdd) const {
+    const std::string& userID, const std::string& friendUsernameToAdd) const {
   return bakcyl::database::Database::impl->addUserToFriendList(
-      token, friendUsernameToAdd);
+      userID, friendUsernameToAdd);
 }
 
 bool bakcyl::database::Database::removeUserFromFriendList(
-    const std::string& token, const std::string& friendUsernameToRemove) const {
+    const std::string& userID, const std::string& friendUsernameToRemove) const {
   return bakcyl::database::Database::impl->removeUserFromFriendList(
-      token, friendUsernameToRemove);
+      userID, friendUsernameToRemove);
 }
 
 std::string bakcyl::database::Database::getUserIDUsingToken(

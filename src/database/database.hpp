@@ -28,10 +28,10 @@ class Database {
 
   std::vector<std::pair<std::string, std::string>> returnUserFriendList(
       const std::string& userID) const;
-  bool addUserToFriendList(const std::string& token,
+  bool addUserToFriendList(const std::string& userID,
                            const std::string& friendUsernameToAdd) const;
   bool removeUserFromFriendList(
-      const std::string& token,
+      const std::string& userID,
       const std::string& friendUsernameToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
