@@ -24,7 +24,7 @@ TEST(DatabaseBalanceTest, ExpectedValidBalanceToWork) {
   EXPECT_EQ(database.getBalance("6605b3d13431efc35a0d7cb7"), 15.55);
 }
 
-TEST(DatabaseBalanceTest, ExpectedFriendsToWork) {
+TEST(DatabaseFriendsTest, ExpectedFriendsToWork) {
   bakcyl::database::Database database(
       "mongodb+srv://"
       "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/");

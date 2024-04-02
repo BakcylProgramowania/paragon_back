@@ -61,7 +61,7 @@ int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
 };
 
 std::vector<bakcyl::core::ReceiptShortView> ReceiptOperations::getReceipts(
-    const std::string& token) {
+    const std::string& token) const {
   return database.getReceipts(database.getUserIDUsingToken(token));
 };
 
@@ -72,13 +72,13 @@ bakcyl::core::Receipt ReceiptOperations::getReceipt(
 
 bool ReceiptOperations::paidForItem(const std::string& receiptID,
                                     const std::string& itemName,
-                                    const std::string& token) {
+                                    const std::string& token) const {
   return database.paidForItem(receiptID, itemName,
                               database.getUserIDUsingToken(token));
 };
 
 std::vector<bakcyl::core::ItemToPay> ReceiptOperations::getItemsToPay(
-    const std::string& token) {
+    const std::string& token) const {
   return database.getItemsToPay(database.getUserIDUsingToken(token));
 };
 
