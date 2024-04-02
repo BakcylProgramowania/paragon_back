@@ -1,10 +1,10 @@
 #pragma once
-#include "core/structures.hpp"
-
 #include <mongocxx/client.hpp>
 #include <mongocxx/uri.hpp>
 #include <utility>
 #include <vector>
+
+#include "core/structures.hpp"
 
 namespace bakcyl {
 namespace database {
@@ -27,20 +27,25 @@ class DatabaseImpl {
       const std::string& userID) const;
   bool addUserToFriendList(const std::string& userID,
                            const std::string& friendUsernameToAdd) const;
-  bool removeUserFromFriendList(const std::string& userID,
-                                const std::string& friendUsernameToRemove) const;
+  bool removeUserFromFriendList(
+      const std::string& userID,
+      const std::string& friendUsernameToRemove) const;
   std::string getUserIDUsingToken(const std::string& token) const;
   bool isThereUserWithThisID(const std::string& userID) const;
   int createReceiptInHistory(const bakcyl::core::Receipt& receipt);
   bakcyl::core::Receipt getReceipt(const std::string& receiptID);
   bool changeIfMerged(const std::string& receiptID, const bool& newState);
-  std::vector<bakcyl::core::ReceiptShortView> getReceipts(const std::string& authorID);
+  std::vector<bakcyl::core::ReceiptShortView> getReceipts(
+      const std::string& userID);
+  bool paidForItem(const std::string& receiptID, const std::string& itemName,
+                   const std::string& whoBuy);
+  std::vector<bakcyl::core::ItemToPay> getItemsToPay(const std::string& userID);
   std::string getUserIDUsingUsername(const std::string& username) const;
+  bool isThereUserWithThisUsername(const std::string& username) const;
 
  private:
   bool isUserPasswordEqualGivenPassword(mongocxx::cursor& cursor,
                                         const std::string& password) const;
-  bool isThereUserWithThisUsername(const std::string& username) const;
   bool isThereUserWithThisEmail(const std::string& email) const;
 
   mongocxx::uri uri;
@@ -48,5 +53,5 @@ class DatabaseImpl {
   mongocxx::database database;
 };
 
-}
-}
+}  // namespace database
+}  // namespace bakcyl

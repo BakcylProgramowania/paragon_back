@@ -12,5 +12,5 @@ std::string TokenGenerator::generateToken() const {
   return boost::uuids::to_string(uuid);
 }
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

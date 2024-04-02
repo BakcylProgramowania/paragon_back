@@ -58,5 +58,5 @@ class AppComponent {
   ([] { return oatpp::parser::json::mapping::ObjectMapper::createShared(); }());
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl

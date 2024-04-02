@@ -12,5 +12,5 @@ class EnvironmentWrapper {
   ~EnvironmentWrapper() { oatpp::base::Environment::destroy(); }
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl

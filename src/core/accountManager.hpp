@@ -17,9 +17,10 @@ class AccountManager {
       const std::string& token) const;
   bool addUserToFriendList(const std::string& token,
                            const std::string& friendUsernameToAdd) const;
-  bool removeUserFromFriendList(const std::string& token,
-                                const std::string& friendUsernameToRemove) const;
+  bool removeUserFromFriendList(
+      const std::string& token,
+      const std::string& friendUsernameToRemove) const;
 };
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl
