@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <mutex>
 
 #include "core/structures.hpp"
 
@@ -48,6 +49,7 @@ class Database {
 
  private:
   std::unique_ptr<DatabaseImpl> impl;
+  mutable std::mutex mtx;
 };
 
 }  // namespace database
