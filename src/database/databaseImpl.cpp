@@ -276,7 +276,16 @@ bool DatabaseImpl::addUserToFriendList(
             "$addToSet",
             make_document(kvp("UserFriendList",
                               getUserIDUsingUsername(friendUsernameToAdd))))));
-    if (result) return true;
+    if (result)
+    {
+      result = collection.update_one(
+        make_document(kvp("UserID", getUserIDUsingUsername(friendUsernameToAdd))),
+        make_document(kvp(
+            "$addToSet",
+            make_document(kvp("UserFriendList", userID)))));
+      
+      if(result) return true;
+    }
   }
 
   return false;
@@ -302,7 +311,13 @@ bool DatabaseImpl::removeUserFromFriendList(
             "$pull", make_document(kvp(
                          "UserFriendList",
                          getUserIDUsingUsername(friendUsernameToRemove))))));
-    if (result) return true;
+    if (result)  {
+      result = collection.update_one(
+        make_document(kvp("UserID", getUserIDUsingUsername(friendUsernameToRemove))),
+        make_document(kvp(
+            "$pull", make_document(kvp(
+                         "UserFriendList", userID)))));
+    }
   }
 
   return false;
