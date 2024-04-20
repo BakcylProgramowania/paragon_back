@@ -317,6 +317,7 @@ bool DatabaseImpl::removeUserFromFriendList(
         make_document(kvp(
             "$pull", make_document(kvp(
                          "UserFriendList", userID)))));
+      if(result) return true;
     }
   }
 
