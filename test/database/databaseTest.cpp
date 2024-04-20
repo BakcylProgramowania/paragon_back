@@ -31,8 +31,12 @@ TEST(DatabaseFriendsTest, ExpectedFriendsToWork) {
 
   EXPECT_TRUE(database.addUserToFriendList("6605b3d13431efc35a0d7cb7", "utestfriend"));
 
+  EXPECT_FALSE(database.addUserToFriendList("6605b3d13431efc35a0d7cb7", "utestfriend"));
+
   std::vector<std::pair<std::string, std::string>> friendList = {{"660692a0a1a7a813cd0a51f1", "utestfriend"}};
   EXPECT_EQ(database.returnUserFriendList("6605b3d13431efc35a0d7cb7"), friendList);
+  std::vector<std::pair<std::string, std::string>> friendList2 = {{"6605b3d13431efc35a0d7cb7", "utest"}};
+  EXPECT_EQ(databse.returnUserFriendList("660692a0a1a7a813cd0a51f1", friendList2));
 
   EXPECT_TRUE(database.addUserToFriendList("6605b3d13431efc35a0d7cb7", "utestfriend2"));
 
@@ -41,7 +45,29 @@ TEST(DatabaseFriendsTest, ExpectedFriendsToWork) {
 
   EXPECT_TRUE(database.removeUserFromFriendList("6605b3d13431efc35a0d7cb7", "utestfriend"));
   EXPECT_TRUE(database.removeUserFromFriendList("6605b3d13431efc35a0d7cb7", "utestfriend2"));
+
+  EXPECT_FALSE(database.removeUserFromFriendList("6605b3d13431efc35a0d7cb7", "utestfriend"));
+  EXPECT_FALSE(database.removeUserFromFriendList("6605b3d13431efc35a0d7cb7", "utestfriend2"));
   
   friendList.clear();
+  friendList2.clear();
   EXPECT_EQ(database.returnUserFriendList("6605b3d13431efc35a0d7cb7"), friendList);
+  EXPECT_EQ(database.returnUserFriendList("660692a0a1a7a813cd0a51f1"), friendList2);
+}
+
+TEST(DatabaseManagingUsersTest, ExpectedCreatingDeletingUsersToWork) {
+  bakcyl::database::Database database(
+      "mongodb+srv://"
+      "bakcyl324:Bakcyl768324@paragondatabase.jedczob.mongodb.net/");
+  EXPECT_TRUE(database.createUser("utestNewUser", "utestNewUserPass", "utestNewUser@notExistingEmail.com", "utestNewUserRandomToken" ));
+  EXPECT_FALSE(database.createUser("utestNewUser", "utestNewUserPass", "utestNewUser@notExistingEmail.com", "utestNewUserRandomToken" ));
+  EXPECT_FALSE(database.createUser("utestNewUser", "utestNewUserPass", "utestNewUser@notExistingEmail.com2", "utestNewUserRandomToken" ));
+  EXPECT_FALSE(database.createUser("utestNewUser2", "utestNewUserPass", "utestNewUser@notExistingEmail.com", "utestNewUserRandomToken" ));
+
+  EXPECT_EQ(detabase.getToken("utestNewUser", "utestNewUserPass", "utestNewUserRandomToken"));
+  
+  EXPECT_EQ(detabase.getgetUserIDUsingToken("utestNewUserRandomToken"), database.getUserIDUsingUsername("utestNewUser"));
+  
+  EXPECT_TRUE(database.deleteUser("utestNewUser", "utestNewUserPass"));
+  EXPECT_FALSE(database.deleteUser("utestNewUser", "utestNewUserPass"));
 }
