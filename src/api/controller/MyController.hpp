@@ -9,11 +9,13 @@
 #include "dto/LoginDTOs.hpp"
 #include "dto/ReceiptDTOs.hpp"
 #include "dto/RegisterDTOs.hpp"
+#include "oatpp/core/Types.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/core/utils/ConversionUtils.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/web/server/api/ApiController.hpp"
+#include <oatpp/web/protocol/http/outgoing/Response.hpp>
 
 using namespace oatpp::web::server::handler;
 
@@ -292,7 +294,8 @@ class MyController : public oatpp::web::server::api::ApiController {
         for (const auto& itemJson : *itemsList) {
           auto item = bakcyl::core::Item{itemJson->whoBuy->c_str(),
                                          itemJson->item->c_str(),
-                                         itemJson->price, itemJson->amount};
+                                         static_cast<double>(itemJson->price),
+                                         static_cast<double>(itemJson->amount)};
           items.push_back(item);
         }
       }
@@ -330,6 +333,87 @@ class MyController : public oatpp::web::server::api::ApiController {
       responseDto->success = true;
       responseDto->data = {};
       responseDto->data->push_back({"friends", friendsDto});
+      return createDtoResponse(Status::CODE_200, responseDto);
+    }
+  }
+  
+  ENDPOINT_INFO(mergeReceipts) {
+    info->summary = "MergeReceipt endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+
+  ENDPOINT("POST", "/mergeReceipt", mergeReceipts,
+           AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>, authObject),
+           BODY_STRING(String, body)) {
+
+    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
+    ->readFromString<oatpp::Object<bakcyl::api::MergeReceiptsDto>>(body);
+
+    auto responseDto = bakcyl::api::MergeReceiptsResponseDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+        responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    if (!json || !json->receiptsId || !json->receiptName) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_400, responseDto);
+    }
+
+    std::vector<std::string> receiptIDs;
+
+    for (auto& receiptId : *json->receiptsId)
+      receiptIDs.push_back(receiptId);
+
+    std::string receiptName = json->receiptName;
+
+    int errorCode = receiptOper.mergeReceipt(receiptIDs, receiptName, database.getUserIDUsingToken(authObject->token));
+
+    if (errorCode != 0) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_400, responseDto);
+    } else {
+      responseDto->success = true;
+      responseDto->receiptName = receiptName;
+      return createDtoResponse(Status::CODE_200, responseDto);
+    }
+  }
+
+  ENDPOINT_INFO(unmergeReceipts) {
+    info->summary = "UnmergeReceipt endpoint";
+    info->addSecurityRequirement("bearer_auth");
+  }
+
+  ENDPOINT("POST", "/unmergeReceipt", unmergeReceipts,
+            AUTHORIZATION(std::shared_ptr<DefaultBearerAuthorizationObject>, authObject),
+            BODY_STRING(String, body)) {
+    
+    auto json = oatpp::parser::json::mapping::ObjectMapper::createShared()
+    ->readFromString<oatpp::Object<bakcyl::api::UnmergeReceiptsDto>>(body);
+
+    auto responseDto = bakcyl::api::UnmergeReceiptResponseDto::createShared();
+
+    if (!auth.tokenCheck(authObject->token)) {
+        responseDto->success = false;
+      return createDtoResponse(Status::CODE_401, responseDto);
+    }
+
+    if (!json || !json->receiptId) {
+      responseDto->success = false;
+      return createDtoResponse(Status::CODE_400, responseDto);
+    }
+
+    std::string receiptId = json->receiptId;
+    
+    int errorCode = receiptOper.unmergeReceipt(receiptId);
+
+    if (errorCode != 0) {
+        responseDto->success = false;
+        return createDtoResponse(Status::CODE_400, responseDto);
+    } else{
+      responseDto->success = true;
       return createDtoResponse(Status::CODE_200, responseDto);
     }
   }

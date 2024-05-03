@@ -11,7 +11,7 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
   std::vector<bakcyl::core::User> users;
 
   for (const auto& item : items) {
-    int cost = item.price * item.amount;
+    double cost = item.price * item.amount;
     bool foundEqualUserID = false;
 
     if (!database.isThereUserWithThisID(item.whoBuy)) return {};
@@ -40,59 +40,62 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
 
 int ReceiptOperations::mergeReceipt(std::vector<std::string>& receiptIDs, std::string& receiptName, std::string& author) const{
   bakcyl::core::Receipt mergedReceipt;
-  std::vector<bakcyl::core::Item> items;
   
   if (!database.isThereUserWithThisID(author)) return {};
 
+  mergedReceipt.mergedReceipts = receiptIDs;
   mergedReceipt.receiptName = receiptName;
   mergedReceipt.author = author;
-  mergedReceipt.mergedReceipts = receiptIDs;
   
   for (auto& receiptId : receiptIDs) {
     bakcyl::core::Receipt receipt = database.getReceipt(receiptId);
-    items.insert(items.end(), receipt.items.begin(), receipt.items.end());
-    
+
+    for (bakcyl::core::Item& Receipt : receipt.items) {
+      Receipt.amount = 1;
+      mergedReceipt.items.push_back(Receipt);
+    } // lepsza nazwa dla Receipt
+
     database.changeIfMerged(receiptId, true);
   }
 
   return saveReceipt(mergedReceipt);
 };
 
-int ReceiptOperations::unmergeReceipt(std::string& mergedReceiptID) const{
+int ReceiptOperations::unmergeReceipt(std::string& mergedReceiptID) const {
   bakcyl::core::Receipt receipt = database.getReceipt(mergedReceiptID);
-  std::vector<bakcyl::core::ReceiptShortView> receiptsShortView = database.getReceipts(receipt.author);
-  
-  for (auto& receiptID : receipt.mergedReceipts) {
-    for (auto& receiptShortView : receiptsShortView) {
-      if (receiptID == receiptShortView.receiptID) {
-        database.changeIfMerged(receiptID, false);
-        break;
-      }
-    }
-  }
 
-  return database.changeIfMerged(mergedReceiptID, true);
+  for (auto& receiptID : receipt.mergedReceipts)
+    database.changeIfMerged(receiptID, false);
+
+  database.changeIfMerged(mergedReceiptID, true);
+
+  return 0;
 };
 
 int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
   std::vector<std::string> usersIncluded;
   
   receipt.date = std::to_string(time(0));
+
   for (auto& item : receipt.items) {
     item.price = item.price * item.amount;
     item.amount = 0;
 
     bool found = false;
+
     for(const auto& user : usersIncluded) {
       if(user == item.whoBuy) {
         found = true;
         break;
       }
     }
+
     if(!found)
       usersIncluded.push_back(item.whoBuy);
   }
+
   receipt.usersIncluded = usersIncluded;
+  
   return database.createReceiptInHistory(receipt);
 };
 
