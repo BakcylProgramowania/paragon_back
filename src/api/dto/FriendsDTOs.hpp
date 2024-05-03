@@ -28,7 +28,7 @@ class AddFriendDto : public oatpp::DTO {
  public:
   DTO_INIT(AddFriendDto, DTO)
 
-  DTO_FIELD(String, id);
+  DTO_FIELD(String, username);
 };
 
 class AddFriendResponseDto : public oatpp::DTO {
@@ -42,7 +42,7 @@ class RemoveFriendDto : public oatpp::DTO {
  public:
   DTO_INIT(RemoveFriendDto, DTO)
 
-  DTO_FIELD(String, id);
+  DTO_FIELD(String, username);
 };
 
 class RemoveFriendResponseDto : public oatpp::DTO {
@@ -52,7 +52,7 @@ class RemoveFriendResponseDto : public oatpp::DTO {
   DTO_FIELD(Boolean, success);
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl
 
 #include OATPP_CODEGEN_END(DTO)

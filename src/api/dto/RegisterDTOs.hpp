@@ -25,7 +25,7 @@ class RegisterResponseDto : public oatpp::DTO {
   DTO_FIELD(Int32, errorCode);
 };
 
-}
-}
+}  // namespace api
+}  // namespace bakcyl
 
 #include OATPP_CODEGEN_END(DTO)

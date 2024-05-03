@@ -24,5 +24,5 @@ class Authenticator {
   bool tokenCheck(const std::string& token) const;
 };
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

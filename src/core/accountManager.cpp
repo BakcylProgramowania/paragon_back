@@ -3,8 +3,7 @@
 namespace bakcyl {
 namespace core {
 
-AccountManager::AccountManager(bakcyl::database::Database& db)
-    : database(db) {}  // Update constructor
+AccountManager::AccountManager(bakcyl::database::Database& db) : database(db) {}
 
 bool AccountManager::changeBalance(const std::string& token, double amount) {
   return database.changeBalance(database.getUserIDUsingToken(token), amount);
@@ -20,15 +19,19 @@ AccountManager::returnUserFriendList(const std::string& token) const {
 }
 
 bool AccountManager::addUserToFriendList(
-    const std::string& token, const std::string& friendIdToAdd) const {
+    const std::string& token, const std::string& friendUsernameToAdd) const {
+  if (friendUsernameToAdd.empty()) return false;
+
+  if (!database.isThereUserWithThisUsername(friendUsernameToAdd)) return false;
+
   return database.addUserToFriendList(database.getUserIDUsingToken(token),
-                                      friendIdToAdd);
+                                      friendUsernameToAdd);
 }
 bool AccountManager::removeUserFromFriendList(
-    const std::string& token, const std::string& friendIdToRemove) const {
+    const std::string& token, const std::string& friendIdUsernameRemove) const {
   return database.removeUserFromFriendList(database.getUserIDUsingToken(token),
-                                           friendIdToRemove);
+                                           friendIdUsernameRemove);
 }
 
-}
-}
+}  // namespace core
+}  // namespace bakcyl

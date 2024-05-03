@@ -31,5 +31,16 @@ struct ReceiptShortView {
   std::string receiptID;
 };
 
-}
-}
+struct ReceiptShortView {
+  std::string receiptName;
+  std::string receiptID;
+};
+
+struct ItemToPay {
+  std::string receiptID;
+  std::string itemName;
+  float price;
+};
+
+}  // namespace core
+}  // namespace bakcyl

@@ -257,14 +257,15 @@ DatabaseImpl::returnUserFriendList(const std::string& userID) const {
   return friendList;
 }
 
-bool DatabaseImpl::addUserToFriendList(const std::string& userID,
-                                       const std::string& friendIdToAdd) const {
+bool DatabaseImpl::addUserToFriendList(
+    const std::string& userID, const std::string& friendUsernameToAdd) const {
   auto collection = database["userFriendList"];
 
-  auto cursor = collection.find_one(
-      make_document(kvp("UserID", userID),
-                    kvp("UserFriendList",
-                        make_document(kvp("$in", make_array(friendIdToAdd))))));
+  auto cursor = collection.find_one(make_document(
+      kvp("UserID", userID),
+      kvp("UserFriendList",
+          make_document(kvp("$in", make_array(getUserIDUsingUsername(
+                                       friendUsernameToAdd)))))));
   if (cursor) return false;
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
@@ -272,21 +273,34 @@ bool DatabaseImpl::addUserToFriendList(const std::string& userID,
     auto result = collection.update_one(
         make_document(kvp("UserID", userID)),
         make_document(kvp(
-            "$addToSet", make_document(kvp("UserFriendList", friendIdToAdd)))));
-    if (result) return true;
+            "$addToSet",
+            make_document(kvp("UserFriendList",
+                              getUserIDUsingUsername(friendUsernameToAdd))))));
+    if (result)
+    {
+      result = collection.update_one(
+        make_document(kvp("UserID", getUserIDUsingUsername(friendUsernameToAdd))),
+        make_document(kvp(
+            "$addToSet",
+            make_document(kvp("UserFriendList", userID)))));
+      
+      if(result) return true;
+    }
   }
 
   return false;
 }
 
 bool DatabaseImpl::removeUserFromFriendList(
-    const std::string& userID, const std::string& friendIdToRemove) const {
+    const std::string& userID,
+    const std::string& friendUsernameToRemove) const {
   auto collection = database["userFriendList"];
 
   auto cursor = collection.find_one(make_document(
       kvp("UserID", userID),
       kvp("UserFriendList",
-          make_document(kvp("$in", make_array(friendIdToRemove))))));
+          make_document(kvp("$in", make_array(getUserIDUsingUsername(
+                                       friendUsernameToRemove)))))));
   if (!cursor) return false;
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
@@ -294,8 +308,17 @@ bool DatabaseImpl::removeUserFromFriendList(
     auto result = collection.update_one(
         make_document(kvp("UserID", userID)),
         make_document(kvp(
-            "$pull", make_document(kvp("UserFriendList", friendIdToRemove)))));
-    if (result) return true;
+            "$pull", make_document(kvp(
+                         "UserFriendList",
+                         getUserIDUsingUsername(friendUsernameToRemove))))));
+    if (result)  {
+      result = collection.update_one(
+        make_document(kvp("UserID", getUserIDUsingUsername(friendUsernameToRemove))),
+        make_document(kvp(
+            "$pull", make_document(kvp(
+                         "UserFriendList", userID)))));
+      if(result) return true;
+    }
   }
 
   return false;
@@ -317,16 +340,16 @@ std::string DatabaseImpl::getUserIDUsingToken(const std::string& token) const {
 
 bool DatabaseImpl::isThereUserWithThisID(const std::string& userID) const {
   auto collection = database["users"];
-  
+
   try {
     bsoncxx::oid oid(userID);
     auto cursor = collection.find_one(make_document(kvp("_id", oid)));
-    
+
     if (cursor)
       return true;
     else
       return false;
-  } catch(const std::exception& e) {
+  } catch (const std::exception& e) {
     return false;
   }
 }
@@ -337,49 +360,37 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
   auto items = bsoncxx::builder::basic::array{};
   auto mergedReceipts = bsoncxx::builder::basic::array{};
 
-  for(const auto& element : receipt.usersIncluded)
-  {
+  for (const auto& element : receipt.usersIncluded) {
     usersIncluded.append(element);
   }
 
-  for(const auto& element : receipt.items)
-  {
-    items.append(make_document(kvp("whoBuy", element.whoBuy), kvp("itemName", element.itemName), kvp("price", element.price)));
+  for (const auto& element : receipt.items) {
+    items.append(make_document(
+        kvp("whoBuy", element.whoBuy), kvp("itemName", element.itemName),
+        kvp("price", element.price), kvp("paid", false)));
   }
 
-  if(receipt.mergedReceipts.size() > 0)
-  {
-    for(const auto& element : receipt.mergedReceipts)
-    {
+  if (receipt.mergedReceipts.size() > 0) {
+    for (const auto& element : receipt.mergedReceipts) {
       mergedReceipts.append(element);
     }
     collection.insert_one(make_document(
-      kvp("author", receipt.author),
-      kvp("receiptName", receipt.receiptName),
-      kvp("date", receipt.date),
-      kvp("usersIncluded", usersIncluded),
-      kvp("items", items),
-      kvp("merged", false),
-      kvp("mergedReceipts", mergedReceipts)
-    ));
-  }
-  else
-  {
+        kvp("author", receipt.author), kvp("receiptName", receipt.receiptName),
+        kvp("date", receipt.date), kvp("usersIncluded", usersIncluded),
+        kvp("items", items), kvp("merged", false),
+        kvp("mergedReceipts", mergedReceipts)));
+  } else {
     collection.insert_one(make_document(
-      kvp("author", receipt.author),
-      kvp("receiptName", receipt.receiptName),
-      kvp("date", receipt.date),
-      kvp("usersIncluded", usersIncluded),
-      kvp("items", items),
-      kvp("merged", false)
-    ));
+        kvp("author", receipt.author), kvp("receiptName", receipt.receiptName),
+        kvp("date", receipt.date), kvp("usersIncluded", usersIncluded),
+        kvp("items", items), kvp("merged", false)));
   }
 
   return 0;
 }
 
 bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
-  
+
   auto collection = database["receiptHistory"];
   bakcyl::core::Receipt receipt;
 
@@ -393,70 +404,84 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
   receipt.receiptName = doc_view["receiptName"].get_string().value.to_string();
 
   auto array_value_usersIncluded = doc_view["usersIncluded"];
-  if (array_value_usersIncluded && array_value_usersIncluded.type() == bsoncxx::type::k_array) {
-            
+
+  if (array_value_usersIncluded &&
+      array_value_usersIncluded.type() == bsoncxx::type::k_array) {
+
     for (const auto& element : array_value_usersIncluded.get_array().value) {
       receipt.usersIncluded.push_back(element.get_string().value.to_string());
     }
   }
-  
+
+
   auto array_value_mergedReceipts = doc_view["mergedReceipts"];
-  if (array_value_mergedReceipts && array_value_mergedReceipts.type() == bsoncxx::type::k_array) {
-            
+  if (array_value_mergedReceipts &&
+      array_value_mergedReceipts.type() == bsoncxx::type::k_array) {
+    
     for (const auto& element : array_value_mergedReceipts.get_array().value) {
       receipt.mergedReceipts.push_back(element.get_string().value.to_string());
     }
   }
 
   auto array_value_items = doc_view["items"];
-  
+
   if (array_value_items && array_value_items.type() == bsoncxx::type::k_array) {
     for (auto& object : array_value_items.get_array().value) {
       bakcyl::core::Item item;
 
       item.itemName = object["itemName"].get_string().value.to_string();
 
-      if(object["price"].type() == bsoncxx::type::k_double) {
-        item.price = object["price"].get_double().value;  
-      }
-      else
-      {
+      if (object["price"].type() == bsoncxx::type::k_double) {
+        item.price = object["price"].get_double().value;
+      } else {
         item.price = object["price"].get_int32().value;
       }
 
       item.whoBuy = object["whoBuy"].get_string().value.to_string();
+      item.paid = object["paid"].get_bool().value;
 
-      receipt.items.push_back(item); 
+      receipt.items.push_back(item);
     }
   }
 
   return receipt;
 }
 
-bool bakcyl::database::DatabaseImpl::changeIfMerged(const std::string& receiptID, const bool& newState) {
+
+bool bakcyl::database::DatabaseImpl::changeIfMerged(
+    const std::string& receiptID, const bool& newState) {
   auto collection = database["receiptHistory"];
 
   bsoncxx::oid document_id(receiptID);
   auto cursor = collection.find_one(make_document(kvp("_id", document_id)));
   auto doc_view = cursor->view();
-  if(doc_view["merged"].get_bool().value == newState)
-  {
+
+  if (doc_view["merged"].get_bool().value == newState) {
     return false;
   }
 
-  collection.update_one(make_document(kvp("_id", document_id)) ,make_document(kvp("$set", make_document(kvp("merged", newState)))));
+  collection.update_one(
+      make_document(kvp("_id", document_id)),
+      make_document(kvp("$set", make_document(kvp("merged", newState)))));
 
   return true;
 }
 
-std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getReceipts(const std::string& authorID) {
+
+std::vector<bakcyl::core::ReceiptShortView>
+bakcyl::database::DatabaseImpl::getReceipts(const std::string& userID) {
   auto collection = database["receiptHistory"];
 
   std::vector<bakcyl::core::ReceiptShortView> receipts;
+  auto cursor = collection.find(make_document(
+      kvp("$or",
+          make_array(
+              make_document(kvp("author", userID), kvp("merged", false)),
+              make_document(kvp("usersIncluded",
+                                make_document(kvp("$in", make_array(userID)))),
+                            kvp("merged", false))))));
 
-  auto cursor = collection.find(make_document(kvp("author", authorID), kvp("merged", false)));
-  for(auto doc : cursor)
-  {
+  for (auto doc : cursor) {
     bakcyl::core::ReceiptShortView receipt;
 
     receipt.receiptName = doc["receiptName"].get_string().value.to_string();
@@ -466,5 +491,80 @@ std::vector<bakcyl::core::ReceiptShortView> bakcyl::database::DatabaseImpl::getR
   return receipts;
 }
 
+bool bakcyl::database::DatabaseImpl::paidForItem(const std::string& receiptID,
+                                                 const std::string& itemName,
+                                                 const std::string& whoBuy) {
+  auto collection = database["receiptHistory"];
+  bsoncxx::oid document_id(receiptID);
+
+  auto cursor = collection.find_one(make_document(
+      kvp("_id", document_id),
+      kvp("items",
+          make_document(
+              kvp("$elemMatch", make_document(kvp("whoBuy", whoBuy),
+                                              kvp("itemName", itemName)))))));
+  auto doc_view = cursor->view();
+  if (!cursor) {
+    return false;
+  }
+
+  auto array_value_items = doc_view["items"];
+  for (auto& object : array_value_items.get_array().value) {
+    if (object["whoBuy"].get_string().value.to_string() == whoBuy &&
+        object["itemName"].get_string().value.to_string() == itemName &&
+        object["paid"].get_bool().value == true) {
+      return false;
+    }
+  }
+
+  collection.update_one(
+      make_document(
+          kvp("_id", document_id),
+          kvp("items",
+              make_document(kvp("$elemMatch",
+                                make_document(kvp("whoBuy", whoBuy),
+                                              kvp("itemName", itemName)))))),
+      make_document(kvp("$set", make_document(kvp("items.$.paid", true)))));
+  return true;
 }
+
+std::vector<bakcyl::core::ItemToPay>
+bakcyl::database::DatabaseImpl::getItemsToPay(const std::string& userID) {
+  std::vector<bakcyl::core::ItemToPay> itemsToPay;
+  std::vector<bakcyl::core::ReceiptShortView> receipts = getReceipts(userID);
+  for (auto receiptShortView : receipts) {
+    std::string receiptID = receiptShortView.receiptID;
+    bakcyl::core::ItemToPay itemToPay;
+
+    auto receipt = getReceipt(receiptID);
+    std::vector<bakcyl::core::Item> items = receipt.items;
+
+    for (auto item : items) {
+      if (item.whoBuy == userID && item.paid == false) {
+        itemToPay.itemName = item.itemName;
+        itemToPay.price = item.price;
+        itemToPay.receiptID = receiptID;
+        itemsToPay.push_back(itemToPay);
+      }
+    }
+  }
+
+  return itemsToPay;
 }
+
+std::string bakcyl::database::DatabaseImpl::getUserIDUsingUsername(
+    const std::string& username) const {
+  auto collection = database["users"];
+
+  auto cursor = collection.find(make_document(kvp("UserName", username)));
+
+  for (auto&& doc : cursor) {
+    auto idElement = doc["_id"];
+    return idElement.get_oid().value.to_string();
+  }
+
+  return "";
+}
+
+}  // namespace database
+}  // namespace bakcyl
