@@ -544,7 +544,11 @@ class MyController : public oatpp::web::server::api::ApiController {
     }
 
     std::vector<std::string> receiptIDs;
-
+    int receiptIDsCapacity = 0; 
+    for (const auto& receiptId : *json->receiptsId){
+      receiptIDsCapacity ++;  
+    }
+    receiptIds.reserve(receiptIDsCapacity);
     for (const auto& receiptId : *json->receiptsId){
       receiptIDs.push_back(receiptId);
     }
