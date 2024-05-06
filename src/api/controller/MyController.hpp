@@ -548,7 +548,7 @@ class MyController : public oatpp::web::server::api::ApiController {
     for (const auto& receiptId : *json->receiptsId){
       receiptIDsCapacity ++;  
     }
-    receiptIds.reserve(receiptIDsCapacity);
+    receiptIDs.reserve(receiptIDsCapacity);
     for (const auto& receiptId : *json->receiptsId){
       receiptIDs.push_back(receiptId);
     }
