@@ -545,13 +545,14 @@ class MyController : public oatpp::web::server::api::ApiController {
 
     std::vector<std::string> receiptIDs;
 
-    for (auto& receiptId : *json->receiptsId)
+    for (const auto& receiptId : *json->receiptsId){
       receiptIDs.push_back(receiptId);
+    }
 
-    std::string receiptName = json->receiptName;
-    std::string author = database.getUserIDUsingToken(authObject->token);
+    const auto receiptName = json->receiptName;
+    const auto author = database.getUserIDUsingToken(authObject->token);
 
-    int errorCode = receiptOper.mergeReceipt(receiptIDs, receiptName, author);
+    const int errorCode = receiptOper.mergeReceipt(receiptIDs, receiptName, author);
 
     if (errorCode != 0) {
       responseDto->success = false;
