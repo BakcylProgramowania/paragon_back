@@ -549,8 +549,9 @@ class MyController : public oatpp::web::server::api::ApiController {
       receiptIDs.push_back(receiptId);
 
     std::string receiptName = json->receiptName;
+    std::string author = database.getUserIDUsingToken(authObject->token);
 
-    int errorCode = receiptOper.mergeReceipt(receiptIDs, receiptName, database.getUserIDUsingToken(authObject->token));
+    int errorCode = receiptOper.mergeReceipt(receiptIDs, receiptName, author);
 
     if (errorCode != 0) {
       responseDto->success = false;

@@ -15,6 +15,7 @@ struct Item {
   std::string itemName;
   double price;
   double amount;
+  bool paid;
 };
 
 struct Receipt {
@@ -24,11 +25,6 @@ struct Receipt {
     std::string date;
     std::vector<bakcyl::core::Item> items;
     std::vector<std::string> mergedReceipts;
-};
-
-struct ReceiptShortView {
-  std::string receiptName;
-  std::string receiptID;
 };
 
 struct ReceiptShortView {
