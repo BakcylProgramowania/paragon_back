@@ -11,6 +11,7 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
   std::vector<bakcyl::core::User> users;
 
   for (const auto& item : items) {
+
     float cost = item.price * item.amount;
 
     bool foundEqualUserID = false;
@@ -39,24 +40,63 @@ std::vector<bakcyl::core::User> ReceiptOperations::calculateReceipt(
   return users;
 };
 
+int ReceiptOperations::mergeReceipt(std::vector<std::string>& receiptIDs, const std::string& receiptName, const std::string& author) const{
+  bakcyl::core::Receipt mergedReceipt;
+  
+  if (!database.isThereUserWithThisID(author)) return 1;
+
+  mergedReceipt.mergedReceipts = receiptIDs;
+  mergedReceipt.receiptName = receiptName;
+  mergedReceipt.author = author;
+  
+  for (const auto& receiptId : receiptIDs) {
+    bakcyl::core::Receipt receipt = database.getReceipt(receiptId);
+
+    for (bakcyl::core::Item& item : receipt.items) {
+      item.amount = 1;
+      mergedReceipt.items.push_back(item);
+    } 
+
+    database.changeIfMerged(receiptId, true);
+  }
+
+  return saveReceipt(mergedReceipt);
+};
+
+int ReceiptOperations::unmergeReceipt(std::string& mergedReceiptID) const {
+  bakcyl::core::Receipt receipt = database.getReceipt(mergedReceiptID);
+
+  for (auto& receiptID : receipt.mergedReceipts)
+    database.changeIfMerged(receiptID, false);
+
+  database.changeIfMerged(mergedReceiptID, true);
+
+  return 0;
+};
+
 int ReceiptOperations::saveReceipt(bakcyl::core::Receipt& receipt) const {
   std::vector<std::string> usersIncluded;
 
   receipt.date = std::to_string(time(0));
+
   for (auto& item : receipt.items) {
     item.price = item.price * item.amount;
     item.amount = 0;
 
     bool found = false;
+
     for (const auto& user : usersIncluded) {
       if (user == item.whoBuy) {
         found = true;
         break;
       }
     }
-    if (!found) usersIncluded.push_back(item.whoBuy);
+    if(!found)
+      usersIncluded.push_back(item.whoBuy);
   }
+
   receipt.usersIncluded = usersIncluded;
+  
   return database.createReceiptInHistory(receipt);
 };
 

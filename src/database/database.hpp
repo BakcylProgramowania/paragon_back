@@ -46,7 +46,7 @@ class Database {
   std::vector<bakcyl::core::ItemToPay> getItemsToPay(const std::string& userID);
   std::string getUserIDUsingUsername(const std::string& username) const;
   bool isThereUserWithThisUsername(const std::string& username) const;
-
+  
  private:
   std::unique_ptr<DatabaseImpl> impl;
   mutable std::mutex mtx;

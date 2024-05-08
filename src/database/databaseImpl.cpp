@@ -199,7 +199,7 @@ double DatabaseImpl::getBalance(const std::string& userID) const {
 
   if (isUser) {
     bsoncxx::document::value userDoc = isUser.value();
-    bsoncxx::document::view userView = userDoc.view();
+    bsoncxx::document::view userView = userDoc.view(); 
 
     // Pobierz saldo uÅ¼ytkownika
     auto balanceElement = userView["Balance"];
@@ -390,6 +390,7 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
 }
 
 bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
+
   auto collection = database["receiptHistory"];
   bakcyl::core::Receipt receipt;
 
@@ -403,16 +404,20 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
   receipt.receiptName = doc_view["receiptName"].get_string().value.to_string();
 
   auto array_value_usersIncluded = doc_view["usersIncluded"];
+
   if (array_value_usersIncluded &&
       array_value_usersIncluded.type() == bsoncxx::type::k_array) {
+
     for (const auto& element : array_value_usersIncluded.get_array().value) {
       receipt.usersIncluded.push_back(element.get_string().value.to_string());
     }
   }
 
+
   auto array_value_mergedReceipts = doc_view["mergedReceipts"];
   if (array_value_mergedReceipts &&
       array_value_mergedReceipts.type() == bsoncxx::type::k_array) {
+    
     for (const auto& element : array_value_mergedReceipts.get_array().value) {
       receipt.mergedReceipts.push_back(element.get_string().value.to_string());
     }
@@ -433,7 +438,6 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
       }
 
       item.whoBuy = object["whoBuy"].get_string().value.to_string();
-
       item.paid = object["paid"].get_bool().value;
 
       receipt.items.push_back(item);
@@ -443,6 +447,7 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
   return receipt;
 }
 
+
 bool bakcyl::database::DatabaseImpl::changeIfMerged(
     const std::string& receiptID, const bool& newState) {
   auto collection = database["receiptHistory"];
@@ -450,6 +455,7 @@ bool bakcyl::database::DatabaseImpl::changeIfMerged(
   bsoncxx::oid document_id(receiptID);
   auto cursor = collection.find_one(make_document(kvp("_id", document_id)));
   auto doc_view = cursor->view();
+
   if (doc_view["merged"].get_bool().value == newState) {
     return false;
   }
@@ -460,6 +466,7 @@ bool bakcyl::database::DatabaseImpl::changeIfMerged(
 
   return true;
 }
+
 
 std::vector<bakcyl::core::ReceiptShortView>
 bakcyl::database::DatabaseImpl::getReceipts(const std::string& userID) {

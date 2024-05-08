@@ -7,24 +7,24 @@ namespace core {
 
 struct User {
   std::string userID;
-  float price;
+  double price;
 };
 
 struct Item {
   std::string whoBuy;
   std::string itemName;
-  float price;
-  float amount;
+  double price;
+  double amount;
   bool paid;
 };
 
 struct Receipt {
-  std::string author;
-  std::vector<std::string> usersIncluded;
-  std::string receiptName;
-  std::string date;
-  std::vector<bakcyl::core::Item> items;
-  std::vector<std::string> mergedReceipts;
+    std::string author;
+    std::vector<std::string> usersIncluded;
+    std::string receiptName;
+    std::string date;
+    std::vector<bakcyl::core::Item> items;
+    std::vector<std::string> mergedReceipts;
 };
 
 struct ReceiptShortView {

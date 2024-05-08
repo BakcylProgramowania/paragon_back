@@ -95,6 +95,32 @@ class ReceiptResponseDto : public oatpp::DTO {
   DTO_FIELD(Fields<List<Object<ReceiptFriendsDto>>>, data);
 };
 
+class MergeReceiptsDto : public oatpp::DTO {
+    DTO_INIT(MergeReceiptsDto, DTO)
+
+    DTO_FIELD(String, receiptName);
+    DTO_FIELD(List<String>, receiptsId);
+};
+
+class MergeReceiptsResponseDto : public oatpp::DTO {
+  DTO_INIT(MergeReceiptsResponseDto, DTO)
+
+  DTO_FIELD(Boolean, success);
+  DTO_FIELD(String, receiptName);
+};
+
+class UnmergeReceiptsDto : public oatpp::DTO {
+    DTO_INIT(UnmergeReceiptsDto, DTO)
+
+    DTO_FIELD(String, receiptId);
+};
+
+class UnmergeReceiptResponseDto : public oatpp::DTO{
+  DTO_INIT(UnmergeReceiptResponseDto, DTO)
+
+  DTO_FIELD(Boolean, success);
+};
+
 class ReceiptsResponseDto : public oatpp::DTO {
   DTO_INIT(ReceiptsResponseDto, DTO);
 
@@ -104,5 +130,6 @@ class ReceiptsResponseDto : public oatpp::DTO {
 
 }  // namespace api
 }  // namespace bakcyl
+
 
 #include OATPP_CODEGEN_END(DTO)
