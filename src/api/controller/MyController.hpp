@@ -107,11 +107,7 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
 
-    std::pair<int, std::string> registerPair =
-        auth.registerUser(json->username, json->password, json->email);
-
-    int errorCode = registerPair.first;
-    std::string token = registerPair.second;
+    const auto& [errorCode, token] = auth.registerUser(json->username, json->password, json->email);
 
     responseDto->success = errorCode == 0 ? true : false;
     responseDto->errorCode = errorCode;
