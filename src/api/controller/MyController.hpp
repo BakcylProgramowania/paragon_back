@@ -73,10 +73,10 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
 
-    std::string token = auth.authenticateUser(json->username, json->password);
+    const auto token = auth.authenticateUser(json->username, json->password);
 
-    bool loginSuccess = false;
-    if (token != "") loginSuccess = true;
+    bool loginSuccess = token.empty() ? false : true;
+
     responseDto->success = loginSuccess;
 
     if (loginSuccess) {
@@ -113,20 +113,18 @@ class MyController : public oatpp::web::server::api::ApiController {
     int errorCode = registerPair.first;
     std::string token = registerPair.second;
 
-    if (errorCode == 0)
-      responseDto->success = true;
-    else
-      responseDto->success = false;
+    responseDto->success = errorCode == 0 ? true : false;
     responseDto->errorCode = errorCode;
 
     if (errorCode == 0) {
       auto response = createDtoResponse(Status::CODE_201, responseDto);
       response->putHeader("Authorization", "Bearer " + token);
       return response;
-    } else if (errorCode == 1)
+    } else if (errorCode == 1) {
       return createDtoResponse(Status::CODE_400, responseDto);
-    else
+    } else {
       return createDtoResponse(Status::CODE_409, responseDto);
+    }
   }
 
   ENDPOINT_INFO(changeBalance) {
