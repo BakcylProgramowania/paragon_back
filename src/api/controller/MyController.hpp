@@ -107,7 +107,8 @@ class MyController : public oatpp::web::server::api::ApiController {
       return createDtoResponse(Status::CODE_400, responseDto);
     }
 
-    const auto& [errorCode, token] = auth.registerUser(json->username, json->password, json->email);
+    const auto& [errorCode, token] =
+        auth.registerUser(json->username, json->password, json->email);
 
     responseDto->success = errorCode == 0 ? true : false;
     responseDto->errorCode = errorCode;
