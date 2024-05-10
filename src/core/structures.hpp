@@ -19,12 +19,12 @@ struct Item {
 };
 
 struct Receipt {
-    std::string author;
-    std::vector<std::string> usersIncluded;
-    std::string receiptName;
-    std::string date;
-    std::vector<bakcyl::core::Item> items;
-    std::vector<std::string> mergedReceipts;
+  std::string author;
+  std::vector<std::string> usersIncluded;
+  std::string receiptName;
+  std::string date;
+  std::vector<bakcyl::core::Item> items;
+  std::vector<std::string> mergedReceipts;
 };
 
 struct ReceiptShortView {

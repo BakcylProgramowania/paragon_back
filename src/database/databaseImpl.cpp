@@ -199,7 +199,7 @@ double DatabaseImpl::getBalance(const std::string& userID) const {
 
   if (isUser) {
     bsoncxx::document::value userDoc = isUser.value();
-    bsoncxx::document::view userView = userDoc.view(); 
+    bsoncxx::document::view userView = userDoc.view();
 
     // Pobierz saldo uÅ¼ytkownika
     auto balanceElement = userView["Balance"];
@@ -276,15 +276,14 @@ bool DatabaseImpl::addUserToFriendList(
             "$addToSet",
             make_document(kvp("UserFriendList",
                               getUserIDUsingUsername(friendUsernameToAdd))))));
-    if (result)
-    {
+    if (result) {
       result = collection.update_one(
-        make_document(kvp("UserID", getUserIDUsingUsername(friendUsernameToAdd))),
-        make_document(kvp(
-            "$addToSet",
-            make_document(kvp("UserFriendList", userID)))));
-      
-      if(result) return true;
+          make_document(
+              kvp("UserID", getUserIDUsingUsername(friendUsernameToAdd))),
+          make_document(
+              kvp("$addToSet", make_document(kvp("UserFriendList", userID)))));
+
+      if (result) return true;
     }
   }
 
@@ -311,13 +310,13 @@ bool DatabaseImpl::removeUserFromFriendList(
             "$pull", make_document(kvp(
                          "UserFriendList",
                          getUserIDUsingUsername(friendUsernameToRemove))))));
-    if (result)  {
+    if (result) {
       result = collection.update_one(
-        make_document(kvp("UserID", getUserIDUsingUsername(friendUsernameToRemove))),
-        make_document(kvp(
-            "$pull", make_document(kvp(
-                         "UserFriendList", userID)))));
-      if(result) return true;
+          make_document(
+              kvp("UserID", getUserIDUsingUsername(friendUsernameToRemove))),
+          make_document(
+              kvp("$pull", make_document(kvp("UserFriendList", userID)))));
+      if (result) return true;
     }
   }
 
@@ -390,7 +389,6 @@ int DatabaseImpl::createReceiptInHistory(const bakcyl::core::Receipt& receipt) {
 }
 
 bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
-
   auto collection = database["receiptHistory"];
   bakcyl::core::Receipt receipt;
 
@@ -407,17 +405,14 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
 
   if (array_value_usersIncluded &&
       array_value_usersIncluded.type() == bsoncxx::type::k_array) {
-
     for (const auto& element : array_value_usersIncluded.get_array().value) {
       receipt.usersIncluded.push_back(element.get_string().value.to_string());
     }
   }
 
-
   auto array_value_mergedReceipts = doc_view["mergedReceipts"];
   if (array_value_mergedReceipts &&
       array_value_mergedReceipts.type() == bsoncxx::type::k_array) {
-    
     for (const auto& element : array_value_mergedReceipts.get_array().value) {
       receipt.mergedReceipts.push_back(element.get_string().value.to_string());
     }
@@ -447,7 +442,6 @@ bakcyl::core::Receipt DatabaseImpl::getReceipt(const std::string& receiptID) {
   return receipt;
 }
 
-
 bool bakcyl::database::DatabaseImpl::changeIfMerged(
     const std::string& receiptID, const bool& newState) {
   auto collection = database["receiptHistory"];
@@ -466,7 +460,6 @@ bool bakcyl::database::DatabaseImpl::changeIfMerged(
 
   return true;
 }
-
 
 std::vector<bakcyl::core::ReceiptShortView>
 bakcyl::database::DatabaseImpl::getReceipts(const std::string& userID) {

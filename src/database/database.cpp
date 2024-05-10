@@ -67,7 +67,8 @@ bool bakcyl::database::Database::addUserToFriendList(
 }
 
 bool bakcyl::database::Database::removeUserFromFriendList(
-    const std::string& userID, const std::string& friendUsernameToRemove) const {
+    const std::string& userID,
+    const std::string& friendUsernameToRemove) const {
   std::lock_guard<std::mutex> lock(mtx);
   return bakcyl::database::Database::impl->removeUserFromFriendList(
       userID, friendUsernameToRemove);
