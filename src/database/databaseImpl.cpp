@@ -23,10 +23,11 @@ bool DatabaseImpl::isThereUserWithThisEmail(const std::string& email) const {
 
   // searching for user with this email and returning result
   auto cursor = collection.find_one(make_document(kvp("Email", email)));
-  if (cursor)
+  if (cursor) {
     return true;
-  else
+  } else {
     return false;
+  }
 }
 
 // Checks if is there user with given Username
@@ -36,10 +37,11 @@ bool DatabaseImpl::isThereUserWithThisUsername(
 
   // searching for user with this username and returning result
   auto cursor = collection.find_one(make_document(kvp("UserName", username)));
-  if (cursor)
+  if (cursor) {
     return true;
-  else
+  } else {
     return false;
+  }
 }
 
 bool DatabaseImpl::isUserPasswordEqualGivenPassword(
@@ -52,8 +54,9 @@ bool DatabaseImpl::isUserPasswordEqualGivenPassword(
     // if 'userPassword' == 'Password' and return result
     if (userPassword.compare(password) == 0) {
       return true;
-    } else
+    } else {
       return false;
+    }
   }
   return false;
 }
@@ -93,8 +96,7 @@ bool DatabaseImpl::deleteUser(const std::string& id,
   auto collection = database["users"];
 
   // Checking if the 'id' is a Username or Email
-  if (isThereUserWithThisUsername(id))  // id is an Username
-  {
+  if (isThereUserWithThisUsername(id)) {  // id is an Username
     // Finding user by Username
     auto cursor = collection.find(make_document(kvp("UserName", id)));
     if (isUserPasswordEqualGivenPassword(cursor, password)) {
@@ -102,19 +104,18 @@ bool DatabaseImpl::deleteUser(const std::string& id,
       return true;
     } else
       return false;
-  } else if (isThereUserWithThisEmail(id))  // id is an Email
-  {
+  } else if (isThereUserWithThisEmail(id)) {  // id is an Email
     // Finding user by Email
     auto cursor = collection.find(make_document(kvp("Email", id)));
     if (isUserPasswordEqualGivenPassword(cursor, password)) {
       collection.delete_one(make_document(kvp("Email", id)));
       return true;
-    } else
+    } else {
       return false;
-  } else
+    }
+  } else {
     return false;  // there is no user with this id
-
-  return false;
+  }
 }
 
 // Checks if there is user with given 'id' and if user's password equals given
@@ -181,12 +182,14 @@ bool DatabaseImpl::changeBalance(const std::string& userID, double amount) {
   auto result = collection.update_one(doc.view(), update.view());
 
   if (result) {
-    if (result.value().modified_count() > 0)
+    if (result.value().modified_count() > 0) {
       return true;
-    else
+    } else {
       return false;
-  } else
+    }
+  } else {
     return false;
+  }
 }
 
 double DatabaseImpl::getBalance(const std::string& userID) const {
@@ -266,7 +269,9 @@ bool DatabaseImpl::addUserToFriendList(
       kvp("UserFriendList",
           make_document(kvp("$in", make_array(getUserIDUsingUsername(
                                        friendUsernameToAdd)))))));
-  if (cursor) return false;
+  if (cursor) {
+    return false;
+  }
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor) {
@@ -283,7 +288,9 @@ bool DatabaseImpl::addUserToFriendList(
           make_document(
               kvp("$addToSet", make_document(kvp("UserFriendList", userID)))));
 
-      if (result) return true;
+      if (result) {
+        return true;
+      }
     }
   }
 
@@ -300,7 +307,9 @@ bool DatabaseImpl::removeUserFromFriendList(
       kvp("UserFriendList",
           make_document(kvp("$in", make_array(getUserIDUsingUsername(
                                        friendUsernameToRemove)))))));
-  if (!cursor) return false;
+  if (!cursor) {
+    return false;
+  }
 
   cursor = collection.find_one(make_document(kvp("UserID", userID)));
   if (cursor) {
@@ -316,7 +325,9 @@ bool DatabaseImpl::removeUserFromFriendList(
               kvp("UserID", getUserIDUsingUsername(friendUsernameToRemove))),
           make_document(
               kvp("$pull", make_document(kvp("UserFriendList", userID)))));
-      if (result) return true;
+      if (result) {
+        return true;
+      }
     }
   }
 
@@ -344,10 +355,11 @@ bool DatabaseImpl::isThereUserWithThisID(const std::string& userID) const {
     bsoncxx::oid oid(userID);
     auto cursor = collection.find_one(make_document(kvp("_id", oid)));
 
-    if (cursor)
+    if (cursor) {
       return true;
-    else
+    } else {
       return false;
+    }
   } catch (const std::exception& e) {
     return false;
   }
