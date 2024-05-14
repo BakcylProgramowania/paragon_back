@@ -96,10 +96,10 @@ class ReceiptResponseDto : public oatpp::DTO {
 };
 
 class MergeReceiptsDto : public oatpp::DTO {
-    DTO_INIT(MergeReceiptsDto, DTO)
+  DTO_INIT(MergeReceiptsDto, DTO)
 
-    DTO_FIELD(String, receiptName);
-    DTO_FIELD(List<String>, receiptsId);
+  DTO_FIELD(String, receiptName);
+  DTO_FIELD(List<String>, receiptsId);
 };
 
 class MergeReceiptsResponseDto : public oatpp::DTO {
@@ -110,12 +110,12 @@ class MergeReceiptsResponseDto : public oatpp::DTO {
 };
 
 class UnmergeReceiptsDto : public oatpp::DTO {
-    DTO_INIT(UnmergeReceiptsDto, DTO)
+  DTO_INIT(UnmergeReceiptsDto, DTO)
 
-    DTO_FIELD(String, receiptId);
+  DTO_FIELD(String, receiptId);
 };
 
-class UnmergeReceiptResponseDto : public oatpp::DTO{
+class UnmergeReceiptResponseDto : public oatpp::DTO {
   DTO_INIT(UnmergeReceiptResponseDto, DTO)
 
   DTO_FIELD(Boolean, success);
@@ -130,6 +130,5 @@ class ReceiptsResponseDto : public oatpp::DTO {
 
 }  // namespace api
 }  // namespace bakcyl
-
 
 #include OATPP_CODEGEN_END(DTO)

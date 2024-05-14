@@ -18,7 +18,7 @@ class ReceiptOperations {
       const std::vector<bakcyl::core::Item>& items) const;
   int mergeReceipt(std::vector<std::string>& receiptIDs,
                    const std::string& receiptName,
-                   const std::string& author)  const;
+                   const std::string& author) const;
   int unmergeReceipt(std::string& mergedReceiptID) const;
   int saveReceipt(bakcyl::core::Receipt& receipt) const;
   std::vector<bakcyl::core::ReceiptShortView> getReceipts(
@@ -26,7 +26,8 @@ class ReceiptOperations {
   bakcyl::core::Receipt getReceipt(const std::string& receiptID);
   bool paidForItem(const std::string& receiptID, const std::string& itemName,
                    const std::string& token) const;
-  std::vector<bakcyl::core::ItemToPay> getItemsToPay(const std::string& token) const;
+  std::vector<bakcyl::core::ItemToPay> getItemsToPay(
+      const std::string& token) const;
 };
 
 }  // namespace core

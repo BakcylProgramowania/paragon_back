@@ -20,9 +20,10 @@ AccountManager::returnUserFriendList(const std::string& token) const {
 
 bool AccountManager::addUserToFriendList(
     const std::string& token, const std::string& friendUsernameToAdd) const {
-  if (friendUsernameToAdd.empty()) return false;
-
-  if (!database.isThereUserWithThisUsername(friendUsernameToAdd)) return false;
+  if (friendUsernameToAdd.empty() ||
+      !database.isThereUserWithThisUsername(friendUsernameToAdd)) {
+    return false;
+  }
 
   return database.addUserToFriendList(database.getUserIDUsingToken(token),
                                       friendUsernameToAdd);

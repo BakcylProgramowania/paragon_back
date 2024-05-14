@@ -3,8 +3,7 @@
 namespace bakcyl {
 namespace core {
 
-Authenticator::Authenticator(bakcyl::database::Database& db)
-    : database(db) {}  // Update constructor
+Authenticator::Authenticator(bakcyl::database::Database& db) : database(db) {}
 
 bool Authenticator::isPasswordStrong(const std::string& password) const {
   const size_t minPasswordLength = 8;
@@ -21,6 +20,7 @@ std::string Authenticator::authenticateUser(const std::string& username,
   if (database.loginCheck(username, password)) {
     return database.getToken(username, password);
   }
+
   return "";
 }
 
@@ -29,13 +29,16 @@ std::pair<int, std::string> Authenticator::registerUser(
     const std::string& email) {
   TokenGenerator tokenGen;
 
-  if (!isPasswordStrong(password)) return std::pair<int, std::string>(1, "");
+  if (!isPasswordStrong(password)) {
+    return std::pair<int, std::string>(1, "");
+  }
 
   if (database.createUser(username, password, email,
                           tokenGen.generateToken())) {
     return std::pair<int, std::string>(0,
                                        database.getToken(username, password));
   }
+
   return std::pair<int, std::string>(2, "");
 }
 
